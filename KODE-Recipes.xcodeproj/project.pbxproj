@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -116,6 +116,8 @@
 		934DA4C226675C260037D829 /* KODE-Recipes */ = {
 			isa = PBXGroup;
 			children = (
+				934DA504266769AD0037D829 /* Support */,
+				934DA503266769A70037D829 /* Scenes */,
 				934DA4C326675C260037D829 /* AppDelegate.swift */,
 				934DA4C526675C260037D829 /* SceneDelegate.swift */,
 				934DA4C726675C260037D829 /* ViewController.swift */,
@@ -145,6 +147,36 @@
 			path = "KODE-RecipesUITests";
 			sourceTree = "<group>";
 		};
+		934DA503266769A70037D829 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		934DA504266769AD0037D829 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				934DA509266769EC0037D829 /* ApiClient */,
+				934DA508266769E70037D829 /* DatabaseClient */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		934DA508266769E70037D829 /* DatabaseClient */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DatabaseClient;
+			sourceTree = "<group>";
+		};
+		934DA509266769EC0037D829 /* ApiClient */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ApiClient;
+			sourceTree = "<group>";
+		};
 		AC69383ECD5DF421907E49F5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,7 +187,6 @@
 				0E363EAF47C28CE50A2A3DA9 /* Pods-KODE-RecipesTests.debug.xcconfig */,
 				2DCFF48E48363D706471EBB1 /* Pods-KODE-RecipesTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
