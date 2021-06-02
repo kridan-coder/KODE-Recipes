@@ -22,6 +22,8 @@
 		934DA529266773270037D829 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA528266773270037D829 /* ApiClient.swift */; };
 		934DA531266773330037D829 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA530266773330037D829 /* DatabaseClient.swift */; };
 		934DA5362667737A0037D829 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA5352667737A0037D829 /* Repository.swift */; };
+		934DA53E26677A830037D829 /* RecipesContainerAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA53D26677A830037D829 /* RecipesContainerAC.swift */; };
+		934DA54626677AF80037D829 /* RecipeAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA54526677AF80037D829 /* RecipeAC.swift */; };
 		F0B1235C67BCD2B314627A90 /* Pods_KODE_Recipes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C9170DDB4484CB3722715B6 /* Pods_KODE_Recipes.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +70,8 @@
 		934DA528266773270037D829 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		934DA530266773330037D829 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		934DA5352667737A0037D829 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		934DA53D26677A830037D829 /* RecipesContainerAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesContainerAC.swift; sourceTree = "<group>"; };
+		934DA54526677AF80037D829 /* RecipeAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAC.swift; sourceTree = "<group>"; };
 		9E54B976B82F080D7615C664 /* Pods-KODE-Recipes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KODE-Recipes.debug.xcconfig"; path = "Target Support Files/Pods-KODE-Recipes/Pods-KODE-Recipes.debug.xcconfig"; sourceTree = "<group>"; };
 		D237F24527C4507A715E084A /* Pods-KODE-Recipes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KODE-Recipes.release.xcconfig"; path = "Target Support Files/Pods-KODE-Recipes/Pods-KODE-Recipes.release.xcconfig"; sourceTree = "<group>"; };
 		ECA258D8C25A2BBC74EC1550 /* Pods-KODE-Recipes-KODE-RecipesUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KODE-Recipes-KODE-RecipesUITests.debug.xcconfig"; path = "Target Support Files/Pods-KODE-Recipes-KODE-RecipesUITests/Pods-KODE-Recipes-KODE-RecipesUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -237,6 +241,8 @@
 		934DA526266773140037D829 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				934DA53D26677A830037D829 /* RecipesContainerAC.swift */,
+				934DA54526677AF80037D829 /* RecipeAC.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -511,12 +517,14 @@
 			files = (
 				934DA531266773330037D829 /* DatabaseClient.swift in Sources */,
 				934DA517266771DC0037D829 /* Coordinator.swift in Sources */,
+				934DA53E26677A830037D829 /* RecipesContainerAC.swift in Sources */,
 				934DA4C826675C260037D829 /* ViewController.swift in Sources */,
 				934DA5362667737A0037D829 /* Repository.swift in Sources */,
 				934DA51F266771F90037D829 /* AppCoordinator.swift in Sources */,
 				934DA4C426675C260037D829 /* AppDelegate.swift in Sources */,
 				934DA4C626675C260037D829 /* SceneDelegate.swift in Sources */,
 				934DA529266773270037D829 /* ApiClient.swift in Sources */,
+				934DA54626677AF80037D829 /* RecipeAC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
