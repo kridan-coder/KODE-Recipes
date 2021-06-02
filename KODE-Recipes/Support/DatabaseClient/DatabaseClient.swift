@@ -6,3 +6,6 @@
 //
 
 import Foundation
+import RealmSwift
+
+class DatabaseClient{}
