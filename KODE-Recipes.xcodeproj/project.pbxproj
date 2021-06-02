@@ -1,0 +1,598 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		934DA4C426675C260037D829 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4C326675C260037D829 /* AppDelegate.swift */; };
+		934DA4C626675C260037D829 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4C526675C260037D829 /* SceneDelegate.swift */; };
+		934DA4C826675C260037D829 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4C726675C260037D829 /* ViewController.swift */; };
+		934DA4CB26675C260037D829 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 934DA4C926675C260037D829 /* Main.storyboard */; };
+		934DA4CD26675C280037D829 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 934DA4CC26675C280037D829 /* Assets.xcassets */; };
+		934DA4D026675C280037D829 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 934DA4CE26675C280037D829 /* LaunchScreen.storyboard */; };
+		934DA4DB26675C280037D829 /* KODE_RecipesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4DA26675C280037D829 /* KODE_RecipesTests.swift */; };
+		934DA4E626675C280037D829 /* KODE_RecipesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4E526675C280037D829 /* KODE_RecipesUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		934DA4D726675C280037D829 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 934DA4B826675C260037D829 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 934DA4BF26675C260037D829;
+			remoteInfo = "KODE-Recipes";
+		};
+		934DA4E226675C280037D829 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 934DA4B826675C260037D829 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 934DA4BF26675C260037D829;
+			remoteInfo = "KODE-Recipes";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		934DA4C026675C260037D829 /* KODE-Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KODE-Recipes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		934DA4C326675C260037D829 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		934DA4C526675C260037D829 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		934DA4C726675C260037D829 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		934DA4CA26675C260037D829 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		934DA4CC26675C280037D829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		934DA4CF26675C280037D829 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		934DA4D126675C280037D829 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		934DA4D626675C280037D829 /* KODE-RecipesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KODE-RecipesTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		934DA4DA26675C280037D829 /* KODE_RecipesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KODE_RecipesTests.swift; sourceTree = "<group>"; };
+		934DA4DC26675C280037D829 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		934DA4E126675C280037D829 /* KODE-RecipesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KODE-RecipesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		934DA4E526675C280037D829 /* KODE_RecipesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KODE_RecipesUITests.swift; sourceTree = "<group>"; };
+		934DA4E726675C280037D829 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		934DA4BD26675C260037D829 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934DA4D326675C280037D829 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934DA4DE26675C280037D829 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		934DA4B726675C260037D829 = {
+			isa = PBXGroup;
+			children = (
+				934DA4C226675C260037D829 /* KODE-Recipes */,
+				934DA4D926675C280037D829 /* KODE-RecipesTests */,
+				934DA4E426675C280037D829 /* KODE-RecipesUITests */,
+				934DA4C126675C260037D829 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		934DA4C126675C260037D829 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				934DA4C026675C260037D829 /* KODE-Recipes.app */,
+				934DA4D626675C280037D829 /* KODE-RecipesTests.xctest */,
+				934DA4E126675C280037D829 /* KODE-RecipesUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		934DA4C226675C260037D829 /* KODE-Recipes */ = {
+			isa = PBXGroup;
+			children = (
+				934DA4C326675C260037D829 /* AppDelegate.swift */,
+				934DA4C526675C260037D829 /* SceneDelegate.swift */,
+				934DA4C726675C260037D829 /* ViewController.swift */,
+				934DA4C926675C260037D829 /* Main.storyboard */,
+				934DA4CC26675C280037D829 /* Assets.xcassets */,
+				934DA4CE26675C280037D829 /* LaunchScreen.storyboard */,
+				934DA4D126675C280037D829 /* Info.plist */,
+			);
+			path = "KODE-Recipes";
+			sourceTree = "<group>";
+		};
+		934DA4D926675C280037D829 /* KODE-RecipesTests */ = {
+			isa = PBXGroup;
+			children = (
+				934DA4DA26675C280037D829 /* KODE_RecipesTests.swift */,
+				934DA4DC26675C280037D829 /* Info.plist */,
+			);
+			path = "KODE-RecipesTests";
+			sourceTree = "<group>";
+		};
+		934DA4E426675C280037D829 /* KODE-RecipesUITests */ = {
+			isa = PBXGroup;
+			children = (
+				934DA4E526675C280037D829 /* KODE_RecipesUITests.swift */,
+				934DA4E726675C280037D829 /* Info.plist */,
+			);
+			path = "KODE-RecipesUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		934DA4BF26675C260037D829 /* KODE-Recipes */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 934DA4EA26675C280037D829 /* Build configuration list for PBXNativeTarget "KODE-Recipes" */;
+			buildPhases = (
+				934DA4BC26675C260037D829 /* Sources */,
+				934DA4BD26675C260037D829 /* Frameworks */,
+				934DA4BE26675C260037D829 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "KODE-Recipes";
+			productName = "KODE-Recipes";
+			productReference = 934DA4C026675C260037D829 /* KODE-Recipes.app */;
+			productType = "com.apple.product-type.application";
+		};
+		934DA4D526675C280037D829 /* KODE-RecipesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 934DA4ED26675C280037D829 /* Build configuration list for PBXNativeTarget "KODE-RecipesTests" */;
+			buildPhases = (
+				934DA4D226675C280037D829 /* Sources */,
+				934DA4D326675C280037D829 /* Frameworks */,
+				934DA4D426675C280037D829 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				934DA4D826675C280037D829 /* PBXTargetDependency */,
+			);
+			name = "KODE-RecipesTests";
+			productName = "KODE-RecipesTests";
+			productReference = 934DA4D626675C280037D829 /* KODE-RecipesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		934DA4E026675C280037D829 /* KODE-RecipesUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 934DA4F026675C280037D829 /* Build configuration list for PBXNativeTarget "KODE-RecipesUITests" */;
+			buildPhases = (
+				934DA4DD26675C280037D829 /* Sources */,
+				934DA4DE26675C280037D829 /* Frameworks */,
+				934DA4DF26675C280037D829 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				934DA4E326675C280037D829 /* PBXTargetDependency */,
+			);
+			name = "KODE-RecipesUITests";
+			productName = "KODE-RecipesUITests";
+			productReference = 934DA4E126675C280037D829 /* KODE-RecipesUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		934DA4B826675C260037D829 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					934DA4BF26675C260037D829 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					934DA4D526675C280037D829 = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = 934DA4BF26675C260037D829;
+					};
+					934DA4E026675C280037D829 = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = 934DA4BF26675C260037D829;
+					};
+				};
+			};
+			buildConfigurationList = 934DA4BB26675C260037D829 /* Build configuration list for PBXProject "KODE-Recipes" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 934DA4B726675C260037D829;
+			productRefGroup = 934DA4C126675C260037D829 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				934DA4BF26675C260037D829 /* KODE-Recipes */,
+				934DA4D526675C280037D829 /* KODE-RecipesTests */,
+				934DA4E026675C280037D829 /* KODE-RecipesUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		934DA4BE26675C260037D829 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				934DA4D026675C280037D829 /* LaunchScreen.storyboard in Resources */,
+				934DA4CD26675C280037D829 /* Assets.xcassets in Resources */,
+				934DA4CB26675C260037D829 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934DA4D426675C280037D829 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934DA4DF26675C280037D829 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		934DA4BC26675C260037D829 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				934DA4C826675C260037D829 /* ViewController.swift in Sources */,
+				934DA4C426675C260037D829 /* AppDelegate.swift in Sources */,
+				934DA4C626675C260037D829 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934DA4D226675C280037D829 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				934DA4DB26675C280037D829 /* KODE_RecipesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		934DA4DD26675C280037D829 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				934DA4E626675C280037D829 /* KODE_RecipesUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		934DA4D826675C280037D829 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 934DA4BF26675C260037D829 /* KODE-Recipes */;
+			targetProxy = 934DA4D726675C280037D829 /* PBXContainerItemProxy */;
+		};
+		934DA4E326675C280037D829 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 934DA4BF26675C260037D829 /* KODE-Recipes */;
+			targetProxy = 934DA4E226675C280037D829 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		934DA4C926675C260037D829 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				934DA4CA26675C260037D829 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		934DA4CE26675C280037D829 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				934DA4CF26675C280037D829 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		934DA4E826675C280037D829 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		934DA4E926675C280037D829 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		934DA4EB26675C280037D829 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73S8J9N7ZU;
+				INFOPLIST_FILE = "KODE-Recipes/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Daniil.KODE-Recipes";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		934DA4EC26675C280037D829 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73S8J9N7ZU;
+				INFOPLIST_FILE = "KODE-Recipes/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Daniil.KODE-Recipes";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		934DA4EE26675C280037D829 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73S8J9N7ZU;
+				INFOPLIST_FILE = "KODE-RecipesTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Daniil.KODE-RecipesTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KODE-Recipes.app/KODE-Recipes";
+			};
+			name = Debug;
+		};
+		934DA4EF26675C280037D829 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73S8J9N7ZU;
+				INFOPLIST_FILE = "KODE-RecipesTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Daniil.KODE-RecipesTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KODE-Recipes.app/KODE-Recipes";
+			};
+			name = Release;
+		};
+		934DA4F126675C280037D829 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73S8J9N7ZU;
+				INFOPLIST_FILE = "KODE-RecipesUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Daniil.KODE-RecipesUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "KODE-Recipes";
+			};
+			name = Debug;
+		};
+		934DA4F226675C280037D829 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73S8J9N7ZU;
+				INFOPLIST_FILE = "KODE-RecipesUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "Daniil.KODE-RecipesUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "KODE-Recipes";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		934DA4BB26675C260037D829 /* Build configuration list for PBXProject "KODE-Recipes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				934DA4E826675C280037D829 /* Debug */,
+				934DA4E926675C280037D829 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		934DA4EA26675C280037D829 /* Build configuration list for PBXNativeTarget "KODE-Recipes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				934DA4EB26675C280037D829 /* Debug */,
+				934DA4EC26675C280037D829 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		934DA4ED26675C280037D829 /* Build configuration list for PBXNativeTarget "KODE-RecipesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				934DA4EE26675C280037D829 /* Debug */,
+				934DA4EF26675C280037D829 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		934DA4F026675C280037D829 /* Build configuration list for PBXNativeTarget "KODE-RecipesUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				934DA4F126675C280037D829 /* Debug */,
+				934DA4F226675C280037D829 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 934DA4B826675C260037D829 /* Project object */;
+}
