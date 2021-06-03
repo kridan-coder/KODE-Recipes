@@ -22,6 +22,8 @@
 		934DA529266773270037D829 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA528266773270037D829 /* ApiClient.swift */; };
 		934DA531266773330037D829 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA530266773330037D829 /* DatabaseClient.swift */; };
 		934DA5362667737A0037D829 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA5352667737A0037D829 /* Repository.swift */; };
+		934DA54E2667808F0037D829 /* RecipesContainerR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA54D2667808F0037D829 /* RecipesContainerR.swift */; };
+		934DA553266781040037D829 /* RecipeR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA552266781040037D829 /* RecipeR.swift */; };
 		934DA53E26677A830037D829 /* RecipesContainerAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA53D26677A830037D829 /* RecipesContainerAC.swift */; };
 		934DA54626677AF80037D829 /* RecipeAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA54526677AF80037D829 /* RecipeAC.swift */; };
 		934DA5682668B9200037D829 /* RecipesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA5662668B9200037D829 /* RecipesListViewController.swift */; };
@@ -72,6 +74,8 @@
 		934DA528266773270037D829 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		934DA530266773330037D829 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		934DA5352667737A0037D829 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		934DA54D2667808F0037D829 /* RecipesContainerR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesContainerR.swift; sourceTree = "<group>"; };
+		934DA552266781040037D829 /* RecipeR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeR.swift; sourceTree = "<group>"; };
 		934DA53D26677A830037D829 /* RecipesContainerAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesContainerAC.swift; sourceTree = "<group>"; };
 		934DA54526677AF80037D829 /* RecipeAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAC.swift; sourceTree = "<group>"; };
 		934DA5662668B9200037D829 /* RecipesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesListViewController.swift; sourceTree = "<group>"; };
@@ -256,6 +260,8 @@
 		934DA5272667731A0037D829 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				934DA54D2667808F0037D829 /* RecipesContainerR.swift */,
+				934DA552266781040037D829 /* RecipeR.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -522,8 +528,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				934DA553266781040037D829 /* RecipeR.swift in Sources */,
 				934DA531266773330037D829 /* DatabaseClient.swift in Sources */,
 				934DA517266771DC0037D829 /* Coordinator.swift in Sources */,
+				934DA54E2667808F0037D829 /* RecipesContainerR.swift in Sources */,
 				934DA53E26677A830037D829 /* RecipesContainerAC.swift in Sources */,
 				934DA4C826675C260037D829 /* ViewController.swift in Sources */,
 				934DA5362667737A0037D829 /* Repository.swift in Sources */,
