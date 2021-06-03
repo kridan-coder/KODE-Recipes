@@ -15,7 +15,9 @@ class AppCoordinator: Coordinator {
     let window: UIWindow?
     
     lazy var rootNavigationController: UINavigationController = {
-        return UINavigationController(rootViewController: UIViewController())
+        
+        let recipesListViewController = RecipesListViewController(nibName: "RecipesListViewController", bundle: nil)
+        return UINavigationController(rootViewController: recipesListViewController)
     }()
     
     let apiClient: ApiClient
