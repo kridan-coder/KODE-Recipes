@@ -38,7 +38,7 @@
     </scenes>
     <resources>
         <namedColor name="BackgroundColor">
-            <color red="0.31" green="0.31" blue="0.95999999999999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.30980392156862746" green="0.30980392156862746" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

@@ -8,9 +8,31 @@
 import UIKit
 
 class RecipesListViewController: UIViewController {
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    private func setSearchBarAppearance(){
+        searchBar.backgroundImage = UIImage()
+        
+        let underline = CALayer()
+        underline.frame = CGRect(x: 10, y: searchBar.frame.height, width: searchBar.frame.width - 20, height: 3)
+        underline.cornerRadius = 1
+        underline.backgroundColor = UIColor.white.cgColor
+    
+        searchBar.layer.addSublayer(underline)
+    }
+    
 
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setSearchBarAppearance()
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setSearchBarAppearance()
 
         // Do any additional setup after loading the view.
     }

@@ -17,7 +17,13 @@ class AppCoordinator: Coordinator {
     lazy var rootNavigationController: UINavigationController = {
         
         let recipesListViewController = RecipesListViewController(nibName: "RecipesListViewController", bundle: nil)
-        return UINavigationController(rootViewController: recipesListViewController)
+        recipesListViewController.title = "Recipes"
+        
+        let navigationController = UINavigationController(rootViewController: recipesListViewController)
+
+        navigationController.navigationBar.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        
+        return navigationController
     }()
     
     let apiClient: ApiClient
