@@ -16,14 +16,11 @@ class AppCoordinator: Coordinator {
     
     lazy var rootNavigationController: UINavigationController = {
         
-        let recipesListViewController = RecipesListViewController(nibName: "RecipesListViewController", bundle: nil)
-        recipesListViewController.title = "Recipes"
-        
-        let navigationController = UINavigationController(rootViewController: recipesListViewController)
+        //let navigationController =
 
-        navigationController.navigationBar.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        //navigationController.navigationBar.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
         
-        return navigationController
+        return UINavigationController()
     }()
     
     let apiClient: ApiClient
@@ -46,6 +43,12 @@ class AppCoordinator: Coordinator {
         
         window.rootViewController = self.rootNavigationController
         window.makeKeyAndVisible()
+        
+        let recipeListCoordinator = RecipesListCoordinator(rootNavigationController: rootNavigationController, apiClient: apiClient, databaseClient: databaseClient, repository: repository)
+        
+        addChildCoordinator(recipeListCoordinator)
+        
+        recipeListCoordinator.start()
     }
     
 }

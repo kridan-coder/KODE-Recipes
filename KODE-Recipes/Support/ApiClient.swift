@@ -10,7 +10,7 @@ import Alamofire
 
 // API Client is just a class. No need to use singleton in MVVM-C architectural pattern.
 
-class ApiClient {
+final class ApiClient {
     
     private let baseURL = "https://test.kode-t.ru/recipes.json"
     

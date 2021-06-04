@@ -10,7 +10,7 @@ import RealmSwift
 
 // Database Client is just a class. No need to use singleton in MVVM-C architectural pattern.
 
-class DatabaseClient {
+final class DatabaseClient {
 
     private static let realm = try! Realm()
     

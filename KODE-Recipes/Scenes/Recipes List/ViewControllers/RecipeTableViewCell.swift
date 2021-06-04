@@ -6,18 +6,58 @@
 //
 
 import UIKit
+import Kingfisher
+
+
 
 class RecipeTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var viewContainer: UIView!
+    @IBOutlet weak var wholeContainerView: UIView!
+    
+    @IBOutlet weak var recipeImage: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var lastUpdatedLabel: UILabel!
+    
+    
+    
+    
+    var viewModel: RecipeCellViewModel!
+    var recipe: Recipe! {
+        didSet{
+            recipeImage.kf.indicatorType = .activity
+            recipeImage.kf.setImage(with: URL(string: recipe.imageLinks[0]))
+            
+            nameLabel.text = recipe.name
+            descriptionLabel.text = recipe.description
+            
+            let date = recipe.lastUpdated
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM, dd, hh:mm"
+            lastUpdatedLabel.text = "Last updated on \(formatter.string(from: date))"
+            
+        }
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        viewContainer.layer.cornerRadius = 15
+        recipeImage.layer.cornerRadius = 15
+        recipeImage.layer.borderWidth = 1
+        recipeImage.layer.borderColor = UIColor(named: "TableBackgroundColor")?.cgColor
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        //super.setSelected(selected, animated: animated)
+    }
+    
+    func setup(viewModel: RecipeCellViewModel){
+        self.viewModel = viewModel
+        self.recipe = viewModel.data
     }
     
 }
+
+
