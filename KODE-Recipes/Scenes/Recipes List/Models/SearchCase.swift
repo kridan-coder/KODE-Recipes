@@ -8,8 +8,8 @@
 import Foundation
 
 enum SearchCase: String {
-    case All
-    case Name
-    case Description
-    case Instruction
+    case all
+    case name
+    case description
+    case instruction
 }

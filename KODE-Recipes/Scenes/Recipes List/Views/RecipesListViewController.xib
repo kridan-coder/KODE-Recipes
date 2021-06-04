@@ -45,6 +45,9 @@
                                 <segment title="Name"/>
                                 <segment title="Date"/>
                             </segments>
+                            <connections>
+                                <action selector="didChangeSegment:" destination="-1" eventType="valueChanged" id="c0y-J7-17x"/>
+                            </connections>
                         </segmentedControl>
                     </subviews>
                 </stackView>

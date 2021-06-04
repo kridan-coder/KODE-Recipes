@@ -28,19 +28,19 @@
                                     <constraint firstAttribute="height" constant="80" id="eeI-1S-fMb"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNH-Xh-ACO">
-                                <rect key="frame" x="106" y="16" width="173" height="18"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name abdsbam mnbda mbnas mnba dm amnbsd amn bdmn" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNH-Xh-ACO">
+                                <rect key="frame" x="106" y="16" width="173" height="31.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description adjh basdjn ajndk ahjdb abh dbha sbkdbkaj sdbkhj adjks" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVf-Q7-gnT">
-                                <rect key="frame" x="106" y="44" width="173" height="29"/>
-                                <fontDescription key="fontDescription" type="italicSystem" pointSize="12"/>
+                                <rect key="frame" x="106" y="50.5" width="173" height="26.5"/>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="11"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="246" verticalHuggingPriority="247" horizontalCompressionResistancePriority="757" verticalCompressionResistancePriority="758" text="Last updated: 14.02.2001" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOd-mm-v1d">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="246" verticalHuggingPriority="247" horizontalCompressionResistancePriority="757" verticalCompressionResistancePriority="758" text="Last update: Aug 15th at 15:30" textAlignment="right" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOd-mm-v1d">
                                 <rect key="frame" x="106" y="84" width="173" height="12"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -54,7 +54,7 @@
                             <constraint firstItem="hOd-mm-v1d" firstAttribute="bottom" secondItem="taE-Mk-YQu" secondAttribute="bottom" id="CwB-PG-7Db"/>
                             <constraint firstAttribute="trailing" secondItem="pVf-Q7-gnT" secondAttribute="trailing" constant="10" id="Dvd-Ua-bhC"/>
                             <constraint firstItem="hOd-mm-v1d" firstAttribute="centerX" secondItem="pVf-Q7-gnT" secondAttribute="centerX" id="KcD-cA-bDY"/>
-                            <constraint firstItem="pVf-Q7-gnT" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="hOd-mm-v1d" secondAttribute="top" constant="-10" id="SMN-4j-O55"/>
+                            <constraint firstItem="hOd-mm-v1d" firstAttribute="top" relation="greaterThanOrEqual" secondItem="pVf-Q7-gnT" secondAttribute="bottom" constant="3" id="SMN-4j-O55"/>
                             <constraint firstItem="mNH-Xh-ACO" firstAttribute="top" secondItem="taE-Mk-YQu" secondAttribute="top" id="VYa-qw-VUQ"/>
                             <constraint firstItem="hOd-mm-v1d" firstAttribute="trailing" secondItem="pVf-Q7-gnT" secondAttribute="trailing" id="WSO-Rz-ixM"/>
                             <constraint firstItem="mNH-Xh-ACO" firstAttribute="leading" secondItem="taE-Mk-YQu" secondAttribute="trailing" constant="10" id="a5O-pF-DEf"/>
@@ -62,7 +62,7 @@
                             <constraint firstItem="taE-Mk-YQu" firstAttribute="bottom" secondItem="Ep1-gT-bde" secondAttribute="bottom" constant="-16" id="dEg-q7-BlG"/>
                             <constraint firstItem="taE-Mk-YQu" firstAttribute="centerY" secondItem="Ep1-gT-bde" secondAttribute="centerY" id="e0L-4a-qP7"/>
                             <constraint firstItem="pVf-Q7-gnT" firstAttribute="leading" secondItem="mNH-Xh-ACO" secondAttribute="leading" id="lMf-Tb-roo"/>
-                            <constraint firstItem="pVf-Q7-gnT" firstAttribute="top" secondItem="mNH-Xh-ACO" secondAttribute="bottom" constant="10" id="sUe-ZV-a7e"/>
+                            <constraint firstItem="pVf-Q7-gnT" firstAttribute="top" secondItem="mNH-Xh-ACO" secondAttribute="bottom" constant="3" id="sUe-ZV-a7e"/>
                         </constraints>
                     </view>
                 </subviews>

@@ -12,15 +12,32 @@ class RecipesListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var filteredRecipes: [RecipeCellViewModel] = []
     
-
+    @IBAction func didChangeSegment(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == SortCase.name.rawValue {
+            filteredRecipes.sort{x, y in
+                return x.data.name < y.data.name
+            }
+            tableView.reloadData()
+        }
+        else if sender.selectedSegmentIndex == SortCase.date.rawValue {
+            filteredRecipes.sort{x, y in
+                return x.data.lastUpdated < y.data.lastUpdated
+            }
+            tableView.reloadData()
+        }
+    }
+    
     
     var viewModel: RecipesListViewModel!
     
     private func setTableView(){
+        
+        
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -41,7 +58,7 @@ class RecipesListViewController: UIViewController {
         
         searchBar.backgroundImage = UIImage()
         
-        searchBar.scopeButtonTitles = [SearchCase.All.rawValue, SearchCase.Name.rawValue, SearchCase.Description.rawValue, SearchCase.Instruction.rawValue]
+        searchBar.scopeButtonTitles = [SearchCase.all.rawValue, SearchCase.name.rawValue, SearchCase.description.rawValue, SearchCase.instruction.rawValue]
         
         searchBar.selectedScopeButtonIndex = 0
     }
@@ -134,21 +151,21 @@ extension RecipesListViewController: UISearchResultsUpdating {
     }
 
 
-    private func filterContentForSearchText(_ searchText: String, scope: SearchCase = SearchCase.All) {
+    private func filterContentForSearchText(_ searchText: String, scope: SearchCase = SearchCase.all) {
         
         switch scope {
-        case .Name:
+        case .name:
 
             filteredRecipes = viewModel.recipesViewModels.filter{(recipe) -> Bool in
                 return recipe.data.name.lowercased().contains(searchText.lowercased())
             }
             
-        case .Description:
+        case .description:
             filteredRecipes = viewModel.recipesViewModels.filter{(recipe) -> Bool in
                 return (recipe.data.description?.lowercased().contains(searchText.lowercased()) ?? false)
             }
         
-        case .Instruction:
+        case .instruction:
             filteredRecipes = viewModel.recipesViewModels.filter{(recipe) -> Bool in
                 return recipe.data.instructions.lowercased().contains(searchText.lowercased())
             }

@@ -10,7 +10,7 @@ import Foundation
 struct Recipe {
     var name: String
     var imageLinks: [String]
-    var lastUpdated: Date
+    var lastUpdated: Double
     var description: String?
     var instructions: String
     var difficulty: Int
