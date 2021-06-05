@@ -36,8 +36,8 @@ class RecipeTableViewCell: UITableViewCell {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMM d, yyyy"
             lastUpdatedLabel.text = "Last update: \(formatter.string(from: date)) "
-            formatter.dateFormat = "h:mm a"
-            lastUpdatedLabel.text! += "(\(formatter.string(from: date)))"
+            //formatter.dateFormat = "h:mm a"
+            //lastUpdatedLabel.text! += "(\(formatter.string(from: date)))"
         }
     }
     

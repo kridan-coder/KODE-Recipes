@@ -18,6 +18,15 @@ final class Repository{
         self.databaseClient = databaseClient
     }
     
+    private func formatText(_ text: String?) -> String? {
+        guard let text = text else {return nil}
+        return text.replacingOccurrences(of: "<br>", with: "\n")
+    }
+    
+    func recipeACtoRecipe(recipeAC: RecipeAC) -> Recipe {
+        return Recipe(name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
+    }
+    
     func isConnectedToNetwork() -> Bool{
         
         var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))

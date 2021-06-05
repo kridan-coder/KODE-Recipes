@@ -56,7 +56,7 @@ final class RecipesListViewModel {
             }
             
             self.recipesViewModels = recipes.map{
-                let recipe = self.recipeACtoRecipe(recipeAC: $0)
+                let recipe = self.repository.recipeACtoRecipe(recipeAC: $0)
                 return self.viewModelFor(recipe: recipe)}
             
             self.didFinishUpdating?()
@@ -79,7 +79,5 @@ final class RecipesListViewModel {
         return viewModel
     }
     
-    private func recipeACtoRecipe(recipeAC: RecipeAC) -> Recipe {
-        return Recipe(name: recipeAC.name!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: recipeAC.description, instructions: recipeAC.instructions!, difficulty: recipeAC.difficulty!)
-    }
+
 }
