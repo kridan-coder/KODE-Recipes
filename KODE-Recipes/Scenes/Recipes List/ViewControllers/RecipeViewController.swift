@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class RecipeViewController: UIViewController {
 
@@ -18,11 +19,30 @@ class RecipeViewController: UIViewController {
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var instructionsTextView: UITextView!
     
+    @IBOutlet weak var pageControl: UIPageControl!
+    
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    
+    
+    
     var viewModel: RecipeViewModel!
+    
+    private func setUpCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        collectionView.register(UINib(nibName: "ImageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ImageCell")
+    }
     
     private func setAppearance(){
         
+        pageControl.numberOfPages = viewModel.recipe.imageLinks.count
+        
+        difficultyLevelImage.layer.cornerRadius = 15
+        difficultyLevelImage.layer.borderWidth = 1
+        difficultyLevelImage.layer.borderColor = UIColor(named: "TableBackgroundColor")?.cgColor
+            
         instructionsTextView.layer.cornerRadius = 15
         descriptionTextView.layer.cornerRadius = 15
         
@@ -40,7 +60,7 @@ class RecipeViewController: UIViewController {
         let date = Date(timeIntervalSince1970: viewModel.recipe.lastUpdated)
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a, EEEE, MMM d, yyyy"
-        lastUpdateLabel.text = "Last update:\n \(formatter.string(from: date)) "
+        lastUpdateLabel.text = "Last Recipe Update:\n \(formatter.string(from: date)) "
 
         
         switch viewModel.recipe.difficulty {
@@ -62,7 +82,16 @@ class RecipeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setAppearance()
+        setUpCollectionView()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(RecipeViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+
+        
+   
+    
+    @objc func rotated(){
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 
 
@@ -75,5 +104,52 @@ class RecipeViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
+}
+
+extension RecipeViewController: UICollectionViewDelegate{
+
+    // TODO: Not sure that this function is a nice decision. Need to rethink and make it work faster
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        pageControl.currentPage = Int(scrollView.contentOffset.x / collectionView.frame.size.width)
+    }
+    
+}
+
+extension RecipeViewController: UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.recipe.imageLinks.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
+        cell.imageView.kf.indicatorType = .activity
+        cell.imageView.kf.setImage(with: URL(string: viewModel.recipe.imageLinks[indexPath.row]))
+        
+//        let image = UIImageView()
+//        image.layer.cornerRadius = 15
+//        image.kf.indicatorType = .activity
+//        image.kf.setImage(with: URL(string: viewModel.recipe.imageLinks[indexPath.row]))
+//        cell.addSubview(image)
+        return cell
+    }
+}
+
+extension RecipeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return collectionView.frame.size
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        return 0
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//    }
 
 }

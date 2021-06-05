@@ -31,6 +31,8 @@
 		934DA5682668B9200037D829 /* RecipesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA5662668B9200037D829 /* RecipesListViewController.swift */; };
 		934DA5692668B9200037D829 /* RecipesListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 934DA5672668B9200037D829 /* RecipesListViewController.xib */; };
 		936FA10B266B564E00E848C8 /* DifficultyLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936FA10A266B564E00E848C8 /* DifficultyLevel.swift */; };
+		936FA111266B8F2D00E848C8 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936FA10F266B8F2D00E848C8 /* ImageCollectionViewCell.swift */; };
+		936FA112266B8F2D00E848C8 /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 936FA110266B8F2D00E848C8 /* ImageCollectionViewCell.xib */; };
 		9370CA042669F8C4004E23D1 /* SearchCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9370CA032669F8C4004E23D1 /* SearchCase.swift */; };
 		9370CA0C266A04C3004E23D1 /* CellRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9370CA0B266A04C3004E23D1 /* CellRepresentable.swift */; };
 		9370CA11266A0DE2004E23D1 /* RecipesListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9370CA10266A0DE2004E23D1 /* RecipesListCoordinator.swift */; };
@@ -95,6 +97,8 @@
 		934DA5662668B9200037D829 /* RecipesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesListViewController.swift; sourceTree = "<group>"; };
 		934DA5672668B9200037D829 /* RecipesListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipesListViewController.xib; sourceTree = "<group>"; };
 		936FA10A266B564E00E848C8 /* DifficultyLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyLevel.swift; sourceTree = "<group>"; };
+		936FA10F266B8F2D00E848C8 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		936FA110266B8F2D00E848C8 /* ImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionViewCell.xib; sourceTree = "<group>"; };
 		9370CA032669F8C4004E23D1 /* SearchCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCase.swift; sourceTree = "<group>"; };
 		9370CA0B266A04C3004E23D1 /* CellRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellRepresentable.swift; sourceTree = "<group>"; };
 		9370CA10266A0DE2004E23D1 /* RecipesListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesListCoordinator.swift; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 				934DA5672668B9200037D829 /* RecipesListViewController.xib */,
 				93DF1271266902B400CC932F /* RecipeTableViewCell.xib */,
 				9370CA1E266A677C004E23D1 /* RecipeViewController.xib */,
+				936FA110266B8F2D00E848C8 /* ImageCollectionViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -256,6 +261,7 @@
 		934DA5152667716B0037D829 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				936FA10F266B8F2D00E848C8 /* ImageCollectionViewCell.swift */,
 				9370CA1D266A677C004E23D1 /* RecipeViewController.swift */,
 				93DF1270266902B400CC932F /* RecipeTableViewCell.swift */,
 				934DA5662668B9200037D829 /* RecipesListViewController.swift */,
@@ -437,6 +443,7 @@
 				934DA4D026675C280037D829 /* LaunchScreen.storyboard in Resources */,
 				9370CA20266A677C004E23D1 /* RecipeViewController.xib in Resources */,
 				934DA4CD26675C280037D829 /* Assets.xcassets in Resources */,
+				936FA112266B8F2D00E848C8 /* ImageCollectionViewCell.xib in Resources */,
 				93DF1273266902B400CC932F /* RecipeTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -566,6 +573,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				934DA553266781040037D829 /* RecipeR.swift in Sources */,
+				936FA111266B8F2D00E848C8 /* ImageCollectionViewCell.swift in Sources */,
 				9370CA0C266A04C3004E23D1 /* CellRepresentable.swift in Sources */,
 				9370CA19266A2922004E23D1 /* SortCase.swift in Sources */,
 				936FA10B266B564E00E848C8 /* DifficultyLevel.swift in Sources */,
