@@ -12,24 +12,37 @@ class RecipesListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var filteredRecipes: [RecipeCellViewModel] = []
     
-    @IBAction func didChangeSegment(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == SortCase.name.rawValue {
+    func sortRecipesBy(sortCase: SortCase){
+ 
+        switch sortCase {
+
+        case .name:
             filteredRecipes.sort{x, y in
                 return x.data.name < y.data.name
             }
-            tableView.reloadData()
-        }
-        else if sender.selectedSegmentIndex == SortCase.date.rawValue {
+        case .date:
             filteredRecipes.sort{x, y in
                 return x.data.lastUpdated < y.data.lastUpdated
             }
-            tableView.reloadData()
         }
+
+        
+    }
+    
+    @IBAction func didChangeSegment(_ sender: UISegmentedControl) {
+ 
+        if sender.selectedSegmentIndex == SortCase.name.rawValue {
+            sortRecipesBy(sortCase: .name)
+        }
+        else if sender.selectedSegmentIndex == SortCase.date.rawValue {
+            sortRecipesBy(sortCase: .date)
+        }
+
+        tableView.reloadData()
     }
     
     
@@ -80,11 +93,13 @@ class RecipesListViewController: UIViewController {
 
     private func bindToViewModel(){
         viewModel.didStartUpdating = {[weak self] in
+            self?.activityIndicator.isHidden = false
             self?.activityIndicator.startAnimating()
         }
         viewModel.didFinishUpdating = {[weak self] in
             self?.activityIndicator.stopAnimating()
             self?.filteredRecipes = self?.viewModel.recipesViewModels ?? []
+            self?.sortRecipesBy(sortCase: .name)
             self?.tableView.reloadData()
         }
         
@@ -103,6 +118,10 @@ extension RecipesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return filteredRecipes[indexPath.row].dequeueCell(tableView: tableView, indexPath: indexPath)
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        filteredRecipes[indexPath.row].cellSelected()
+    }
 }
 
 extension RecipesListViewController: UISearchBarDelegate {
@@ -110,11 +129,14 @@ extension RecipesListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filteredRecipes = []
 
-  
-
-//        for recipe in recipes {
-//
-//        }
+        if searchText == ""{
+            self.filteredRecipes = self.viewModel.recipesViewModels ?? []
+        }
+        else {
+            filterContentForSearchText(searchText, scope: SearchCase(rawValue: searchBar.scopeButtonTitles?[searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)! )
+        }
+        
+        tableView.reloadData()
 
     }
 
@@ -133,6 +155,7 @@ extension RecipesListViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
+        self.filteredRecipes = self.viewModel.recipesViewModels ?? []
         searchBarShouldEndEditing(searchBar)
     }
     
@@ -141,17 +164,20 @@ extension RecipesListViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        
+        filterContentForSearchText(searchBar.text ?? "", scope: SearchCase(rawValue: searchBar.scopeButtonTitles?[searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)! )
+        tableView.reloadData()
     }
 }
 
 extension RecipesListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        
+        print("1")
     }
 
 
     private func filterContentForSearchText(_ searchText: String, scope: SearchCase = SearchCase.all) {
+        
+        guard searchText != "" else {return}
         
         switch scope {
         case .name:
@@ -179,7 +205,7 @@ extension RecipesListViewController: UISearchResultsUpdating {
             }
         }
         
-        tableView.reloadData()
+        
         
     }
 }

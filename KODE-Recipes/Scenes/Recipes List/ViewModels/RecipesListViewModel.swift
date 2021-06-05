@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 
-protocol RecipesListViewModelCoordinatorDelegate{}
+protocol RecipesListViewModelCoordinatorDelegate{
+    func didSelectRecipe(recipe: Recipe)
+}
 
 final class RecipesListViewModel {
     
@@ -23,8 +25,6 @@ final class RecipesListViewModel {
     var didFinishUpdating: (() -> Void)?
     
     
-    
-    var didSelectRecipe: ((Recipe) -> Void)?
     
     var coordinatorDelegate: RecipesListViewModelCoordinatorDelegate?
     
@@ -70,7 +70,7 @@ final class RecipesListViewModel {
     private func viewModelFor(recipe: Recipe) -> RecipeCellViewModel{
         let viewModel = RecipeCellViewModel(recipe: recipe)
         viewModel.didSelectRecipe = { [weak self] recipe in
-            self?.didSelectRecipe?(recipe)
+            self?.coordinatorDelegate?.didSelectRecipe(recipe: recipe)
             
         }
         viewModel.didReceiveError = { [weak self] error in

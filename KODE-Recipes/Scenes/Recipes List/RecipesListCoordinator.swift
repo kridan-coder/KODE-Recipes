@@ -28,6 +28,7 @@ class RecipesListCoordinator: Coordinator {
     }()
     
     
+    
     // MARK: Coordinator
     
     init(rootNavigationController: UINavigationController, apiClient: ApiClient, databaseClient: DatabaseClient, repository: Repository){
@@ -46,5 +47,19 @@ class RecipesListCoordinator: Coordinator {
     }
 }
 extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate{
+    func didSelectRecipe(recipe: Recipe) {
+        let viewModel = RecipeViewModel()
+        viewModel.coordinatorDelegate = self
+        viewModel.recipe = recipe
+        let recipeViewController = RecipeViewController(nibName: "RecipeViewController", bundle: nil)
+        recipeViewController.viewModel = viewModel
+        recipeViewController.title = "Recipe Details"
+        rootNavigationController.pushViewController(recipeViewController, animated: true)
+    }
+    
+    
+}
+
+extension RecipesListCoordinator: RecipeViewModelCoordinatorDelegate {
     
 }
