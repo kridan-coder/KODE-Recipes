@@ -97,7 +97,7 @@
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 </textView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last update:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtm-Af-Z0T">
-                                    <rect key="frame" x="15" y="1099.5" width="290" height="19.5"/>
+                                    <rect key="frame" x="15" y="1119.5" width="290" height="19.5"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -118,7 +118,7 @@
                                 <constraint firstItem="6i6-7O-uLG" firstAttribute="leading" secondItem="RdN-u1-1f6" secondAttribute="leading" constant="15" id="Hca-0p-jHT"/>
                                 <constraint firstAttribute="trailing" secondItem="OVO-in-Obb" secondAttribute="trailing" constant="15" id="Jsl-1i-yOE"/>
                                 <constraint firstAttribute="trailing" secondItem="6i6-7O-uLG" secondAttribute="trailing" constant="15" id="KPa-dZ-55m"/>
-                                <constraint firstItem="dtm-Af-Z0T" firstAttribute="top" secondItem="6i6-7O-uLG" secondAttribute="bottom" constant="20" id="LAj-ap-gkg"/>
+                                <constraint firstItem="dtm-Af-Z0T" firstAttribute="top" secondItem="6i6-7O-uLG" secondAttribute="bottom" constant="40" id="LAj-ap-gkg"/>
                                 <constraint firstItem="hIP-zJ-qTY" firstAttribute="centerX" secondItem="fmG-gK-b10" secondAttribute="centerX" id="S5J-d4-G3z"/>
                                 <constraint firstItem="bod-m1-qra" firstAttribute="top" secondItem="RdN-u1-1f6" secondAttribute="top" constant="35" id="SMe-ry-TMB"/>
                                 <constraint firstItem="fmG-gK-b10" firstAttribute="height" secondItem="RdN-u1-1f6" secondAttribute="height" multiplier="0.25" id="YRL-8I-rvq"/>

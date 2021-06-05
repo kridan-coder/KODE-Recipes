@@ -7,6 +7,7 @@
 
 import Foundation
 import SystemConfiguration
+import RealmSwift
 
 final class Repository{
     
@@ -25,6 +26,37 @@ final class Repository{
     
     func recipeACtoRecipe(recipeAC: RecipeAC) -> Recipe {
         return Recipe(name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
+    }
+    
+    func recipeRtoRecipe(recipeR: RecipeR) -> Recipe {
+
+        return Recipe(name: formatText(recipeR.name!)!, imageLinks: Array(recipeR.images), lastUpdated: recipeR.lastUpdated.value!, description: formatText(recipeR.recipeDescription), instructions: formatText(recipeR.instructions!)!, difficulty: recipeR.difficulty.value!)
+    }
+    
+    func recipeACtoRecipeR(recipeAC: RecipeAC) -> RecipeR {
+
+        let recipeR = RecipeR()
+        recipeR.difficulty.value = recipeAC.difficulty
+        recipeR.images = List<String>()
+        if let images = recipeAC.images{
+            for link in images {
+                recipeR.images.append(link)
+            }
+        }
+        recipeR.instructions = recipeAC.instructions
+        recipeR.lastUpdated.value = recipeAC.lastUpdated
+        recipeR.name = recipeAC.name
+        recipeR.recipeDescription = recipeAC.description
+        recipeR.uuid = recipeAC.uuid
+        return recipeR
+    }
+    
+    func wrapIntoDatabaseContainer(recipes: [RecipeR]) -> RecipesContainerR {
+        let container = RecipesContainerR()
+        for recipe in recipes {
+            container.recipes.append(recipe)
+        }
+        return container
     }
     
     func isConnectedToNetwork() -> Bool{

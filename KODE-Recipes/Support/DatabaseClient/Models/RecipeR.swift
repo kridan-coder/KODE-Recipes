@@ -12,7 +12,7 @@ class RecipeR: Object {
     @objc dynamic var uuid: String? = nil
     @objc dynamic var name: String? = nil
     var images = List<String>()
-    @objc dynamic var lastUpdated: Date? = nil
+    var lastUpdated = RealmOptional<Double>()
     @objc dynamic var recipeDescription: String? = nil
     @objc dynamic var instructions: String? = nil
     var difficulty = RealmOptional<Int>()

@@ -156,6 +156,7 @@ extension RecipesListViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
         self.filteredRecipes = self.viewModel.recipesViewModels ?? []
+        tableView.reloadData()
         searchBarShouldEndEditing(searchBar)
     }
     
@@ -171,7 +172,7 @@ extension RecipesListViewController: UISearchBarDelegate {
 
 extension RecipesListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        print("1")
+        
     }
 
 

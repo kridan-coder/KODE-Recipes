@@ -38,12 +38,31 @@ final class RecipesListViewModel {
             getDataFromNetwork()
         }
         else {
-            
+            getDataFromDatabase()
         }
     }
     
-    private func getDataFromDatabase() -> RecipesContainerR? {
-        return repository.databaseClient?.getRecipesContainerFromDatabase()
+    private func setDataToDatabase(recipes: [RecipeR]){
+        if let container = repository?.wrapIntoDatabaseContainer(recipes: recipes) {
+            repository?.databaseClient?.setRecipesContainerToDatabase(container)
+        }
+
+    }
+    
+    private func getDataFromDatabase(){
+        
+        
+        
+        if let recipeContainer = repository.databaseClient?.getRecipesContainerFromDatabase() {
+            self.recipesViewModels = recipeContainer.recipes.map{
+                let recipe = self.repository.recipeRtoRecipe(recipeR: $0)
+                return self.viewModelFor(recipe: recipe)}
+            
+        }
+        
+
+        
+        self.didFinishUpdating?()
     }
     
     private func getDataFromNetwork(){
@@ -54,6 +73,13 @@ final class RecipesListViewModel {
                 self.didReceiveError?("Recipes list is empty.")
                 return
             }
+            
+
+            
+            let recipesR = recipes.map {
+                return self.repository.recipeACtoRecipeR(recipeAC: $0)
+            }
+            self.setDataToDatabase(recipes: recipesR)
             
             self.recipesViewModels = recipes.map{
                 let recipe = self.repository.recipeACtoRecipe(recipeAC: $0)
