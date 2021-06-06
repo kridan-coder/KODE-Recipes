@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class RecipesListCoordinator: Coordinator {
+    
     // MARK: Properties
     
     let rootNavigationController: UINavigationController
@@ -17,21 +18,9 @@ class RecipesListCoordinator: Coordinator {
     let databaseClient: DatabaseClient
     let repository: Repository
     
-    
-    // MARK: VM/VC's
-    
-    lazy var recipesListViewModel: RecipesListViewModel! = {
-        let viewModel = RecipesListViewModel()
-        viewModel.coordinatorDelegate = self
-        viewModel.repository = self.repository
-        return viewModel
-    }()
-    
-    
-    
     // MARK: Coordinator
     
-    init(rootNavigationController: UINavigationController, apiClient: ApiClient, databaseClient: DatabaseClient, repository: Repository){
+    init(rootNavigationController: UINavigationController, apiClient: ApiClient, databaseClient: DatabaseClient, repository: Repository) {
         self.rootNavigationController = rootNavigationController
         self.apiClient = apiClient
         self.databaseClient = databaseClient
@@ -39,27 +28,52 @@ class RecipesListCoordinator: Coordinator {
     }
     
     override func start() {
-        let recipesListViewController = RecipesListViewController(nibName: "RecipesListViewController", bundle: nil)
-        recipesListViewController.viewModel = recipesListViewModel
-        recipesListViewController.title = "Recipes"
+        
+        // init viewModel
+        let recipesListViewModel: RecipesListViewModel! = {
+            let viewModel = RecipesListViewModel()
+            viewModel.coordinatorDelegate = self
+            viewModel.repository = self.repository
+            return viewModel
+        }()
+        
+        // init viewController
+        let recipesListViewController: RecipesListViewController! = {
+            let viewController = RecipesListViewController(nibName: "RecipesListViewController", bundle: nil)
+            viewController.viewModel = recipesListViewModel
+            viewController.title = "Recipes"
+            return viewController
+        }()
         
         rootNavigationController.setViewControllers([recipesListViewController], animated: false)
     }
-}
-extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate{
-    func didSelectRecipe(recipe: Recipe) {
-        let viewModel = RecipeViewModel()
-        viewModel.coordinatorDelegate = self
-        viewModel.recipe = recipe
-        let recipeViewController = RecipeViewController(nibName: "RecipeViewController", bundle: nil)
-        recipeViewController.viewModel = viewModel
-        recipeViewController.title = "Recipe Details"
-        rootNavigationController.pushViewController(recipeViewController, animated: true)
-    }
-    
     
 }
 
-extension RecipesListCoordinator: RecipeViewModelCoordinatorDelegate {
+extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
+    
+    // moves user to Recipe Details viewController (Scene remains the same)
+    func didSelectRecipe(recipe: Recipe) {
+        
+        // init viewModel
+        let recipeViewModel: RecipeDetailsViewModel! = {
+            let viewModel = RecipeDetailsViewModel()
+            viewModel.coordinatorDelegate = self
+            viewModel.recipe = recipe
+            return viewModel
+        }()
+        
+        // init viewController
+        let recipeViewController: RecipeDetailsViewController! = {
+            let viewController = RecipeDetailsViewController(nibName: "RecipeDetailsViewController", bundle: nil)
+            viewController.viewModel = recipeViewModel
+            viewController.title = "Recipe Details"
+            return viewController
+        }()
+        
+        rootNavigationController.pushViewController(recipeViewController, animated: true)
+    }
     
 }
+
+extension RecipesListCoordinator: RecipeViewModelCoordinatorDelegate {}

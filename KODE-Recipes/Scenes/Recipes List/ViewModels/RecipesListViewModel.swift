@@ -20,17 +20,71 @@ final class RecipesListViewModel {
     
     var didReceiveError: ((String) -> Void)?
     
-    var didNotFindConnecton: (() -> Void)?
+    var didNotFindInternetConnection: (() -> Void)?
     
     var didStartUpdating: (() -> Void)?
     
     var didFinishUpdating: (() -> Void)?
     
+    func sortRecipesBy(sortCase: SortCase, recipes: [RecipeTableViewCellViewModel]) -> [RecipeTableViewCellViewModel]{
+        
+        var safeRecipes = recipes
+            switch sortCase {
+            
+            case .name:
+                safeRecipes.sort{x, y in
+                    return x.data.name < y.data.name
+                }
+            case .date:
+                safeRecipes.sort{x, y in
+                    return x.data.lastUpdated > y.data.lastUpdated
+                }
+            }
+            
+            return safeRecipes
+        
+
+
+    }
     
+    func filterRecipesForSearchText(recipes: [RecipeTableViewCellViewModel], searchText: String, scope: SearchCase? = SearchCase.all) -> [RecipeTableViewCellViewModel] {
+        
+        guard searchText != "" else {return recipesViewModels}
+        var safeRecipes = recipes
+        switch scope {
+        case .name:
+            
+            safeRecipes = recipesViewModels.filter{(recipe) -> Bool in
+                return recipe.data.name.lowercased().contains(searchText.lowercased())
+            }
+            
+        case .description:
+            safeRecipes = recipesViewModels.filter{(recipe) -> Bool in
+                return (recipe.data.description?.lowercased().contains(searchText.lowercased()) ?? false)
+            }
+            
+        case .instruction:
+            safeRecipes = recipesViewModels.filter{(recipe) -> Bool in
+                return recipe.data.instructions.lowercased().contains(searchText.lowercased())
+            }
+        default:
+            safeRecipes = recipesViewModels.filter{(recipe) -> Bool in
+                return recipe.data.name.lowercased().contains(searchText.lowercased()) ||
+                    (recipe.data.description?.lowercased().contains(searchText.lowercased()) ?? false) ||
+                    recipe.data.instructions.lowercased().contains(searchText.lowercased())
+                
+                
+            }
+        }
+        return safeRecipes
+        
+        
+        
+    }
     
     var coordinatorDelegate: RecipesListViewModelCoordinatorDelegate?
     
-    var recipesViewModels: [RecipeCellViewModel] = []
+    var recipesViewModels: [RecipeTableViewCellViewModel] = []
     
     
     func reloadData(){
@@ -40,7 +94,7 @@ final class RecipesListViewModel {
             getDataFromNetwork()
         }
         else {
-            didNotFindConnecton?()
+            didNotFindInternetConnection?()
             getDataFromDatabase()
         }
     }
@@ -96,8 +150,8 @@ final class RecipesListViewModel {
         })
     }
     
-    private func viewModelFor(recipe: Recipe) -> RecipeCellViewModel{
-        let viewModel = RecipeCellViewModel(recipe: recipe)
+    private func viewModelFor(recipe: Recipe) -> RecipeTableViewCellViewModel{
+        let viewModel = RecipeTableViewCellViewModel(recipe: recipe)
         viewModel.didSelectRecipe = { [weak self] recipe in
             self?.coordinatorDelegate?.didSelectRecipe(recipe: recipe)
             

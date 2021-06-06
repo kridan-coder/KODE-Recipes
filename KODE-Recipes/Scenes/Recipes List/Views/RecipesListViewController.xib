@@ -10,10 +10,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecipesListViewController" customModule="KODE_Recipes" customModuleProvider="target">
             <connections>
-                <outlet property="activityIndicator" destination="EPG-7J-Rf7" id="a0u-R1-4HY"/>
                 <outlet property="nameDateSegmentedControl" destination="Iw2-dG-D1E" id="Eh8-ua-qa2"/>
                 <outlet property="searchBar" destination="r1E-aF-1sP" id="5ML-PN-eu2"/>
                 <outlet property="tableView" destination="JtQ-FX-zYV" id="vM4-Bj-qSr"/>
+                <outlet property="tableViewActivityIndicator" destination="EPG-7J-Rf7" id="a0u-R1-4HY"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

@@ -8,230 +8,197 @@
 import UIKit
 
 class RecipesListViewController: UIViewController {
+    
+    // MARK: IBOutlets
+    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var nameDateSegmentedControl: UISegmentedControl!
-    
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableViewActivityIndicator: UIActivityIndicatorView!
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    // MARK: Elements set in code
     
-    var filteredRecipes: [RecipeCellViewModel] = []
+    private var refreshControl = UIRefreshControl()
     
-    func sortRecipesBy(sortCase: SortCase){
- 
-        switch sortCase {
-
-        case .name:
-            filteredRecipes.sort{x, y in
-                return x.data.name < y.data.name
-            }
-        case .date:
-            filteredRecipes.sort{x, y in
-                return x.data.lastUpdated < y.data.lastUpdated
-            }
-        }
-
-        
-    }
-    
-    @IBAction func didChangeSegment(_ sender: UISegmentedControl) {
- 
-        if sender.selectedSegmentIndex == SortCase.name.rawValue {
-            sortRecipesBy(sortCase: .name)
-        }
-        else if sender.selectedSegmentIndex == SortCase.date.rawValue {
-            sortRecipesBy(sortCase: .date)
-        }
-
-        tableView.reloadData()
-    }
-    
+    // MARK: Public
     
     var viewModel: RecipesListViewModel!
     
-    private func setTableView(){
-        
-        
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        tableView.layer.cornerRadius = 5
-        
-        RecipeCellViewModel.registerCell(tableView: self.tableView)
-        
-        
-        //tableView.register(UINib(nibName: "RecipeTableViewCell", bundle: nil), forCellReuseIdentifier: "RecipeCell")
-        
+    // MARK: Private
+    
+    private var filteredRecipes: [RecipeTableViewCellViewModel] = []
+    
+    private var currentSearchCase: SearchCase {
+        get {
+            SearchCase(rawValue: searchBar.scopeButtonTitles?[searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)!
+        }
     }
     
-    private func setSearchBar(){
-        
+    private var currentSortCase: SortCase {
+        get {
+            SortCase(rawValue: nameDateSegmentedControl.selectedSegmentIndex) ?? .name
+        }
+    }
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        RecipeTableViewCellViewModel.registerCell(tableView: self.tableView)
+    }
+    
+    private func setupSearchBar() {
         searchBar.delegate = self
-        
-        
-        searchBar.backgroundImage = UIImage()
-        
         searchBar.scopeButtonTitles = [SearchCase.all.rawValue, SearchCase.name.rawValue, SearchCase.description.rawValue, SearchCase.instruction.rawValue]
-        
         searchBar.selectedScopeButtonIndex = 0
     }
     
-
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(RecipesListViewController.refresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+    }
     
-    var refreshControl = UIRefreshControl()
+    private func setupAppearance() {
+        tableView.layer.cornerRadius = 5
+        searchBar.backgroundImage = UIImage()
+        
+        // appearance of refresh control
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "BackgroundColor")]
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributes as [NSAttributedString.Key : Any])
+        refreshControl.tintColor = UIColor(named: "BackgroundColor")
+    }
+    
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindToViewModel()
-        setSearchBar()
-        setTableView()
+        setupAppearance()
+        setupSearchBar()
+        setupTableView()
+        setupRefreshControl()
         bindToViewModel()
         viewModel.reloadData()
-        
-        
-        let attributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "BackgroundColor")]
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributes)
-        refreshControl.addTarget(self, action: #selector(RecipesListViewController.refresh), for: .valueChanged)
-        refreshControl.tintColor = UIColor(named: "BackgroundColor")
-        tableView.addSubview(refreshControl)
-
     }
+    
+    // MARK: Actions
     
     @objc func refresh() {
         viewModel.reloadData()
+    }
+    
+    @IBAction func didChangeSegment(_ sender: UISegmentedControl) {
+        let sortCase = SortCase(rawValue: sender.selectedSegmentIndex) ?? .name
+        filteredRecipes = viewModel.sortRecipesBy(sortCase: sortCase, recipes: filteredRecipes)
+        tableView.reloadData()
+    }
+    
+    private func startTableViewActivityIndicator() {
+        tableViewActivityIndicator.isHidden = false
+        tableViewActivityIndicator.startAnimating()
+    }
+    
+    // MARK: ViewModel
+    
+    private func bindToViewModel() {
+        viewModel.didStartUpdating = { [weak self] in
+            self?.viewModelDidStartUpdating()
+        }
+        viewModel.didFinishUpdating = { [weak self] in
+            self?.viewModelDidFinishUpdating()
+        }
+        viewModel.didNotFindInternetConnection = { [weak self] in
+            self?.viewModelDidNotFindInternet()
+        }
+    }
+    
+    private func viewModelDidStartUpdating() {
+        startTableViewActivityIndicator()
+    }
+    
+    private func viewModelDidFinishUpdating() {
+        tableViewActivityIndicator.stopAnimating()
+        
+        // update may be finished after refreshing the table -> information may already be in the fields
+        filteredRecipes = viewModel.filterRecipesForSearchText(recipes: filteredRecipes, searchText: searchBar.text ?? "", scope: currentSearchCase)
+        filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
+    
+        // in case update was triggered by refreshing the table
         refreshControl.endRefreshing()
-    }
-
-    private func bindToViewModel(){
-        viewModel.didStartUpdating = {[weak self] in
-            self?.activityIndicator.isHidden = false
-            self?.activityIndicator.startAnimating()
-        }
-        viewModel.didFinishUpdating = {[weak self] in
-            self?.activityIndicator.stopAnimating()
-            self?.filteredRecipes = []
-
-            if self?.searchBar.text == ""{
-                self?.filteredRecipes = self?.viewModel.recipesViewModels ?? []
-            }
-            else {
-                self?.filterContentForSearchText(self!.searchBar.text!, scope: SearchCase(rawValue: self!.searchBar.scopeButtonTitles?[self!.searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)! )
-            }
-            self?.sortRecipesBy(sortCase: SortCase(rawValue: (self?.nameDateSegmentedControl.selectedSegmentIndex)!)! )
-            self?.tableView.reloadData()
-        }
         
-        viewModel.didNotFindConnecton = {[weak self] in
-            let alert = UIAlertController(title: "No Internet.", message: "Local saves will be shown (if there are any). Please connect to the Internet and refresh the table.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(alert, animated: true)
-        }
-        
+        tableView.reloadData()
     }
-
-
+    
+    private func viewModelDidNotFindInternet() {
+        let alert = UIAlertController(title: "No Internet.", message: "Local saves will be shown (if there are any). Please connect to the Internet and refresh the table.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
 }
 
-extension RecipesListViewController: UITableViewDelegate {}
-
 extension RecipesListViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredRecipes.count
+        filteredRecipes.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return filteredRecipes[indexPath.row].dequeueCell(tableView: tableView, indexPath: indexPath)
+        filteredRecipes[indexPath.row].dequeueCell(tableView: tableView, indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         filteredRecipes[indexPath.row].cellSelected()
     }
+    
 }
 
 extension RecipesListViewController: UISearchBarDelegate {
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filteredRecipes = []
-
-        if searchText == ""{
-            self.filteredRecipes = self.viewModel.recipesViewModels ?? []
-        }
-        else {
-            filterContentForSearchText(searchText, scope: SearchCase(rawValue: searchBar.scopeButtonTitles?[searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)! )
-        }
-        
-        tableView.reloadData()
-
+    
+    private func hideSearchBar() {
+        searchBar.showsScopeBar = false
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
     }
-
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+    
+    private func showSearchBar() {
         searchBar.showsScopeBar = true
         searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    private func resetSearchBar() {
+        searchBar.text = ""
+        filteredRecipes = viewModel.recipesViewModels
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredRecipes = viewModel.filterRecipesForSearchText(recipes: filteredRecipes, searchText: searchText, scope: currentSearchCase)
+        tableView.reloadData()
+    }
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        showSearchBar()
         return true
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        searchBar.showsScopeBar = false
-        searchBar.setShowsCancelButton(false, animated: true)
-        searchBar.endEditing(true)
+        hideSearchBar()
         return true
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        self.filteredRecipes = self.viewModel.recipesViewModels ?? []
+        resetSearchBar()
         tableView.reloadData()
-        searchBarShouldEndEditing(searchBar)
+        hideSearchBar()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBarShouldEndEditing(searchBar)
+        hideSearchBar()
     }
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        filterContentForSearchText(searchBar.text ?? "", scope: SearchCase(rawValue: searchBar.scopeButtonTitles?[searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)! )
+        filteredRecipes = viewModel.filterRecipesForSearchText(recipes: filteredRecipes, searchText: searchBar.text ?? "", scope: currentSearchCase)
         tableView.reloadData()
     }
+    
 }
 
-extension RecipesListViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        
-    }
-
-
-    private func filterContentForSearchText(_ searchText: String, scope: SearchCase = SearchCase.all) {
-        
-        guard searchText != "" else {return}
-        
-        switch scope {
-        case .name:
-
-            filteredRecipes = viewModel.recipesViewModels.filter{(recipe) -> Bool in
-                return recipe.data.name.lowercased().contains(searchText.lowercased())
-            }
-            
-        case .description:
-            filteredRecipes = viewModel.recipesViewModels.filter{(recipe) -> Bool in
-                return (recipe.data.description?.lowercased().contains(searchText.lowercased()) ?? false)
-            }
-        
-        case .instruction:
-            filteredRecipes = viewModel.recipesViewModels.filter{(recipe) -> Bool in
-                return recipe.data.instructions.lowercased().contains(searchText.lowercased())
-            }
-        default:
-            filteredRecipes = viewModel.recipesViewModels.filter{(recipe) -> Bool in
-                return recipe.data.name.lowercased().contains(searchText.lowercased()) ||
-                    (recipe.data.description?.lowercased().contains(searchText.lowercased()) ?? false) ||
-                    recipe.data.instructions.lowercased().contains(searchText.lowercased())
-                
-                
-            }
-        }
-        
-        
-        
-    }
-}
+extension RecipesListViewController: UITableViewDelegate {}
