@@ -9,6 +9,7 @@ import UIKit
 
 class RecipesListViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var nameDateSegmentedControl: UISegmentedControl!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -109,8 +110,15 @@ class RecipesListViewController: UIViewController {
         }
         viewModel.didFinishUpdating = {[weak self] in
             self?.activityIndicator.stopAnimating()
-            self?.filteredRecipes = self?.viewModel.recipesViewModels ?? []
-            self?.sortRecipesBy(sortCase: .name)
+            self?.filteredRecipes = []
+
+            if self?.searchBar.text == ""{
+                self?.filteredRecipes = self?.viewModel.recipesViewModels ?? []
+            }
+            else {
+                self?.filterContentForSearchText(self!.searchBar.text!, scope: SearchCase(rawValue: self!.searchBar.scopeButtonTitles?[self!.searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)! )
+            }
+            self?.sortRecipesBy(sortCase: SortCase(rawValue: (self?.nameDateSegmentedControl.selectedSegmentIndex)!)! )
             self?.tableView.reloadData()
         }
         
