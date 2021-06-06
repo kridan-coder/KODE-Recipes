@@ -8,6 +8,6 @@
 import Foundation
 import RealmSwift
 
-class RecipesContainerR: Object{
-    var recipes = List<RecipeR>()
+class RecipesContainerDC: Object{
+    var recipes = List<RecipeDC>()
 }

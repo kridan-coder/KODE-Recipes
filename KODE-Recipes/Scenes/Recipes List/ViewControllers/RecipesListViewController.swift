@@ -78,7 +78,7 @@ class RecipesListViewController: UIViewController {
     
 
     
-
+    var refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,9 +86,20 @@ class RecipesListViewController: UIViewController {
         setSearchBar()
         setTableView()
         bindToViewModel()
-        
         viewModel.reloadData()
+        
+        
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "BackgroundColor")]
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributes)
+        refreshControl.addTarget(self, action: #selector(RecipesListViewController.refresh), for: .valueChanged)
+        refreshControl.tintColor = UIColor(named: "BackgroundColor")
+        tableView.addSubview(refreshControl)
 
+    }
+    
+    @objc func refresh() {
+        viewModel.reloadData()
+        refreshControl.endRefreshing()
     }
 
     private func bindToViewModel(){
@@ -101,6 +112,12 @@ class RecipesListViewController: UIViewController {
             self?.filteredRecipes = self?.viewModel.recipesViewModels ?? []
             self?.sortRecipesBy(sortCase: .name)
             self?.tableView.reloadData()
+        }
+        
+        viewModel.didNotFindConnecton = {[weak self] in
+            let alert = UIAlertController(title: "No Internet.", message: "Local saves will be shown (if there are any). Please connect to the Internet and refresh the table.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self?.present(alert, animated: true)
         }
         
     }

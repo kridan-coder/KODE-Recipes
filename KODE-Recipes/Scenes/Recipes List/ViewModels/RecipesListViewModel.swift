@@ -20,6 +20,8 @@ final class RecipesListViewModel {
     
     var didReceiveError: ((String) -> Void)?
     
+    var didNotFindConnecton: (() -> Void)?
+    
     var didStartUpdating: (() -> Void)?
     
     var didFinishUpdating: (() -> Void)?
@@ -38,11 +40,12 @@ final class RecipesListViewModel {
             getDataFromNetwork()
         }
         else {
+            didNotFindConnecton?()
             getDataFromDatabase()
         }
     }
     
-    private func setDataToDatabase(recipes: [RecipeR]){
+    private func setDataToDatabase(recipes: [RecipeDC]){
         if let container = repository?.wrapIntoDatabaseContainer(recipes: recipes) {
             repository?.databaseClient?.setRecipesContainerToDatabase(container)
         }

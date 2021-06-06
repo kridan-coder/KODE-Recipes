@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class RecipeR: Object {
+class RecipeDC: Object {
     @objc dynamic var uuid: String? = nil
     @objc dynamic var name: String? = nil
     var images = List<String>()

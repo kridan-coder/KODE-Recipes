@@ -28,14 +28,14 @@ final class Repository{
         return Recipe(name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
     }
     
-    func recipeRtoRecipe(recipeR: RecipeR) -> Recipe {
+    func recipeRtoRecipe(recipeR: RecipeDC) -> Recipe {
 
         return Recipe(name: formatText(recipeR.name!)!, imageLinks: Array(recipeR.images), lastUpdated: recipeR.lastUpdated.value!, description: formatText(recipeR.recipeDescription), instructions: formatText(recipeR.instructions!)!, difficulty: recipeR.difficulty.value!)
     }
     
-    func recipeACtoRecipeR(recipeAC: RecipeAC) -> RecipeR {
+    func recipeACtoRecipeR(recipeAC: RecipeAC) -> RecipeDC {
 
-        let recipeR = RecipeR()
+        let recipeR = RecipeDC()
         recipeR.difficulty.value = recipeAC.difficulty
         recipeR.images = List<String>()
         if let images = recipeAC.images{
@@ -51,8 +51,8 @@ final class Repository{
         return recipeR
     }
     
-    func wrapIntoDatabaseContainer(recipes: [RecipeR]) -> RecipesContainerR {
-        let container = RecipesContainerR()
+    func wrapIntoDatabaseContainer(recipes: [RecipeDC]) -> RecipesContainerDC {
+        let container = RecipesContainerDC()
         for recipe in recipes {
             container.recipes.append(recipe)
         }
