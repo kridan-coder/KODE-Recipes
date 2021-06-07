@@ -40,8 +40,11 @@ class RecipeDetailsViewController: UIViewController {
         recipeNameLabel.text = viewModel.recipe.name
         instructionsTextView.text = viewModel.recipe.instructions
         
-        // description may be not provided
-        descriptionTextView.text = viewModel.recipe.description ?? "No description provided."
+        // description may be not provided or can be empty
+        descriptionTextView.text = viewModel.recipe.description
+        if descriptionTextView.text == nil || descriptionTextView.text == "" {
+            descriptionTextView.text = "No description provided."
+        }
         
         // set date with specific format
         let date = Date(timeIntervalSince1970: viewModel.recipe.lastUpdated)
