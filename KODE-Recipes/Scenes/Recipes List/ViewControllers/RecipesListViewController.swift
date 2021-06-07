@@ -172,6 +172,7 @@ extension RecipesListViewController: UISearchBarDelegate {
     private func resetSearchBar() {
         searchBar.text = ""
         filteredRecipes = viewModel.recipesViewModels
+        filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
         tableView.reloadData()
     }
     

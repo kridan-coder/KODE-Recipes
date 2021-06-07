@@ -88,6 +88,7 @@ class RecipeDetailsViewController: UIViewController {
     
     @objc func rotated() {
         collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.scrollToItem(at: IndexPath(item: pageControl.currentPage, section: 0), at: .centeredHorizontally, animated: false)
     }
     
 }

@@ -26,7 +26,16 @@ final class ApiClient {
                     onFailure("Error: response is empty.")
                     return
                 }
-                onSuccess(try! JSONDecoder().decode(RecipesContainerAC.self, from: safeData))
+                
+                do {
+                    let recipesContainerAC = try JSONDecoder().decode(RecipesContainerAC.self, from: safeData)
+                    onSuccess(recipesContainerAC)
+                }
+                catch
+                {
+                    onFailure("Failed to decode data into Recipes Container. Error: \(error)")
+                }
+                
             }
         }
     }
