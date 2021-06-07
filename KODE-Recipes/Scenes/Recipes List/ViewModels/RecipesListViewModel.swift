@@ -59,7 +59,7 @@ final class RecipesListViewModel {
     
     // MARK: Helpers
     
-    private func viewModelFor(recipe: Recipe) -> RecipeTableViewCellViewModel{
+    private func viewModelFor(recipe: Recipe) -> RecipeTableViewCellViewModel {
         let viewModel = RecipeTableViewCellViewModel(recipe: recipe)
         
         viewModel.didSelectRecipe = { [weak self] recipe in

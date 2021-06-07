@@ -37,7 +37,7 @@ class AppCoordinator: Coordinator {
         window.makeKeyAndVisible()
         
         // launching Recipes List Scene
-        let recipeListCoordinator = RecipesListCoordinator(rootNavigationController: rootNavigationController, apiClient: apiClient, databaseClient: databaseClient, repository: repository)
+        let recipeListCoordinator = RecipesListCoordinator(rootNavigationController: rootNavigationController, repository: repository)
         addChildCoordinator(recipeListCoordinator)
         recipeListCoordinator.start()
     }

@@ -14,16 +14,12 @@ class RecipesListCoordinator: Coordinator {
     
     let rootNavigationController: UINavigationController
     
-    let apiClient: ApiClient
-    let databaseClient: DatabaseClient
     let repository: Repository
     
     // MARK: Coordinator
     
-    init(rootNavigationController: UINavigationController, apiClient: ApiClient, databaseClient: DatabaseClient, repository: Repository) {
+    init(rootNavigationController: UINavigationController, repository: Repository) {
         self.rootNavigationController = rootNavigationController
-        self.apiClient = apiClient
-        self.databaseClient = databaseClient
         self.repository = repository
     }
     

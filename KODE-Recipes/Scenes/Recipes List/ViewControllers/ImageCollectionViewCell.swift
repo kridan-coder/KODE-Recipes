@@ -40,7 +40,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     
     // MARK: Actions
     
-    func setupCellData(viewModel: ImageCollectionViewCellViewModel){
+    func setupCellData(viewModel: ImageCollectionViewCellViewModel) {
         self.viewModel = viewModel
         imageLink = viewModel.data
         
