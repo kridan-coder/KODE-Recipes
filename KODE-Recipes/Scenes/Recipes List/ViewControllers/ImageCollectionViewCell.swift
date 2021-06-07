@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 class ImageCollectionViewCell: UICollectionViewCell {
-
+    
     // MARK: IBOutlets
     
     @IBOutlet weak var imageView: UIImageView!
@@ -37,7 +37,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         setupCellAppearance()
     }
-
+    
     // MARK: Actions
     
     func setupCellData(viewModel: ImageCollectionViewCellViewModel){

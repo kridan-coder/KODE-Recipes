@@ -8,20 +8,23 @@
 import Foundation
 import UIKit
 
-protocol RecipeViewModelCoordinatorDelegate{
-    
-}
+protocol RecipeViewModelCoordinatorDelegate {}
 
 final class RecipeDetailsViewModel {
+    
+    // MARK: Public
+    
     var coordinatorDelegate: RecipeViewModelCoordinatorDelegate?
     
     var imagesViewModels: [ImageCollectionViewCellViewModel] = []
     
     var recipe: Recipe! {
         didSet {
-            imagesViewModels = recipe.imageLinks.map {return viewModelFor(imageLink: $0)}
+            imagesViewModels = recipe.imageLinks.map { viewModelFor(imageLink: $0) }
         }
     }
+    
+    // MARK: Private
     
     private func viewModelFor(imageLink: String) -> ImageCollectionViewCellViewModel {
         ImageCollectionViewCellViewModel(imageLink: imageLink)

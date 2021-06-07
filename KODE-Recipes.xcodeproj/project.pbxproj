@@ -14,7 +14,6 @@
 		9341102C26694A8300B9DBA5 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9341102B26694A8300B9DBA5 /* Recipe.swift */; };
 		934DA4C426675C260037D829 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4C326675C260037D829 /* AppDelegate.swift */; };
 		934DA4C626675C260037D829 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4C526675C260037D829 /* SceneDelegate.swift */; };
-		934DA4C826675C260037D829 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4C726675C260037D829 /* ViewController.swift */; };
 		934DA4CD26675C280037D829 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 934DA4CC26675C280037D829 /* Assets.xcassets */; };
 		934DA4D026675C280037D829 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 934DA4CE26675C280037D829 /* LaunchScreen.storyboard */; };
 		934DA4DB26675C280037D829 /* KODE_RecipesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4DA26675C280037D829 /* KODE_RecipesTests.swift */; };
@@ -76,7 +75,6 @@
 		934DA4C026675C260037D829 /* KODE-Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KODE-Recipes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		934DA4C326675C260037D829 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		934DA4C526675C260037D829 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		934DA4C726675C260037D829 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		934DA4CC26675C280037D829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		934DA4CF26675C280037D829 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		934DA4D126675C280037D829 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -172,7 +170,6 @@
 				934DA504266769AD0037D829 /* Support */,
 				934DA4C326675C260037D829 /* AppDelegate.swift */,
 				934DA4C526675C260037D829 /* SceneDelegate.swift */,
-				934DA4C726675C260037D829 /* ViewController.swift */,
 				934DA4CC26675C280037D829 /* Assets.xcassets */,
 				934DA4D126675C280037D829 /* Info.plist */,
 			);
@@ -587,7 +584,6 @@
 				934DA54E2667808F0037D829 /* RecipesContainerDC.swift in Sources */,
 				9341102C26694A8300B9DBA5 /* Recipe.swift in Sources */,
 				934DA53E26677A830037D829 /* RecipesContainerAC.swift in Sources */,
-				934DA4C826675C260037D829 /* ViewController.swift in Sources */,
 				934DA5362667737A0037D829 /* Repository.swift in Sources */,
 				936F2F02266CE030009663F4 /* ImageCollectionViewCellViewModel.swift in Sources */,
 				934110272669447300B9DBA5 /* RecipeTableViewCellViewModel.swift in Sources */,

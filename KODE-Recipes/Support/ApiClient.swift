@@ -14,9 +14,9 @@ final class ApiClient {
     
     private let baseURL = "https://test.kode-t.ru/recipes.json"
     
-    func getRecipes(onSuccess: @escaping (RecipesContainerAC) -> Void, onFailure: @escaping (String) -> Void){
-        AF.request(baseURL, method: .get).response  { response in
-            switch response.result{
+    func getRecipes(onSuccess: @escaping (RecipesContainerAC) -> Void, onFailure: @escaping (String) -> Void) {
+        AF.request(baseURL, method: .get).response { response in
+            switch response.result {
             
             case .failure(let error):
                 onFailure(error.errorDescription ?? "Unhandled error while requesting Recipes List.")
@@ -27,7 +27,6 @@ final class ApiClient {
                     return
                 }
                 onSuccess(try! JSONDecoder().decode(RecipesContainerAC.self, from: safeData))
-                
             }
         }
     }

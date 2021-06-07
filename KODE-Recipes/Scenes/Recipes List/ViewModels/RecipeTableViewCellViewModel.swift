@@ -9,19 +9,27 @@ import Foundation
 import UIKit
 
 final class RecipeTableViewCellViewModel {
+    
+    // MARK: Public
+    
     let data: Recipe
+    
+    // MARK: Actions
     
     var didReceiveError: ((String) -> Void)?
     var didUpdate: ((RecipeTableViewCellViewModel) -> Void)?
     var didSelectRecipe: ((Recipe) -> Void)?
     
-    init(recipe: Recipe){
+    // MARK: Lifecycle
+    
+    init(recipe: Recipe) {
         self.data = recipe
     }
     
 }
 
-extension RecipeTableViewCellViewModel: TableViewCellRepresentable{
+extension RecipeTableViewCellViewModel: TableViewCellRepresentable {
+    
     static func registerCell(tableView: UITableView) {
         tableView.register(UINib(nibName: "RecipeTableViewCell", bundle: nil), forCellReuseIdentifier: "RecipeTableViewCell")
     }
@@ -35,6 +43,5 @@ extension RecipeTableViewCellViewModel: TableViewCellRepresentable{
     func cellSelected() {
         self.didSelectRecipe?(data)
     }
-    
     
 }

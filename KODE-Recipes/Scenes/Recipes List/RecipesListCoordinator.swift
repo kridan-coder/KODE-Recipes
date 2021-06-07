@@ -31,9 +31,8 @@ class RecipesListCoordinator: Coordinator {
         
         // init viewModel
         let recipesListViewModel: RecipesListViewModel! = {
-            let viewModel = RecipesListViewModel()
+            let viewModel = RecipesListViewModel(repository: self.repository)
             viewModel.coordinatorDelegate = self
-            viewModel.repository = self.repository
             return viewModel
         }()
         
