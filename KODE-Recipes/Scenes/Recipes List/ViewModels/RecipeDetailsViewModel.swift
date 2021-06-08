@@ -20,16 +20,10 @@ final class RecipeDetailsViewModel {
     
     var imagesViewModels: [ImageCollectionViewCellViewModel] = []
     
-    var recipe: Recipe {
+    var recipe: Recipe! {
         didSet {
             imagesViewModels = recipe.imageLinks.map { viewModelFor(imageLink: $0) }
         }
-    }
-    
-    // MARK: Lifecycle
-    
-    init(recipe: Recipe) {
-        self.recipe = recipe
     }
     
     // MARK: Helpers

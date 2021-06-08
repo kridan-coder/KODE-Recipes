@@ -52,7 +52,8 @@ extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
         
         // init viewModel
         let recipeViewModel: RecipeDetailsViewModel! = {
-            let viewModel = RecipeDetailsViewModel(recipe: recipe)
+            let viewModel = RecipeDetailsViewModel()
+            viewModel.recipe = recipe
             viewModel.coordinatorDelegate = self
             return viewModel
         }()
