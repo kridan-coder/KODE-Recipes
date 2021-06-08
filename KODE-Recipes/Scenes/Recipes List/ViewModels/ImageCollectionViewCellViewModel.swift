@@ -10,7 +10,7 @@ import UIKit
 
 final class ImageCollectionViewCellViewModel {
     
-    // MARK: Public
+    // MARK: Properties
     
     let data: String
     
@@ -18,7 +18,7 @@ final class ImageCollectionViewCellViewModel {
     
     var didReceiveError: ((String) -> Void)?
     var didUpdate: ((ImageCollectionViewCellViewModel) -> Void)?
-    var didSelectRecipe: ((String) -> Void)?
+    var didSelectImage: ((String) -> Void)?
     
     // MARK: Lifecycle
     
@@ -41,7 +41,7 @@ extension ImageCollectionViewCellViewModel: CollectionViewCellRepresentable {
     }
     
     func cellSelected() {
-        self.didSelectRecipe?(data)
+        self.didSelectImage?(data)
     }
     
 }

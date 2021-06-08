@@ -22,6 +22,8 @@ class RecipeTableViewCell: UITableViewCell {
     
     private var viewModel: RecipeTableViewCellViewModel!
     
+    // MARK: Properties
+    
     private var recipe: Recipe! {
         didSet {
             nameLabel.text = recipe.name
@@ -38,6 +40,8 @@ class RecipeTableViewCell: UITableViewCell {
             lastUpdatedLabel.text = "Last update: \(formatter.string(from: date))"
         }
     }
+    
+    // MARK: Helpers
     
     private func setupCellAppearance() {
         wrapperContainerView.layer.cornerRadius = 15
@@ -63,5 +67,3 @@ class RecipeTableViewCell: UITableViewCell {
     }
     
 }
-
-

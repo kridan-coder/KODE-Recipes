@@ -10,7 +10,7 @@ import UIKit
 
 final class RecipeTableViewCellViewModel {
     
-    // MARK: Public
+    // MARK: Properties
     
     let data: Recipe
     

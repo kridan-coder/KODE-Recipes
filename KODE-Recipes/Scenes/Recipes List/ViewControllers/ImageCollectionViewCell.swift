@@ -18,12 +18,16 @@ class ImageCollectionViewCell: UICollectionViewCell {
     
     private var viewModel: ImageCollectionViewCellViewModel!
     
+    // MARK: Properties
+    
     private var imageLink: String! {
         didSet {
             imageView.kf.indicatorType = .activity
             imageView.kf.setImage(with: URL(string: imageLink), placeholder: UIImage(named: "Placeholder"))
         }
     }
+    
+    // MARK: Helpers
     
     private func setupCellAppearance() {
         imageView.layer.cornerRadius = 15

@@ -24,7 +24,7 @@ class RecipesListViewController: UIViewController {
     
     var viewModel: RecipesListViewModel!
     
-    // MARK: Private
+    // MARK: Properties
     
     private var filteredRecipes: [RecipeTableViewCellViewModel] = []
     
@@ -33,11 +33,14 @@ class RecipesListViewController: UIViewController {
             SearchCase(rawValue: searchBar.scopeButtonTitles?[searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)!
         }
     }
+    
     private var currentSortCase: SortCase {
         get {
             SortCase(rawValue: nameDateSegmentedControl.selectedSegmentIndex) ?? .name
         }
     }
+    
+    // MARK: Helpers
     
     private func setupTableView() {
         tableView.delegate = self

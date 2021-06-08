@@ -36,7 +36,7 @@ class Coordinator {
         childCoordinators = childCoordinators.filter{$0 is T == false}
     }
     
-    func removeAllChildCoordinators(){
+    func removeAllChildCoordinators() {
         childCoordinators.removeAll()
     }
     

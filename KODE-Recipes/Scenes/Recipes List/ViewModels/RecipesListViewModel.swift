@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol RecipesListViewModelCoordinatorDelegate {
+protocol RecipesListViewModelCoordinatorDelegate: class {
     func didSelectRecipe(recipe: Recipe)
 }
 
@@ -18,9 +18,11 @@ final class RecipesListViewModel {
     
     private let repository: Repository
     
-    // MARK: Public
+    // MARK: Delegates
     
-    var coordinatorDelegate: RecipesListViewModelCoordinatorDelegate?
+    weak var coordinatorDelegate: RecipesListViewModelCoordinatorDelegate?
+    
+    // MARK: Properties
     
     var recipesViewModels: [RecipeTableViewCellViewModel] = []
     
@@ -30,6 +32,8 @@ final class RecipesListViewModel {
     var didNotFindInternetConnection: (() -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
+    
+    // MARK: Service
     
     func reloadData() {
         self.didStartUpdating?()

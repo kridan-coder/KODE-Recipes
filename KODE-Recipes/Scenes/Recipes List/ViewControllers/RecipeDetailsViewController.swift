@@ -25,7 +25,7 @@ class RecipeDetailsViewController: UIViewController {
     
     var viewModel: RecipeDetailsViewModel!
     
-    // MARK: Private
+    // MARK: Helpers
     
     private func setupAppearance() {
         difficultyLevelImage.layer.cornerRadius = 15
