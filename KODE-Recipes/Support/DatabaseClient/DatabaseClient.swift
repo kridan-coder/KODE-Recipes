@@ -14,18 +14,25 @@ final class DatabaseClient {
     
     private static let realm = try! Realm()
     
-    func setRecipesContainerToDatabase(_ data: RecipesContainerDC) {
+    func saveObject<T: Object>(_ object: T) {
         try! DatabaseClient.realm.write {
-            DatabaseClient.realm.add(data)
+            DatabaseClient.realm.add(object, update: .modified)
         }
     }
     
-    func getRecipesContainerFromDatabase() -> RecipesContainerDC? {
-        let databaseData = DatabaseClient.realm.objects(RecipesContainerDC.self)
-        guard databaseData.count != 0 else {
-            return nil
+    func saveObjects<T: Object>(_ objects: [T]) {
+        try! DatabaseClient.realm.write {
+            DatabaseClient.realm.add(objects, update: .modified)
         }
-        return databaseData[0]
+    }
+    
+    func getObjects<T: Object>(ofType: T.Type, filter: String? = nil) -> [T] {
+        let result = (filter != nil) ? DatabaseClient.realm.objects(T.self).filter(filter!) : DatabaseClient.realm.objects(T.self)
+        return Array(result)
+    }
+    
+    func getObjectByPrimaryKey<T: Object>(ofType: T.Type, primaryKey: String) -> T? {
+        DatabaseClient.realm.object(ofType: T.self, forPrimaryKey: primaryKey)
     }
     
 }

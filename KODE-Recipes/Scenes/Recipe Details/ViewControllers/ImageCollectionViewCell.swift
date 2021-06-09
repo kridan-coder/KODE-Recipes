@@ -23,15 +23,15 @@ class ImageCollectionViewCell: UICollectionViewCell {
     private var imageLink: String! {
         didSet {
             imageView.kf.indicatorType = .activity
-            imageView.kf.setImage(with: URL(string: imageLink), placeholder: UIImage(named: "Placeholder"))
+            imageView.kf.setImage(with: URL(string: imageLink), placeholder: UIImage.BaseTheme.placeholder)
         }
     }
     
     // MARK: Helpers
     
     private func setupCellAppearance() {
-        imageView.layer.cornerRadius = 15
-        imageView.layer.borderWidth = 2
+        imageView.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        imageView.layer.borderWidth = Constants.Design.borderWidthMain
         imageView.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
     }
     

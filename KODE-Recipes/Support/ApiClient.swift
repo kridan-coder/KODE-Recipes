@@ -12,18 +12,18 @@ import Alamofire
 
 final class ApiClient {
     
-    private let baseURL = "https://test.kode-t.ru/recipes.json"
+    private let baseURL = Constants.API.baseURL
     
     func getRecipes(onSuccess: @escaping (RecipesContainerAC) -> Void, onFailure: @escaping (String) -> Void) {
         AF.request(baseURL, method: .get).response { response in
             switch response.result {
             
             case .failure(let error):
-                onFailure(error.errorDescription ?? "Unhandled error while requesting Recipes List.")
+                onFailure(error.errorDescription ?? Constants.ErrorText.unhandledRequestFailure)
                 
             case .success(let data):
                 guard let safeData = data else {
-                    onFailure("Error: response is empty.")
+                    onFailure(Constants.ErrorText.emptyResponse)
                     return
                 }
                 
@@ -31,9 +31,8 @@ final class ApiClient {
                     let recipesContainerAC = try JSONDecoder().decode(RecipesContainerAC.self, from: safeData)
                     onSuccess(recipesContainerAC)
                 }
-                catch
-                {
-                    onFailure("Failed to decode data into Recipes Container. Error: \(error)")
+                catch {
+                    onFailure(Constants.ErrorText.decodingFailure + "Error: \(error)")
                 }
                 
             }

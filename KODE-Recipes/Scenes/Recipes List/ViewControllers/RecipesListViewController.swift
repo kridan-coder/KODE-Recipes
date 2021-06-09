@@ -60,7 +60,7 @@ class RecipesListViewController: UIViewController {
     }
     
     private func setupAppearance() {
-        tableView.layer.cornerRadius = 5
+        tableView.layer.cornerRadius = Constants.Design.cornerRadiusSecondary
         searchBar.backgroundImage = UIImage()
         refreshControl.tintColor = UIColor.BaseTheme.cellBackground
     }
@@ -118,7 +118,7 @@ class RecipesListViewController: UIViewController {
         tableViewActivityIndicator.stopAnimating()
         
         // in case update was triggered by refreshing the table
-        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text ?? "", scope: currentSearchCase)
+        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text, scope: currentSearchCase)
         filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
         refreshControl.endRefreshing()
         
@@ -126,14 +126,14 @@ class RecipesListViewController: UIViewController {
     }
     
     private func viewModelDidNotFindInternetConnection() {
-        let alert = UIAlertController(title: "No Internet.", message: "Local saves will be shown (if there are any). Please connect to the Internet and refresh the table.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternetTable, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
         present(alert, animated: true)
     }
     
     private func viewModelDidReceiveError(error: String) {
-        let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
         present(alert, animated: true)
     }
     
@@ -176,7 +176,7 @@ extension RecipesListViewController: UISearchBarDelegate {
     }
     
     private func filter() {
-        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text ?? "", scope: currentSearchCase)
+        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text, scope: currentSearchCase)
         filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
         tableView.reloadData()
     }

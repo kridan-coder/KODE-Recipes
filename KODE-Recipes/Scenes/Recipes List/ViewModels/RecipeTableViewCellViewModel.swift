@@ -12,17 +12,17 @@ final class RecipeTableViewCellViewModel {
     
     // MARK: Properties
     
-    let data: Recipe
+    let data: RecipeDataForCell
     
     // MARK: Actions
     
     var didReceiveError: ((String) -> Void)?
     var didUpdate: ((RecipeTableViewCellViewModel) -> Void)?
-    var didSelectRecipe: ((Recipe) -> Void)?
+    var didSelectRecipe: ((String) -> Void)?
     
     // MARK: Lifecycle
     
-    init(recipe: Recipe) {
+    init(recipe: RecipeDataForCell) {
         self.data = recipe
     }
     
@@ -41,7 +41,7 @@ extension RecipeTableViewCellViewModel: TableViewCellRepresentable {
     }
     
     func cellSelected() {
-        self.didSelectRecipe?(data)
+        self.didSelectRecipe?(data.recipeID)
     }
     
 }

@@ -16,4 +16,8 @@ class RecipeDC: Object {
     @objc dynamic var recipeDescription: String? = nil
     @objc dynamic var instructions: String? = nil
     var difficulty = RealmOptional<Int>()
+    
+    override static func primaryKey() -> String? {
+        return "uuid"
+    }
 }

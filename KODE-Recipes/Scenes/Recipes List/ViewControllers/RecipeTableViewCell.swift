@@ -24,29 +24,24 @@ class RecipeTableViewCell: UITableViewCell {
     
     // MARK: Properties
     
-    private var recipe: Recipe! {
+    private var recipe: RecipeDataForCell! {
         didSet {
             nameLabel.text = recipe.name
             descriptionLabel.text = recipe.description
+            lastUpdatedLabel.text = recipe.lastUpdated
             
             // set first image of recipe
             recipeImage.kf.indicatorType = .activity
-            recipeImage.kf.setImage(with: URL(string: recipe.imageLinks[0]), placeholder: UIImage.BaseTheme.placeholder)
-            
-            // set date with specific format
-            let date = Date(timeIntervalSince1970: recipe.lastUpdated)
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMM d, yyyy"
-            lastUpdatedLabel.text = "Last update: \(formatter.string(from: date))"
+            recipeImage.kf.setImage(with: URL(string: recipe.imageLink), placeholder: UIImage.BaseTheme.placeholder)
         }
     }
     
     // MARK: Helpers
     
     private func setupCellAppearance() {
-        wrapperContainerView.layer.cornerRadius = Constants.cornerRadiusMain
-        recipeImage.layer.cornerRadius = Constants.cornerRadiusMain
-        recipeImage.layer.borderWidth = Constants.borderWidthSecondary
+        wrapperContainerView.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        recipeImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        recipeImage.layer.borderWidth = Constants.Design.borderWidthSecondary
         recipeImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
     }
     

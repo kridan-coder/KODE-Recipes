@@ -30,6 +30,9 @@ class RecipeDetailsViewController: UIViewController {
     
     var viewModel: RecipeDetailsViewModel!
     
+    // MARK: Properties
+    private var images: [ImageCollectionViewCellViewModel] = []
+    
     // MARK: Helpers
     
     private func setupRefreshControl() {
@@ -38,46 +41,12 @@ class RecipeDetailsViewController: UIViewController {
     }
     
     private func setupAppearance() {
-        difficultyLevelImage.layer.cornerRadius = 15
-        difficultyLevelImage.layer.borderWidth = 1
+        difficultyLevelImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        difficultyLevelImage.layer.borderWidth = Constants.Design.borderWidthSecondary
         difficultyLevelImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
-        instructionsTextView.layer.cornerRadius = 15
-        descriptionTextView.layer.cornerRadius = 15
+        instructionsTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        descriptionTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
         refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
-    }
-    
-    private func setupRecipeData() {
-        pageControl.numberOfPages = viewModel.recipe.imageLinks.count
-        recipeNameLabel.text = viewModel.recipe.name
-        instructionsTextView.text = viewModel.recipe.instructions
-        
-        // description may be not provided or can be empty
-        descriptionTextView.text = viewModel.recipe.description
-        if descriptionTextView.text == nil || descriptionTextView.text == "" {
-            descriptionTextView.text = "No description provided."
-        }
-        
-        // set date with specific format
-        let date = Date(timeIntervalSince1970: viewModel.recipe.lastUpdated)
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a, EEEE, MMM d, yyyy"
-        lastUpdateLabel.text = "Last Recipe Update:\n \(formatter.string(from: date)) "
-        
-        // set image according to recipe difficulty
-        switch viewModel.recipe.difficulty {
-        case 1:
-            difficultyLevelImage.image = UIImage(named: DifficultyLevel.easy.rawValue)
-        case 2:
-            difficultyLevelImage.image = UIImage(named: DifficultyLevel.normal.rawValue)
-        case 3:
-            difficultyLevelImage.image = UIImage(named: DifficultyLevel.hard.rawValue)
-        case 4:
-            difficultyLevelImage.image = UIImage(named: DifficultyLevel.extreme.rawValue)
-        case 5:
-            difficultyLevelImage.image = UIImage(named: DifficultyLevel.insane.rawValue)
-        default:
-            difficultyLevelImage.image = UIImage(named: DifficultyLevel.easy.rawValue)
-        }
     }
     
     private func setupCollectionView() {
@@ -92,8 +61,9 @@ class RecipeDetailsViewController: UIViewController {
         super.viewDidLoad()
         setupRefreshControl()
         setupAppearance()
-        setupRecipeData()
         setupCollectionView()
+        bindToViewModel()
+        viewModel.reloadData()
         
         // this notification is needed for correct cell size recalculating
         NotificationCenter.default.addObserver(self, selector: #selector(RecipeDetailsViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -107,7 +77,49 @@ class RecipeDetailsViewController: UIViewController {
     }
     
     @objc func refresh() {
-        print("Heeh")
+        viewModel.reloadData()
+    }
+    
+    func setupRecipeData(recipe: RecipeDataForDetails) {
+        pageControl.numberOfPages = recipe.imageLinks.count
+        recipeNameLabel.text = recipe.name
+        instructionsTextView.text = recipe.instructions
+        descriptionTextView.text = recipe.description
+        lastUpdateLabel.text = recipe.lastUpdated
+        difficultyLevelImage.image = recipe.difficultyImage
+    }
+    
+    // MARK: ViewModel
+    
+    private func bindToViewModel() {
+        viewModel.didStartUpdating = { [weak self] in
+            self?.viewModelDidStartUpdating()
+        }
+        viewModel.didFinishUpdating = { [weak self] in
+            self?.viewModelDidFinishUpdating()
+        }
+        viewModel.didReceiveError = { [weak self] error in
+            self?.viewModelDidReceiveError(error: error)
+        }
+    }
+    
+    private func viewModelDidStartUpdating() {
+    }
+    
+    private func viewModelDidFinishUpdating() {
+        if let recipe = viewModel.recipe {
+            images = viewModel.imagesViewModels
+            setupRecipeData(recipe: recipe)
+            collectionView.reloadData()
+        }
+        refreshControl.endRefreshing()
+    }
+    
+
+    private func viewModelDidReceiveError(error: String) {
+        let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
+        present(alert, animated: true)
     }
     
 }
@@ -124,11 +136,11 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
 extension RecipeDetailsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.recipe.imageLinks.count
+        images.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        viewModel.imagesViewModels[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        images[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
     }
     
 }

@@ -8,13 +8,15 @@
 import Foundation
 import UIKit
 
-class RecipesListCoordinator: Coordinator {
+final class RecipesListCoordinator: Coordinator {
     
     // MARK: Properties
     
     let rootNavigationController: UINavigationController
     
     let repository: Repository
+    
+    weak var delegate: Coordinator?
     
     // MARK: Coordinator
     
@@ -36,7 +38,7 @@ class RecipesListCoordinator: Coordinator {
         let recipesListViewController: RecipesListViewController! = {
             let viewController = RecipesListViewController(nibName: "RecipesListViewController", bundle: nil)
             viewController.viewModel = recipesListViewModel
-            viewController.title = "Recipes"
+            viewController.title = Constants.NavigationBarTitle.recipes
             return viewController
         }()
         
@@ -47,28 +49,12 @@ class RecipesListCoordinator: Coordinator {
 
 extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
     
-    // moves user to Recipe Details viewController (Scene remains the same)
-    func didSelectRecipe(recipe: Recipe) {
-        
-        // init viewModel
-        let recipeViewModel: RecipeDetailsViewModel! = {
-            let viewModel = RecipeDetailsViewModel()
-            viewModel.recipe = recipe
-            viewModel.coordinatorDelegate = self
-            return viewModel
-        }()
-        
-        // init viewController
-        let recipeViewController: RecipeDetailsViewController! = {
-            let viewController = RecipeDetailsViewController(nibName: "RecipeDetailsViewController", bundle: nil)
-            viewController.viewModel = recipeViewModel
-            viewController.title = "Recipe Details"
-            return viewController
-        }()
-        
-        rootNavigationController.pushViewController(recipeViewController, animated: true)
+    // switches Scene to Recipe Details
+    func didSelectRecipe(recipeID: String) {
+        let recipeDetailsCoordinator = RecipeDetailsCoordinator(rootNavigationController: rootNavigationController, repository: repository, recipeID: recipeID)
+        recipeDetailsCoordinator.delegate = self
+        addChildCoordinator(recipeDetailsCoordinator)
+        recipeDetailsCoordinator.start()
     }
     
 }
-
-extension RecipesListCoordinator: RecipeViewModelCoordinatorDelegate {}

@@ -42,6 +42,7 @@ class AppCoordinator: Coordinator {
         
         // launching Recipes List Scene
         let recipeListCoordinator = RecipesListCoordinator(rootNavigationController: rootNavigationController, repository: repository)
+        recipeListCoordinator.delegate = self
         addChildCoordinator(recipeListCoordinator)
         recipeListCoordinator.start()
     }

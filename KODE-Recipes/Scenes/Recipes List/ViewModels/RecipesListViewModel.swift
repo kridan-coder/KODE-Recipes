@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol RecipesListViewModelCoordinatorDelegate: class {
-    func didSelectRecipe(recipe: Recipe)
+    func didSelectRecipe(recipeID: String)
 }
 
 final class RecipesListViewModel {
@@ -39,7 +39,7 @@ final class RecipesListViewModel {
         self.didStartUpdating?()
         
         if repository.isConnectedToNetwork() {
-            getDataFromNetwork()
+            getDataFromNetworkAndSaveItLocally()
         }
         else {
             didNotFindInternetConnection?()
@@ -47,7 +47,7 @@ final class RecipesListViewModel {
         }
     }
     
-    func filterRecipesForSearchText(searchText: String, scope: SearchCase?) -> [RecipeTableViewCellViewModel] {
+    func filterRecipesForSearchText(searchText: String?, scope: SearchCase?) -> [RecipeTableViewCellViewModel] {
         repository.filterRecipesForSearchText(recipes: recipesViewModels, searchText: searchText, scope: scope)
     }
     
@@ -63,11 +63,11 @@ final class RecipesListViewModel {
     
     // MARK: Helpers
     
-    private func viewModelFor(recipe: Recipe) -> RecipeTableViewCellViewModel {
+    private func viewModelFor(recipe: RecipeDataForCell) -> RecipeTableViewCellViewModel {
         let viewModel = RecipeTableViewCellViewModel(recipe: recipe)
         
-        viewModel.didSelectRecipe = { [weak self] recipe in
-            self?.coordinatorDelegate?.didSelectRecipe(recipe: recipe)
+        viewModel.didSelectRecipe = { [weak self] recipeID in
+            self?.coordinatorDelegate?.didSelectRecipe(recipeID: recipeID)
         }
         viewModel.didReceiveError = { [weak self] error in
             self?.didReceiveError?(error)
@@ -77,32 +77,31 @@ final class RecipesListViewModel {
     }
     
     private func getDataFromDatabase() {
-        if let recipeContainer = repository.databaseClient?.getRecipesContainerFromDatabase() {
-            recipesViewModels = recipeContainer.recipes.map {
-                let recipe = repository.recipeDCtoRecipe($0)
+        if let recipes = repository.databaseClient?.getObjects(ofType: RecipeDC.self) {
+            recipesViewModels = recipes.map {
+                let recipe = repository.recipeDCToRecipeForCell($0)
                 return viewModelFor(recipe: recipe)
             }
         }
-        
         self.didFinishUpdating?()
     }
     
-    private func getDataFromNetwork() {
+    private func getDataFromNetworkAndSaveItLocally() {
         repository.apiClient?.getRecipes(onSuccess: { recipesContainer in
             guard let recipes = recipesContainer.recipes else {
-                self.didReceiveError?("Recipes list is empty.")
+                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
                 return
             }
             
             // received data should be saved locally
-            let recipesR = recipes.map {
+            let recipesDC = recipes.map {
                 return self.repository.recipeACtoRecipeDC($0)
             }
-            self.setDataToDatabase(recipesDC: recipesR)
+            self.repository.databaseClient?.saveObjects(recipesDC)
             
             // set viewModels
             self.recipesViewModels = recipes.map {
-                let recipe = self.repository.recipeACtoRecipe($0)
+                let recipe = self.repository.recipeACToRecipeForCell($0)
                 return self.viewModelFor(recipe: recipe)
             }
             
@@ -112,11 +111,6 @@ final class RecipesListViewModel {
             self.didFinishUpdating?()
             self.didReceiveError?(error)
         })
-    }
-    
-    private func setDataToDatabase(recipesDC: [RecipeDC]) {
-        let container = repository.wrapRecipesDCIntoDatabaseContainer(recipesDC)
-        repository.databaseClient?.setRecipesContainerToDatabase(container)
     }
     
 }

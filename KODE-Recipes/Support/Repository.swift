@@ -50,12 +50,47 @@ final class Repository {
     
     // converting
     
+    func recipeDCToRecipeForDetails(_ recipeDC: RecipeDC) -> RecipeDataForDetails {
+        return recipeToRecipeForDetails(recipeDCtoRecipe(recipeDC))
+    }
+    
+    func recipeDCToRecipeForCell(_ recipeDC: RecipeDC) -> RecipeDataForCell {
+        return recipeToRecipeForCell(recipeDCtoRecipe(recipeDC))
+    }
+    
+    func recipeACToRecipeForCell(_ recipeAC: RecipeAC) -> RecipeDataForCell {
+        return recipeToRecipeForCell(recipeACtoRecipe(recipeAC))
+    }
+    
+    func recipeToRecipeForDetails(_ recipe: Recipe) -> RecipeDataForDetails {
+        let date = getDateForRecipeDetails(lastUpdated: recipe.lastUpdated)
+        
+        // description may be not provided or can be empty
+        var description = recipe.description
+        if description == nil || description == "" {
+            description = Constants.Description.empty
+        }
+        
+        let difficultyImage = getDifficultyImage(difficultyLevel: recipe.difficulty)
+      
+        return RecipeDataForDetails(recipeID: recipe.recipeID, name: recipe.name, imageLinks: recipe.imageLinks, lastUpdated: date, description: description!, instructions: recipe.instructions, difficultyImage: difficultyImage)
+    }
+    
+    func recipeToRecipeForCell(_ recipe: Recipe) -> RecipeDataForCell {
+        
+        let imageLink = recipe.imageLinks[0]
+        
+        let date = getDateForRecipeCell(lastUpdated: recipe.lastUpdated)
+        
+        return RecipeDataForCell(recipeID: recipe.recipeID, name: recipe.name, imageLink: imageLink, lastUpdated: date, description: recipe.description, instructions: recipe.instructions)
+    }
+    
     func recipeACtoRecipe(_ recipeAC: RecipeAC) -> Recipe {
-        return Recipe(name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
+        return Recipe(recipeID: recipeAC.uuid!, name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
     }
     
     func recipeDCtoRecipe(_ recipeDC: RecipeDC) -> Recipe {
-        return Recipe(name: formatText(recipeDC.name!)!, imageLinks: Array(recipeDC.images), lastUpdated: recipeDC.lastUpdated.value!, description: formatText(recipeDC.recipeDescription), instructions: formatText(recipeDC.instructions!)!, difficulty: recipeDC.difficulty.value!)
+        return Recipe(recipeID: recipeDC.uuid!, name: formatText(recipeDC.name!)!, imageLinks: Array(recipeDC.images), lastUpdated: recipeDC.lastUpdated.value!, description: formatText(recipeDC.recipeDescription), instructions: formatText(recipeDC.instructions!)!, difficulty: recipeDC.difficulty.value!)
     }
     
     func recipeACtoRecipeDC(_ recipeAC: RecipeAC) -> RecipeDC {
@@ -74,19 +109,11 @@ final class Repository {
         recipeDC.uuid = recipeAC.uuid
         return recipeDC
     }
-    
-    func wrapRecipesDCIntoDatabaseContainer(_ recipesDC: [RecipeDC]) -> RecipesContainerDC {
-        let container = RecipesContainerDC()
-        for recipe in recipesDC {
-            container.recipes.append(recipe)
-        }
-        return container
-    }
-    
+
     // filtering and sorting
     
-    func filterRecipesForSearchText(recipes: [RecipeTableViewCellViewModel], searchText: String, scope: SearchCase? = SearchCase.all) -> [RecipeTableViewCellViewModel] {
-        guard searchText != "" else {
+    func filterRecipesForSearchText(recipes: [RecipeTableViewCellViewModel], searchText: String?, scope: SearchCase? = SearchCase.all) -> [RecipeTableViewCellViewModel] {
+        guard let safeSearchText = searchText, safeSearchText != "" else {
             return recipes
         }
         
@@ -95,24 +122,24 @@ final class Repository {
         switch scope {
         case .name:
             mutableRecipes = recipes.filter { (recipe) -> Bool in
-                recipe.data.name.lowercased().contains(searchText.lowercased())
+                recipe.data.name.lowercased().contains(safeSearchText.lowercased())
             }
         case .description:
             // if description is not provided then no need to search anything in it
             mutableRecipes = recipes.filter { (recipe) -> Bool in
-                (recipe.data.description?.lowercased().contains(searchText.lowercased()) ?? false)
+                (recipe.data.description?.lowercased().contains(safeSearchText.lowercased()) ?? false)
             }
         case .instruction:
             mutableRecipes = recipes.filter { (recipe) -> Bool in
-                recipe.data.instructions.lowercased().contains(searchText.lowercased())
+                recipe.data.instructions.lowercased().contains(safeSearchText.lowercased())
             }
         default:
             mutableRecipes = recipes.filter { (recipe) -> Bool in
-                recipe.data.name.lowercased().contains(searchText.lowercased()) ||
+                recipe.data.name.lowercased().contains(safeSearchText.lowercased()) ||
                     
-                    (recipe.data.description?.lowercased().contains(searchText.lowercased()) ?? false) ||
+                    (recipe.data.description?.lowercased().contains(safeSearchText.lowercased()) ?? false) ||
                     
-                    recipe.data.instructions.lowercased().contains(searchText.lowercased())
+                    recipe.data.instructions.lowercased().contains(safeSearchText.lowercased())
             }
         }
         
@@ -144,6 +171,37 @@ final class Repository {
             return nil
         }
         return text.replacingOccurrences(of: "<br>", with: "\n")
+    }
+    
+    private func getDateForRecipeCell(lastUpdated: Double) -> String {
+        let date = Date(timeIntervalSince1970: lastUpdated)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        return "Last update: \(formatter.string(from: date))"
+    }
+    
+    private func getDateForRecipeDetails(lastUpdated: Double) -> String {
+        let date = Date(timeIntervalSince1970: lastUpdated)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a, EEEE, MMM d, yyyy"
+        return "Last Recipe Update:\n \(formatter.string(from: date)) "
+    }
+    
+    private func getDifficultyImage(difficultyLevel: Int) -> UIImage? {
+        switch difficultyLevel {
+        case 1:
+            return UIImage.BaseTheme.Difficulty.easy
+        case 2:
+            return UIImage.BaseTheme.Difficulty.normal
+        case 3:
+            return UIImage.BaseTheme.Difficulty.hard
+        case 4:
+            return UIImage.BaseTheme.Difficulty.extreme
+        case 5:
+            return UIImage.BaseTheme.Difficulty.insane
+        default:
+            return UIImage.BaseTheme.Difficulty.unknown
+        }
     }
     
 }
