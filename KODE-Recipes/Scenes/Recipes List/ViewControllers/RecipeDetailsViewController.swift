@@ -12,6 +12,7 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: IBOutlets
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var difficultyLevelImage: UIImageView!
     @IBOutlet weak var recipeNameLabel: UILabel!
@@ -21,18 +22,28 @@ class RecipeDetailsViewController: UIViewController {
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    // MARK: Elements set in code
+    
+    private var refreshControl = UIRefreshControl()
+    
     // MARK: Public
     
     var viewModel: RecipeDetailsViewModel!
     
     // MARK: Helpers
     
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(RecipeDetailsViewController.refresh), for: .valueChanged)
+        scrollView.addSubview(refreshControl)
+    }
+    
     private func setupAppearance() {
         difficultyLevelImage.layer.cornerRadius = 15
         difficultyLevelImage.layer.borderWidth = 1
-        difficultyLevelImage.layer.borderColor = UIColor(named: "TableBackgroundColor")?.cgColor
+        difficultyLevelImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
         instructionsTextView.layer.cornerRadius = 15
         descriptionTextView.layer.cornerRadius = 15
+        refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
     }
     
     private func setupRecipeData() {
@@ -79,6 +90,7 @@ class RecipeDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupRefreshControl()
         setupAppearance()
         setupRecipeData()
         setupCollectionView()
@@ -92,6 +104,10 @@ class RecipeDetailsViewController: UIViewController {
     @objc func rotated() {
         collectionView.collectionViewLayout.invalidateLayout()
         collectionView.scrollToItem(at: IndexPath(item: pageControl.currentPage, section: 0), at: .centeredHorizontally, animated: false)
+    }
+    
+    @objc func refresh() {
+        print("Heeh")
     }
     
 }

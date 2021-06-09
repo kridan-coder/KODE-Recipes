@@ -62,11 +62,7 @@ class RecipesListViewController: UIViewController {
     private func setupAppearance() {
         tableView.layer.cornerRadius = 5
         searchBar.backgroundImage = UIImage()
-        
-        // appearance of refresh control
-        let attributes = [NSAttributedString.Key.foregroundColor: UIColor(named: "BackgroundColor")]
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh", attributes: attributes as [NSAttributedString.Key : Any])
-        refreshControl.tintColor = UIColor(named: "BackgroundColor")
+        refreshControl.tintColor = UIColor.BaseTheme.cellBackground
     }
     
     // MARK: Lifecycle

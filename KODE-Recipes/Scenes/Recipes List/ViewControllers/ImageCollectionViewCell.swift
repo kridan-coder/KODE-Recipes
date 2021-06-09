@@ -32,7 +32,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
     private func setupCellAppearance() {
         imageView.layer.cornerRadius = 15
         imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor(named: "TableBackgroundColor")?.cgColor
+        imageView.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
     }
     
     // MARK: Lifecycle

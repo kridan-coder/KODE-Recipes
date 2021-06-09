@@ -13,7 +13,11 @@ class AppCoordinator: Coordinator {
     // MARK: Properties
     
     let window: UIWindow?
-    let rootNavigationController = UINavigationController()
+    let rootNavigationController: UINavigationController! = {
+        let navigationController = UINavigationController()
+        navigationController.navigationBar.barTintColor = UIColor.BaseTheme.background
+        return navigationController
+    }()
     
     let apiClient: ApiClient
     let databaseClient: DatabaseClient

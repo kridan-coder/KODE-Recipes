@@ -31,7 +31,7 @@ class RecipeTableViewCell: UITableViewCell {
             
             // set first image of recipe
             recipeImage.kf.indicatorType = .activity
-            recipeImage.kf.setImage(with: URL(string: recipe.imageLinks[0]), placeholder: UIImage(named: "Placeholder"))
+            recipeImage.kf.setImage(with: URL(string: recipe.imageLinks[0]), placeholder: UIImage.BaseTheme.placeholder)
             
             // set date with specific format
             let date = Date(timeIntervalSince1970: recipe.lastUpdated)
@@ -44,10 +44,10 @@ class RecipeTableViewCell: UITableViewCell {
     // MARK: Helpers
     
     private func setupCellAppearance() {
-        wrapperContainerView.layer.cornerRadius = 15
-        recipeImage.layer.cornerRadius = 15
-        recipeImage.layer.borderWidth = 1
-        recipeImage.layer.borderColor = UIColor(named: "TableBackgroundColor")?.cgColor
+        wrapperContainerView.layer.cornerRadius = Constants.cornerRadiusMain
+        recipeImage.layer.cornerRadius = Constants.cornerRadiusMain
+        recipeImage.layer.borderWidth = Constants.borderWidthSecondary
+        recipeImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
     }
     
     // MARK: Lifecycle
