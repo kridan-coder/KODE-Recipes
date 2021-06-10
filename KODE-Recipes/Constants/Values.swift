@@ -41,7 +41,7 @@ enum Constants {
         static let unhandledRequestFailure = "Unexpected error while making a request. "
         static let noInternetTable = "Local saves will be shown (if there are any). Please connect to the Internet and refresh the table. "
         static let recipesListIsEmpty = "Recipes list is empty. "
-        static let recipesDetailsAreEmpty = "Recipe Details could not be loaded. "
+        static let recipeDetailsAreEmpty = "Recipe Details could not be loaded. "
     }
     
     enum Description {

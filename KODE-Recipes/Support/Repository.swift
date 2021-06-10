@@ -50,19 +50,19 @@ final class Repository {
     
     // converting
     
-    func recipeDCToRecipeForDetails(_ recipeDC: RecipeDC) -> RecipeDataForDetails {
+    func recipeDCToRecipeForDetails(_ recipeDC: RecipeDataForDC) -> RecipeDataForDetails {
         return recipeToRecipeForDetails(recipeDCtoRecipe(recipeDC))
     }
     
-    func recipeDCToRecipeForCell(_ recipeDC: RecipeDC) -> RecipeDataForCell {
+    func recipeDCToRecipeForCell(_ recipeDC: RecipeDataForDC) -> RecipeDataForCell {
         return recipeToRecipeForCell(recipeDCtoRecipe(recipeDC))
     }
     
-    func recipeACToRecipeForCell(_ recipeAC: RecipeAC) -> RecipeDataForCell {
+    func recipeACToRecipeForCell(_ recipeAC: RecipeDataForAC) -> RecipeDataForCell {
         return recipeToRecipeForCell(recipeACtoRecipe(recipeAC))
     }
     
-    func recipeToRecipeForDetails(_ recipe: Recipe) -> RecipeDataForDetails {
+    func recipeToRecipeForDetails(_ recipe: RecipeDataRaw) -> RecipeDataForDetails {
         let date = getDateForRecipeDetails(lastUpdated: recipe.lastUpdated)
         
         // description may be not provided or can be empty
@@ -76,7 +76,7 @@ final class Repository {
         return RecipeDataForDetails(recipeID: recipe.recipeID, name: recipe.name, imageLinks: recipe.imageLinks, lastUpdated: date, description: description!, instructions: recipe.instructions, difficultyImage: difficultyImage)
     }
     
-    func recipeToRecipeForCell(_ recipe: Recipe) -> RecipeDataForCell {
+    func recipeToRecipeForCell(_ recipe: RecipeDataRaw) -> RecipeDataForCell {
         
         let imageLink = recipe.imageLinks[0]
         
@@ -85,16 +85,16 @@ final class Repository {
         return RecipeDataForCell(recipeID: recipe.recipeID, name: recipe.name, imageLink: imageLink, lastUpdated: date, description: recipe.description, instructions: recipe.instructions)
     }
     
-    func recipeACtoRecipe(_ recipeAC: RecipeAC) -> Recipe {
-        return Recipe(recipeID: recipeAC.uuid!, name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
+    func recipeACtoRecipe(_ recipeAC: RecipeDataForAC) -> RecipeDataRaw {
+        return RecipeDataRaw(recipeID: recipeAC.uuid!, name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
     }
     
-    func recipeDCtoRecipe(_ recipeDC: RecipeDC) -> Recipe {
-        return Recipe(recipeID: recipeDC.uuid!, name: formatText(recipeDC.name!)!, imageLinks: Array(recipeDC.images), lastUpdated: recipeDC.lastUpdated.value!, description: formatText(recipeDC.recipeDescription), instructions: formatText(recipeDC.instructions!)!, difficulty: recipeDC.difficulty.value!)
+    func recipeDCtoRecipe(_ recipeDC: RecipeDataForDC) -> RecipeDataRaw {
+        return RecipeDataRaw(recipeID: recipeDC.uuid!, name: formatText(recipeDC.name!)!, imageLinks: Array(recipeDC.images), lastUpdated: recipeDC.lastUpdated.value!, description: formatText(recipeDC.recipeDescription), instructions: formatText(recipeDC.instructions!)!, difficulty: recipeDC.difficulty.value!)
     }
     
-    func recipeACtoRecipeDC(_ recipeAC: RecipeAC) -> RecipeDC {
-        let recipeDC = RecipeDC()
+    func recipeACtoRecipeDC(_ recipeAC: RecipeDataForAC) -> RecipeDataForDC {
+        let recipeDC = RecipeDataForDC()
         recipeDC.difficulty.value = recipeAC.difficulty
         recipeDC.images = List<String>()
         if let images = recipeAC.images {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RecipeAC: Decodable {
+struct RecipeDataForAC: Decodable {
     var uuid: String? = nil
     var name: String? = nil
     var images: [String]? = nil

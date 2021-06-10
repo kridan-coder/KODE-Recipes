@@ -77,7 +77,7 @@ final class RecipesListViewModel {
     }
     
     private func getDataFromDatabase() {
-        if let recipes = repository.databaseClient?.getObjects(ofType: RecipeDC.self) {
+        if let recipes = repository.databaseClient?.getObjects(ofType: RecipeDataForDC.self) {
             recipesViewModels = recipes.map {
                 let recipe = repository.recipeDCToRecipeForCell($0)
                 return viewModelFor(recipe: recipe)

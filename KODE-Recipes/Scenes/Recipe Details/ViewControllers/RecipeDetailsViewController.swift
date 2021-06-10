@@ -69,6 +69,14 @@ class RecipeDetailsViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(RecipeDetailsViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            viewModel.viewWillDisappear()
+        }
+    }
+    
     // MARK: Actions
     
     @objc func rotated() {

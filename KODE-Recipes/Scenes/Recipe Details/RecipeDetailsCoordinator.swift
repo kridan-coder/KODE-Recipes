@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol RecipeDetailsDelegate: class {
+    func didFinish(from coordinator: RecipeDetailsCoordinator)
+}
+
 final class RecipeDetailsCoordinator: Coordinator {
     
     // MARK: Properties
@@ -18,7 +22,7 @@ final class RecipeDetailsCoordinator: Coordinator {
     
     let recipeID: String
     
-    weak var delegate: Coordinator?
+    weak var delegate: RecipeDetailsDelegate?
     
     // MARK: Coordinator
     
@@ -48,6 +52,16 @@ final class RecipeDetailsCoordinator: Coordinator {
         rootNavigationController.pushViewController(recipeViewController, animated: true)
     }
     
+    override func finish() {
+        delegate?.didFinish(from: self)
+    }
+    
 }
 
-extension RecipeDetailsCoordinator: RecipeViewModelCoordinatorDelegate {}
+// MARK: ViewModel Delegate
+
+extension RecipeDetailsCoordinator: RecipeViewModelCoordinatorDelegate {
+    func viewWillDisappear() {
+        self.finish()
+    }
+}

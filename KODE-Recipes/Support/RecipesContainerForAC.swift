@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct RecipesContainerAC: Decodable {
-    var recipes: [RecipeAC]? = nil
+struct RecipesContainerForAC: Decodable {
+    var recipes: [RecipeDataForAC]? = nil
 }

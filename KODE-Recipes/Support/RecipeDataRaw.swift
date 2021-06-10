@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Recipe {
+struct RecipeDataRaw {
     var recipeID: String
     var name: String
     var imageLinks: [String]

@@ -47,6 +47,8 @@ final class RecipesListCoordinator: Coordinator {
     
 }
 
+// MARK: ViewModel Delegate
+
 extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
     
     // switches Scene to Recipe Details
@@ -55,6 +57,16 @@ extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
         recipeDetailsCoordinator.delegate = self
         addChildCoordinator(recipeDetailsCoordinator)
         recipeDetailsCoordinator.start()
+    }
+    
+}
+
+// MARK: Coordinator Delegate
+
+extension RecipesListCoordinator: RecipeDetailsDelegate {
+    
+    func didFinish(from coordinator: RecipeDetailsCoordinator) {
+        removeChildCoordinator(coordinator)
     }
     
 }

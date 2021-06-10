@@ -8,7 +8,9 @@
 import Foundation
 import UIKit
 
-protocol RecipeViewModelCoordinatorDelegate: class {}
+protocol RecipeViewModelCoordinatorDelegate: class {
+    func viewWillDisappear()
+}
 
 final class RecipeDetailsViewModel {
     
@@ -43,7 +45,10 @@ final class RecipeDetailsViewModel {
     func reloadData() {
         self.didStartUpdating?()
         getDataFromDatabase()
-
+    }
+    
+    func viewWillDisappear() {
+        coordinatorDelegate?.viewWillDisappear()
     }
     
     // MARK: Lifecycle
@@ -60,11 +65,11 @@ final class RecipeDetailsViewModel {
     }
     
     private func getDataFromDatabase() {
-        if let recipeDC = repository.databaseClient?.getObjectByPrimaryKey(ofType: RecipeDC.self, primaryKey: recipeID) {
+        if let recipeDC = repository.databaseClient?.getObjectByPrimaryKey(ofType: RecipeDataForDC.self, primaryKey: recipeID) {
             recipe = repository.recipeDCToRecipeForDetails(recipeDC)
         }
         else {
-            self.didReceiveError?(Constants.ErrorText.recipesDetailsAreEmpty)
+            self.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
         }
         self.didFinishUpdating?()
     }

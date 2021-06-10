@@ -14,7 +14,7 @@ final class ApiClient {
     
     private let baseURL = Constants.API.baseURL
     
-    func getRecipes(onSuccess: @escaping (RecipesContainerAC) -> Void, onFailure: @escaping (String) -> Void) {
+    func getRecipes(onSuccess: @escaping (RecipesContainerForAC) -> Void, onFailure: @escaping (String) -> Void) {
         AF.request(baseURL, method: .get).response { response in
             switch response.result {
             
@@ -28,7 +28,7 @@ final class ApiClient {
                 }
                 
                 do {
-                    let recipesContainerAC = try JSONDecoder().decode(RecipesContainerAC.self, from: safeData)
+                    let recipesContainerAC = try JSONDecoder().decode(RecipesContainerForAC.self, from: safeData)
                     onSuccess(recipesContainerAC)
                 }
                 catch {
