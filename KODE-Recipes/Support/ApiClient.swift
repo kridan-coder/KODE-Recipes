@@ -32,7 +32,7 @@ final class ApiClient {
                     onSuccess(recipesContainerAC)
                 }
                 catch {
-                    onFailure(Constants.ErrorText.decodingFailure + "Error: \(error)")
+                    onFailure(Constants.ErrorText.decodingFailure + error.localizedDescription)
                 }
                 
             }

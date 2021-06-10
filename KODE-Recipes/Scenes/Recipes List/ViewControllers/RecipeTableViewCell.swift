@@ -10,6 +10,17 @@ import Kingfisher
 
 class RecipeTableViewCell: UITableViewCell {
     
+    // MARK: Self creating
+    
+    static func registerCell(tableView: UITableView) {
+        tableView.register(UINib(nibName: "RecipeTableViewCell", bundle: nil), forCellReuseIdentifier: "RecipeTableViewCell")
+    }
+    
+    static func dequeueCell(tableView: UITableView, indexPath: IndexPath) -> RecipeTableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath) as! RecipeTableViewCell
+        return cell
+    }
+    
     // MARK: IBOutlets
     
     @IBOutlet weak var wrapperContainerView: UIView!

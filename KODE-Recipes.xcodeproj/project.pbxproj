@@ -275,11 +275,11 @@
 		934DA504266769AD0037D829 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				9341102B26694A8300B9DBA5 /* RecipeDataRaw.swift */,
 				934DA509266769EC0037D829 /* ApiClient */,
 				934DA508266769E70037D829 /* DatabaseClient */,
-				934DA5352667737A0037D829 /* Repository.swift */,
 				9370CA0B266A04C3004E23D1 /* CellRepresentable.swift */,
-				9341102B26694A8300B9DBA5 /* RecipeDataRaw.swift */,
+				934DA5352667737A0037D829 /* Repository.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";

@@ -31,11 +31,11 @@ final class ImageCollectionViewCellViewModel {
 extension ImageCollectionViewCellViewModel: CollectionViewCellRepresentable {
     
     static func registerCell(collectionView: UICollectionView) {
-        collectionView.register(UINib(nibName: "ImageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ImageCollectionViewCell")
+        ImageCollectionViewCell.registerCell(collectionView: collectionView)
     }
     
     func dequeueCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as! ImageCollectionViewCell
+        let cell = ImageCollectionViewCell.dequeueCell(collectionView: collectionView, indexPath: indexPath)
         cell.setupCellData(viewModel: self)
         return cell
     }

@@ -40,6 +40,12 @@ class RecipeDetailsViewController: UIViewController {
         scrollView.addSubview(refreshControl)
     }
     
+    private func setupCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        ImageCollectionViewCellViewModel.registerCell(collectionView: self.collectionView)
+    }
+    
     private func setupAppearance() {
         difficultyLevelImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
         difficultyLevelImage.layer.borderWidth = Constants.Design.borderWidthSecondary
@@ -49,19 +55,13 @@ class RecipeDetailsViewController: UIViewController {
         refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
     }
     
-    private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        ImageCollectionViewCellViewModel.registerCell(collectionView: self.collectionView)
-    }
-    
     // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupRefreshControl()
         setupAppearance()
         setupCollectionView()
+        setupRefreshControl()
         bindToViewModel()
         viewModel.reloadData()
         
@@ -123,7 +123,7 @@ class RecipeDetailsViewController: UIViewController {
         refreshControl.endRefreshing()
     }
     
-
+    
     private func viewModelDidReceiveError(error: String) {
         let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))

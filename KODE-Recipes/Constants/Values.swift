@@ -16,7 +16,7 @@ enum Constants {
         static let borderWidthMain = CGFloat(2)
         static let borderWidthSecondary = CGFloat(1)
     }
-
+    
     enum API {
         static let baseURL = "https://test.kode-t.ru/recipes.json"
     }
@@ -46,6 +46,11 @@ enum Constants {
     
     enum Description {
         static let empty = "No description provided."
+    }
+    
+    enum DateDummy {
+        static let recipeCell = "Last update: "
+        static let recipeDetails = "Last Recipe Update:\n"
     }
     
 }

@@ -23,16 +23,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <searchBar contentMode="redraw" placeholder="Search..." translatesAutoresizingMaskIntoConstraints="NO" id="r1E-aF-1sP">
-                    <rect key="frame" x="1" y="10" width="373" height="56"/>
+                    <rect key="frame" x="2" y="0.0" width="371" height="56"/>
                     <color key="barTintColor" name="BackgroundColor"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                 </searchBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JtQ-FX-zYV">
-                    <rect key="frame" x="10" y="121" width="355" height="536"/>
+                    <rect key="frame" x="10" y="97" width="355" height="560"/>
                     <color key="backgroundColor" name="TableBackgroundColor"/>
                 </tableView>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="QPo-Rl-669">
-                    <rect key="frame" x="10" y="78" width="355" height="31"/>
+                    <rect key="frame" x="10" y="56" width="355" height="31"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sort by:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PgD-Ju-PPD">
                             <rect key="frame" x="0.0" y="7" width="53.5" height="17"/>
@@ -53,24 +53,24 @@
                     </subviews>
                 </stackView>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="EPG-7J-Rf7">
-                    <rect key="frame" x="169" y="370.5" width="37" height="37"/>
+                    <rect key="frame" x="169" y="358.5" width="37" height="37"/>
                     <color key="color" name="BackgroundColor"/>
                 </activityIndicatorView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" name="BackgroundColor"/>
             <constraints>
-                <constraint firstItem="JtQ-FX-zYV" firstAttribute="top" secondItem="QPo-Rl-669" secondAttribute="bottom" constant="12" id="2NA-md-rUw"/>
+                <constraint firstItem="JtQ-FX-zYV" firstAttribute="top" secondItem="QPo-Rl-669" secondAttribute="bottom" constant="10" id="2NA-md-rUw"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="JtQ-FX-zYV" secondAttribute="trailing" constant="10" id="2Zt-fn-VCL"/>
                 <constraint firstItem="EPG-7J-Rf7" firstAttribute="centerX" secondItem="JtQ-FX-zYV" secondAttribute="centerX" id="5FJ-yw-ekb"/>
                 <constraint firstItem="EPG-7J-Rf7" firstAttribute="centerY" secondItem="JtQ-FX-zYV" secondAttribute="centerY" id="6Tc-BH-lBg"/>
-                <constraint firstItem="r1E-aF-1sP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="1" id="CHF-Dd-pUm"/>
+                <constraint firstItem="r1E-aF-1sP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="2" id="CHF-Dd-pUm"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="JtQ-FX-zYV" secondAttribute="bottom" constant="10" id="CLf-hP-bkr"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="r1E-aF-1sP" secondAttribute="trailing" constant="1" id="TwY-tK-myi"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="r1E-aF-1sP" secondAttribute="trailing" constant="2" id="TwY-tK-myi"/>
                 <constraint firstItem="JtQ-FX-zYV" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="cPn-Wx-HPy"/>
-                <constraint firstItem="r1E-aF-1sP" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="10" id="jmr-39-xu0"/>
+                <constraint firstItem="r1E-aF-1sP" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="jmr-39-xu0"/>
                 <constraint firstItem="QPo-Rl-669" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="mrI-x1-FYK"/>
-                <constraint firstItem="QPo-Rl-669" firstAttribute="top" secondItem="r1E-aF-1sP" secondAttribute="bottom" constant="12" id="nGx-tq-a7n"/>
+                <constraint firstItem="QPo-Rl-669" firstAttribute="top" secondItem="r1E-aF-1sP" secondAttribute="bottom" id="nGx-tq-a7n"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="QPo-Rl-669" secondAttribute="trailing" constant="10" id="qLB-9R-QEb"/>
             </constraints>
             <point key="canvasLocation" x="140" y="89.505247376311857"/>

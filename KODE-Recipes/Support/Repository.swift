@@ -31,7 +31,7 @@ final class Repository {
         zeroAddress.sin_family = sa_family_t(AF_INET)
         
         let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { zeroSockAddress in
                 SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
             }
         }
@@ -51,28 +51,28 @@ final class Repository {
     // converting
     
     func recipeDCToRecipeForDetails(_ recipeDC: RecipeDataForDC) -> RecipeDataForDetails {
-        return recipeToRecipeForDetails(recipeDCtoRecipe(recipeDC))
+        return recipeRawToRecipeForDetails(recipeDCtoRecipeRaw(recipeDC))
     }
     
     func recipeDCToRecipeForCell(_ recipeDC: RecipeDataForDC) -> RecipeDataForCell {
-        return recipeToRecipeForCell(recipeDCtoRecipe(recipeDC))
+        return recipeToRecipeForCell(recipeDCtoRecipeRaw(recipeDC))
     }
     
     func recipeACToRecipeForCell(_ recipeAC: RecipeDataForAC) -> RecipeDataForCell {
-        return recipeToRecipeForCell(recipeACtoRecipe(recipeAC))
+        return recipeToRecipeForCell(recipeACtoRecipeRaw(recipeAC))
     }
     
-    func recipeToRecipeForDetails(_ recipe: RecipeDataRaw) -> RecipeDataForDetails {
+    func recipeRawToRecipeForDetails(_ recipe: RecipeDataRaw) -> RecipeDataForDetails {
         let date = getDateForRecipeDetails(lastUpdated: recipe.lastUpdated)
         
-        // description may be not provided or can be empty
+        // description may be not provided or it can be empty
         var description = recipe.description
         if description == nil || description == "" {
             description = Constants.Description.empty
         }
         
         let difficultyImage = getDifficultyImage(difficultyLevel: recipe.difficulty)
-      
+        
         return RecipeDataForDetails(recipeID: recipe.recipeID, name: recipe.name, imageLinks: recipe.imageLinks, lastUpdated: date, description: description!, instructions: recipe.instructions, difficultyImage: difficultyImage)
     }
     
@@ -85,11 +85,11 @@ final class Repository {
         return RecipeDataForCell(recipeID: recipe.recipeID, name: recipe.name, imageLink: imageLink, lastUpdated: date, description: recipe.description, instructions: recipe.instructions)
     }
     
-    func recipeACtoRecipe(_ recipeAC: RecipeDataForAC) -> RecipeDataRaw {
+    func recipeACtoRecipeRaw(_ recipeAC: RecipeDataForAC) -> RecipeDataRaw {
         return RecipeDataRaw(recipeID: recipeAC.uuid!, name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
     }
     
-    func recipeDCtoRecipe(_ recipeDC: RecipeDataForDC) -> RecipeDataRaw {
+    func recipeDCtoRecipeRaw(_ recipeDC: RecipeDataForDC) -> RecipeDataRaw {
         return RecipeDataRaw(recipeID: recipeDC.uuid!, name: formatText(recipeDC.name!)!, imageLinks: Array(recipeDC.images), lastUpdated: recipeDC.lastUpdated.value!, description: formatText(recipeDC.recipeDescription), instructions: formatText(recipeDC.instructions!)!, difficulty: recipeDC.difficulty.value!)
     }
     
@@ -109,7 +109,7 @@ final class Repository {
         recipeDC.uuid = recipeAC.uuid
         return recipeDC
     }
-
+    
     // filtering and sorting
     
     func filterRecipesForSearchText(recipes: [RecipeTableViewCellViewModel], searchText: String?, scope: SearchCase? = SearchCase.all) -> [RecipeTableViewCellViewModel] {
@@ -147,20 +147,20 @@ final class Repository {
     }
     
     func sortRecipesBy(sortCase: SortCase, recipes: [RecipeTableViewCellViewModel]) -> [RecipeTableViewCellViewModel] {
-        var safeRecipes = recipes
+        var mutableRecipes = recipes
         
         switch sortCase {
         case .name:
-            safeRecipes.sort { x, y in
+            mutableRecipes.sort { x, y in
                 return x.data.name < y.data.name
             }
         case .date:
-            safeRecipes.sort { x, y in
+            mutableRecipes.sort { x, y in
                 return x.data.lastUpdated > y.data.lastUpdated
             }
         }
         
-        return safeRecipes
+        return mutableRecipes
     }
     
     
@@ -177,14 +177,14 @@ final class Repository {
         let date = Date(timeIntervalSince1970: lastUpdated)
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM d, yyyy"
-        return "Last update: \(formatter.string(from: date))"
+        return Constants.DateDummy.recipeCell + formatter.string(from: date)
     }
     
     private func getDateForRecipeDetails(lastUpdated: Double) -> String {
         let date = Date(timeIntervalSince1970: lastUpdated)
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a, EEEE, MMM d, yyyy"
-        return "Last Recipe Update:\n \(formatter.string(from: date)) "
+        return Constants.DateDummy.recipeDetails + formatter.string(from: date)
     }
     
     private func getDifficultyImage(difficultyLevel: Int) -> UIImage? {

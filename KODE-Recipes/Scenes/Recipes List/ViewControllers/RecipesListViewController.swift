@@ -157,32 +157,8 @@ extension RecipesListViewController: UITableViewDataSource {
 
 extension RecipesListViewController: UISearchBarDelegate {
     
-    private func hideSearchBar() {
-        searchBar.showsScopeBar = false
-        searchBar.setShowsCancelButton(false, animated: true)
-        searchBar.endEditing(true)
-    }
-    
-    private func showSearchBar() {
-        searchBar.showsScopeBar = true
-        searchBar.setShowsCancelButton(true, animated: true)
-    }
-    
-    private func resetSearchBar() {
-        searchBar.text = ""
-        filteredRecipes = viewModel.recipesViewModels
-        filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
-        tableView.reloadData()
-    }
-    
-    private func filter() {
-        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text, scope: currentSearchCase)
-        filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
-        tableView.reloadData()
-    }
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filter()
+        filterAndSort()
     }
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
@@ -205,7 +181,33 @@ extension RecipesListViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        filter()
+        filterAndSort()
+    }
+    
+    // MARK: SearchBar Helpers
+    
+    private func hideSearchBar() {
+        searchBar.showsScopeBar = false
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
+    }
+    
+    private func showSearchBar() {
+        searchBar.showsScopeBar = true
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    private func resetSearchBar() {
+        searchBar.text = ""
+        filteredRecipes = viewModel.recipesViewModels
+        filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
+        tableView.reloadData()
+    }
+    
+    private func filterAndSort() {
+        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text, scope: currentSearchCase)
+        filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
+        tableView.reloadData()
     }
     
 }
