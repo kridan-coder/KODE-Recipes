@@ -22,8 +22,6 @@
 		934DA4C626675C260037D829 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4C526675C260037D829 /* SceneDelegate.swift */; };
 		934DA4CD26675C280037D829 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 934DA4CC26675C280037D829 /* Assets.xcassets */; };
 		934DA4D026675C280037D829 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 934DA4CE26675C280037D829 /* LaunchScreen.storyboard */; };
-		934DA4DB26675C280037D829 /* KODE_RecipesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4DA26675C280037D829 /* KODE_RecipesTests.swift */; };
-		934DA4E626675C280037D829 /* KODE_RecipesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA4E526675C280037D829 /* KODE_RecipesUITests.swift */; };
 		934DA517266771DC0037D829 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA516266771DC0037D829 /* Coordinator.swift */; };
 		934DA51F266771F90037D829 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA51E266771F90037D829 /* AppCoordinator.swift */; };
 		934DA529266773270037D829 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934DA528266773270037D829 /* ApiClient.swift */; };
@@ -89,11 +87,7 @@
 		934DA4CF26675C280037D829 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		934DA4D126675C280037D829 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		934DA4D626675C280037D829 /* KODE-RecipesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KODE-RecipesTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		934DA4DA26675C280037D829 /* KODE_RecipesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KODE_RecipesTests.swift; sourceTree = "<group>"; };
-		934DA4DC26675C280037D829 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		934DA4E126675C280037D829 /* KODE-RecipesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KODE-RecipesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		934DA4E526675C280037D829 /* KODE_RecipesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KODE_RecipesUITests.swift; sourceTree = "<group>"; };
-		934DA4E726675C280037D829 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		934DA516266771DC0037D829 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		934DA51E266771F90037D829 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		934DA528266773270037D829 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
@@ -210,8 +204,6 @@
 			isa = PBXGroup;
 			children = (
 				934DA4C226675C260037D829 /* KODE-Recipes */,
-				934DA4D926675C280037D829 /* KODE-RecipesTests */,
-				934DA4E426675C280037D829 /* KODE-RecipesUITests */,
 				934DA4C126675C260037D829 /* Products */,
 				AC69383ECD5DF421907E49F5 /* Pods */,
 				B2052A44B7BC7786B1AEC8C6 /* Frameworks */,
@@ -240,24 +232,6 @@
 				934DA4D126675C280037D829 /* Info.plist */,
 			);
 			path = "KODE-Recipes";
-			sourceTree = "<group>";
-		};
-		934DA4D926675C280037D829 /* KODE-RecipesTests */ = {
-			isa = PBXGroup;
-			children = (
-				934DA4DA26675C280037D829 /* KODE_RecipesTests.swift */,
-				934DA4DC26675C280037D829 /* Info.plist */,
-			);
-			path = "KODE-RecipesTests";
-			sourceTree = "<group>";
-		};
-		934DA4E426675C280037D829 /* KODE-RecipesUITests */ = {
-			isa = PBXGroup;
-			children = (
-				934DA4E526675C280037D829 /* KODE_RecipesUITests.swift */,
-				934DA4E726675C280037D829 /* Info.plist */,
-			);
-			path = "KODE-RecipesUITests";
 			sourceTree = "<group>";
 		};
 		934DA503266769A70037D829 /* Scenes */ = {
@@ -668,7 +642,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				934DA4DB26675C280037D829 /* KODE_RecipesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,7 +649,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				934DA4E626675C280037D829 /* KODE_RecipesUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
