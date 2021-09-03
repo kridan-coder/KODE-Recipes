@@ -10,7 +10,15 @@ import UIKit
 
 enum Constants {
     
+    enum Font {
+        static let standart = CGFloat(18)
+        static let big = CGFloat(24)
+    }
+    
     enum Design {
+        static let cornerRadiusError = CGFloat(22)
+        static let spacingMain = CGFloat(22)
+    
         static let cornerRadiusMain = CGFloat(15)
         static let cornerRadiusSecondary = CGFloat(5)
         static let borderWidthMain = CGFloat(2)
@@ -31,11 +39,18 @@ enum Constants {
     }
     
     enum ErrorType {
-        static let basic = "Error"
-        static let noInternet = "No Internet connection"
+        static let basic = "Something went wrong"
+        static let noInternet = "No Internet"
+    }
+    
+    enum ButtonTitle {
+        static let refresh = "Refresh"
     }
     
     enum ErrorText {
+        static let basic = "The problem is on our side, we are already looking into it. Please try refreshing the screen later."
+        static let noInternet = "Try refreshing the screen when communication is restored."
+        
         static let decodingFailure = "Failed to decode data. "
         static let emptyResponse = "Response is empty. "
         static let unhandledRequestFailure = "Unexpected error while making a request. "

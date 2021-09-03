@@ -41,10 +41,15 @@ final class AppCoordinator: Coordinator {
         window.makeKeyAndVisible()
         
         // launching Recipes List Scene
-        let recipeListCoordinator = RecipesListCoordinator(rootNavigationController: rootNavigationController, repository: repository)
-        recipeListCoordinator.delegate = self
-        addChildCoordinator(recipeListCoordinator)
-        recipeListCoordinator.start()
+//        let recipeListCoordinator = RecipesListCoordinator(rootNavigationController: rootNavigationController, repository: repository)
+//        recipeListCoordinator.delegate = self
+//        addChildCoordinator(recipeListCoordinator)
+//        recipeListCoordinator.start()
+        
+        let errorPageCoordinator = ErrorPageCoordinator(rootNavigationController: rootNavigationController, repository: repository, errorType: .internalError)
+        errorPageCoordinator.delegate = self
+        addChildCoordinator(errorPageCoordinator)
+        errorPageCoordinator.start()
     }
     
 }
