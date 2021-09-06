@@ -26,6 +26,10 @@ class RecipesListViewController: UIViewController {
     
     // MARK: Properties
     
+    
+    // implicit dependency..
+    let alert = CustomAlert()
+    
     private var filteredRecipes: [RecipeTableViewCellViewModel] = []
     
     private var currentSearchCase: SearchCase {
@@ -108,13 +112,25 @@ class RecipesListViewController: UIViewController {
         viewModel.didReceiveError = { [weak self] error in
             self?.viewModelDidReceiveError(error: error)
         }
+        viewModel.didFinishSuccessfully = { [weak self]  in
+            self?.didFinishSuccessfully()
+        }
     }
+    
+    private func didFinishSuccessfully() {
+        if alert.isShown {
+            alert.dismissAlert()
+            navigationController?.navigationBar.isHidden = false
+        }
+    }
+    
     
     private func viewModelDidStartUpdating() {
         startTableViewActivityIndicator()
     }
     
     private func viewModelDidFinishUpdating() {
+        
         tableViewActivityIndicator.stopAnimating()
         
         // in case update was triggered by refreshing the table
@@ -126,20 +142,16 @@ class RecipesListViewController: UIViewController {
     }
     
     private func viewModelDidNotFindInternetConnection() {
-        let alert = CustomAlert()
-        alert.showAlert(with: Constants.ErrorType.basic, message: Constants.ErrorText.noInternet, buttonText: Constants.ButtonTitle.refresh, on: self)
-        
-//        let alert = UIAlertController(title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternetTable, preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-//        present(alert, animated: true)
+        navigationController?.navigationBar.isHidden = true
+        alert.showAlert(with: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternet, buttonText: Constants.ButtonTitle.refresh, on: self) {
+            self.viewModel.reloadData()
+        }
     }
     
     private func viewModelDidReceiveError(error: String) {
-        let alert = CustomAlert()
-        alert.showAlert(with: Constants.ErrorType.basic, message: error, buttonText: Constants.ButtonTitle.refresh, on: self)
-//        let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-//        present(alert, animated: true)
+        alert.showAlert(with: Constants.ErrorType.basic, message: error, buttonText: Constants.ButtonTitle.refresh, on: self) {
+            self.viewModel.reloadData()
+        }
     }
     
 }

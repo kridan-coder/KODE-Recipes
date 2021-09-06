@@ -32,6 +32,7 @@ final class RecipesListViewModel {
     var didNotFindInternetConnection: (() -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
+    var didFinishSuccessfully: (() -> Void)?
     
     // MARK: Service
     
@@ -106,6 +107,7 @@ final class RecipesListViewModel {
             }
             
             self.didFinishUpdating?()
+            self.didFinishSuccessfully?()
             
         }, onFailure: { error in
             self.didFinishUpdating?()

@@ -8,48 +8,33 @@
 import Foundation
 import UIKit
 
+// i think it should be singleton or i need DI like for APIClient or DatabaseClient
 class CustomAlert {
     
     private let contentView = CustomAlertView()
     
-    func showAlert(with title: String, message: String, buttonText: String, on viewController: UIViewController) {
+    var isShown = false
+    
+    func showAlert(with title: String, message: String, buttonText: String, on viewController: UIViewController, completion completed: @escaping () -> Void) {
         guard let targetView = viewController.view else {
             return
         }
-        
-        viewController.navigationController?.navigationBar.isHidden = true
-        
-        //contentView.frame = targetView.bounds
-        
-
 
         targetView.addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-
-        //contentView.frame = targetView.bounds
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.initializeUI()
-        contentView.createConstraints()
         contentView.setData(with: title, message: message, buttonText: buttonText)
+        contentView.didPressButton = {
+            completed()
+        }
         
-
-        
-//        UIView.animate(withDuration: 0.25, animations:  {
-//            self.contentView.center = targetView.center
-//        }, completion: { done in
-//            if done {
-//
-//
-//            }
-//        })
-        
+        isShown = true
     }
     
     func dismissAlert() {
-        
-        
+        contentView.removeFromSuperview()
+        isShown = false
     }
     
 }

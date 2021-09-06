@@ -39,6 +39,7 @@ final class RecipeDetailsViewModel {
     var didReceiveError: ((String) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
+    var didFinishSuccessfully: (() -> Void)?
     
     // MARK: Service
     
@@ -67,6 +68,7 @@ final class RecipeDetailsViewModel {
     private func getDataFromDatabase() {
         if let recipeDC = repository.databaseClient?.getObjectByPrimaryKey(ofType: RecipeDataForDC.self, primaryKey: recipeID) {
             recipe = repository.recipeDCToRecipeForDetails(recipeDC)
+            self.didFinishSuccessfully?()
         }
         else {
             self.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)

@@ -33,6 +33,9 @@ class RecipeDetailsViewController: UIViewController {
     // MARK: Properties
     private var images: [ImageCollectionViewCellViewModel] = []
     
+    // implicit dependency..
+    let alert = CustomAlert()
+    
     // MARK: Helpers
     
     private func setupRefreshControl() {
@@ -109,6 +112,16 @@ class RecipeDetailsViewController: UIViewController {
         viewModel.didReceiveError = { [weak self] error in
             self?.viewModelDidReceiveError(error: error)
         }
+        viewModel.didFinishSuccessfully = { [weak self]  in
+            self?.didFinishSuccessfully()
+        }
+    }
+    
+    private func didFinishSuccessfully() {
+        if alert.isShown {
+            alert.dismissAlert()
+            navigationController?.navigationBar.isHidden = false
+        }
     }
     
     private func viewModelDidStartUpdating() {
@@ -125,9 +138,10 @@ class RecipeDetailsViewController: UIViewController {
     
     
     private func viewModelDidReceiveError(error: String) {
-        let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-        present(alert, animated: true)
+        navigationController?.navigationBar.isHidden = true
+        alert.showAlert(with: Constants.ErrorType.basic, message: Constants.ErrorText.noInternet, buttonText: Constants.ButtonTitle.refresh, on: self) {
+            self.viewModel.reloadData()
+        }
     }
     
 }
