@@ -1,13 +1,13 @@
 //
-//  RecipeAC.swift
+//  Recipe.swift
 //  KODE-Recipes
 //
-//  Created by KriDan on 02.06.2021.
+//  Created by Developer on 06.09.2021.
 //
 
 import Foundation
 
-struct RecipSeListElement: Decodable {
+struct Recipe: Decodable {
     var uuid: String? = nil
     var name: String? = nil
     var images: [String]? = nil
@@ -15,4 +15,5 @@ struct RecipSeListElement: Decodable {
     var description: String? = nil
     var instructions: String? = nil
     var difficulty: Int? = nil
+    var similar: [RecipeBrief]? = nil
 }

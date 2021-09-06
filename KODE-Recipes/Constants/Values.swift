@@ -18,7 +18,7 @@ enum Constants {
     }
     
     enum API {
-        static let baseURL = "https://test.kode-t.ru/recipes.json"
+        static let baseURL = "https://test.kode-t.ru/"
     }
     
     enum AlertActionTitle {

@@ -117,7 +117,7 @@ class RecipeDetailsViewController: UIViewController {
     private func viewModelDidFinishUpdating() {
         if let recipe = viewModel.recipe {
             images = viewModel.imagesViewModels
-            setupRecipeData(recipe: recipe)
+            //setupRecipeData(recipe: recipe)
             collectionView.reloadData()
         }
         refreshControl.endRefreshing()

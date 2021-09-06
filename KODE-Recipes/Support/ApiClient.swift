@@ -14,8 +14,8 @@ final class ApiClient {
     
     private let baseURL = Constants.API.baseURL
     
-    func getRecipes(onSuccess: @escaping (RecipesContainerForAC) -> Void, onFailure: @escaping (String) -> Void) {
-        AF.request(baseURL, method: .get).response { response in
+    func getAllRecipes(onSuccess: @escaping ([RecipeListElement]?) -> Void, onFailure: @escaping (String) -> Void) {
+        AF.request(baseURL + "recipes", method: .get).response { response in
             switch response.result {
             
             case .failure(let error):
@@ -28,8 +28,33 @@ final class ApiClient {
                 }
                 
                 do {
-                    let recipesContainerAC = try JSONDecoder().decode(RecipesContainerForAC.self, from: safeData)
-                    onSuccess(recipesContainerAC)
+                    let recipeList = try JSONDecoder().decode([RecipeListElement].self, from: safeData)
+                    onSuccess(recipeList)
+                }
+                catch {
+                    onFailure(Constants.ErrorText.decodingFailure + error.localizedDescription)
+                }
+                
+            }
+        }
+    }
+    
+    func getRecipe(uuid: String, onSuccess: @escaping (Recipe?) -> Void, onFailure: @escaping (String) -> Void) {
+        AF.request(baseURL + "recipes/" + uuid, method: .get).response { response in
+            switch response.result {
+            
+            case .failure(let error):
+                onFailure(error.errorDescription ?? Constants.ErrorText.unhandledRequestFailure)
+                
+            case .success(let data):
+                guard let safeData = data else {
+                    onFailure(Constants.ErrorText.emptyResponse)
+                    return
+                }
+                
+                do {
+                    let recipe = try JSONDecoder().decode(Recipe.self, from: safeData)
+                    onSuccess(recipe)
                 }
                 catch {
                     onFailure(Constants.ErrorText.decodingFailure + error.localizedDescription)

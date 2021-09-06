@@ -8,5 +8,5 @@
 import Foundation
 
 struct RecipesContainerForAC: Decodable {
-    var recipes: [RecipeDataForAC]? = nil
+    var recipes: [RecipeListElement]? = nil
 }
