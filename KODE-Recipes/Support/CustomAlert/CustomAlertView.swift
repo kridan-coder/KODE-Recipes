@@ -8,22 +8,21 @@
 import Foundation
 import SnapKit
 
-class ErrorPageView: UIView {
+class CustomAlertView: UIView {
     
     let errorBox = UIStackView()
     let titleTextLabel = UILabel()
     let descriptionTextLabel = UILabel()
     let refreshButton = UIButton(type: .system)
     
-    init() {
-        super.init(frame: CGRect.zero)
-        initializeUI()
-        createConstraints()
-    }
+//    override init(frame: CGRect) {
+//        super.init(frame: CGRect.zero)
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     func initializeUI() {
         backgroundColor = .white
@@ -39,26 +38,6 @@ class ErrorPageView: UIView {
         descriptionTextLabel.textAlignment = .center
         descriptionTextLabel.font = UIFont.systemFont(ofSize: Constants.Font.standart, weight: .light)
 
-
-        
-        addSubview(errorBox)
-        
-//        errorBox.addSubview(titleTextLabel)
-//        errorBox.addSubview(descriptionTextLabel)
-//        errorBox.addSubview(refreshButton)
-//        errorBox.subviews.a
-        
-        //errorBox.backgroundColor = .blue
-//        errorBox.didAddSubview(titleTextLabel)
-//        errorBox.didAddSubview(descriptionTextLabel)
-//        errorBox.didAddSubview(refreshButton)
-        
-        
-        refreshButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        
-        
-
-        
         refreshButton.backgroundColor = .none
        
         refreshButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .light)
@@ -70,19 +49,39 @@ class ErrorPageView: UIView {
         refreshButton.layer.borderWidth = Constants.Design.borderWidthSecondary
         refreshButton.layer.borderColor = UIColor.systemBlue.cgColor
         
+        
+        refreshButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        
     }
 
     @objc func buttonPressed() {
         print("pressed!")
     }
     
+    func setData(with title: String, message: String, buttonText: String) {
+        titleTextLabel.text = title
+        descriptionTextLabel.text = message
+        refreshButton.setTitle(buttonText, for: .normal)
+    }
+    
     func createConstraints() {
+        addSubview(errorBox)
+        
+        //errorBox.frame = superview!.bounds
+        
         errorBox.snp.makeConstraints { (make) in
+            //make.edges.equalToSuperview()
             make.leftMargin.equalTo(20)
             make.rightMargin.equalTo(-20)
             make.topMargin.greaterThanOrEqualTo(20)
             make.bottomMargin.lessThanOrEqualTo(-20)
             make.centerY.equalToSuperview()
+            
+            
+//            make.leading.trailing.top.bottom.equalToSuperview()
+//            make.leftMargin.bottomMargin.rightMargin.topMargin.equalToSuperview()
+//            make.centerY.equalToSuperview()
+//            make.centerX.equalToSuperview()
         }
         
         errorBox.addArrangedSubview(titleTextLabel)
@@ -91,8 +90,8 @@ class ErrorPageView: UIView {
         
         
         refreshButton.snp.makeConstraints { (make) in
-            make.leftMargin.rightMargin.equalToSuperview()
             make.height.equalTo(45)
+            make.width.equalTo(errorBox.snp.width).dividedBy(1.5)
         }
         
 //        titleTextLabel.snp.makeConstraints { (make) in

@@ -10,6 +10,10 @@ import UIKit
 
 enum Constants {
     
+    enum Animation {
+        static let alertBackgroundAlphaTo = CGFloat(0.6)
+    }
+    
     enum Font {
         static let standart = CGFloat(18)
         static let big = CGFloat(24)

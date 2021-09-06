@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		3928A84520A470DA943E545E /* Pods_KODE_RecipesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0042F28CD00DE36D0E035AE5 /* Pods_KODE_RecipesTests.framework */; };
+		448B049326E5E11500ADD046 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448B049226E5E11500ADD046 /* CustomAlert.swift */; };
 		44E6DFDE26E1E5E800D3B638 /* ErrorPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E6DFDD26E1E5E800D3B638 /* ErrorPageCoordinator.swift */; };
 		44E6DFE426E1E73600D3B638 /* ErrorPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E6DFE326E1E73600D3B638 /* ErrorPageViewModel.swift */; };
 		44E6DFEE26E1EC7F00D3B638 /* ErrorPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E6DFED26E1EC7F00D3B638 /* ErrorPageViewController.swift */; };
-		44E6DFF026E1FA0000D3B638 /* ErrorPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E6DFEF26E1FA0000D3B638 /* ErrorPageView.swift */; };
+		44E6DFF026E1FA0000D3B638 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E6DFEF26E1FA0000D3B638 /* CustomAlertView.swift */; };
 		44E6DFF226E21EF300D3B638 /* ErrorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E6DFF126E21EF300D3B638 /* ErrorData.swift */; };
 		44E6DFF426E2227800D3B638 /* ErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E6DFF326E2227800D3B638 /* ErrorType.swift */; };
 		4AABC6CF47637BF088605A4B /* Pods_KODE_Recipes_KODE_RecipesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82FFE5D28E8C3046305F0228 /* Pods_KODE_Recipes_KODE_RecipesUITests.framework */; };
@@ -75,10 +76,11 @@
 		05F716C926FD0E55F3E4B457 /* Pods-KODE-Recipes-KODE-RecipesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KODE-Recipes-KODE-RecipesUITests.release.xcconfig"; path = "Target Support Files/Pods-KODE-Recipes-KODE-RecipesUITests/Pods-KODE-Recipes-KODE-RecipesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		0E363EAF47C28CE50A2A3DA9 /* Pods-KODE-RecipesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KODE-RecipesTests.debug.xcconfig"; path = "Target Support Files/Pods-KODE-RecipesTests/Pods-KODE-RecipesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2DCFF48E48363D706471EBB1 /* Pods-KODE-RecipesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KODE-RecipesTests.release.xcconfig"; path = "Target Support Files/Pods-KODE-RecipesTests/Pods-KODE-RecipesTests.release.xcconfig"; sourceTree = "<group>"; };
+		448B049226E5E11500ADD046 /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		44E6DFDD26E1E5E800D3B638 /* ErrorPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPageCoordinator.swift; sourceTree = "<group>"; };
 		44E6DFE326E1E73600D3B638 /* ErrorPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPageViewModel.swift; sourceTree = "<group>"; };
 		44E6DFED26E1EC7F00D3B638 /* ErrorPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPageViewController.swift; sourceTree = "<group>"; };
-		44E6DFEF26E1FA0000D3B638 /* ErrorPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPageView.swift; sourceTree = "<group>"; };
+		44E6DFEF26E1FA0000D3B638 /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
 		44E6DFF126E21EF300D3B638 /* ErrorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorData.swift; sourceTree = "<group>"; };
 		44E6DFF326E2227800D3B638 /* ErrorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorType.swift; sourceTree = "<group>"; };
 		5C9170DDB4484CB3722715B6 /* Pods_KODE_Recipes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KODE_Recipes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +157,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		448B049426E5E16100ADD046 /* CustomAlert */ = {
+			isa = PBXGroup;
+			children = (
+				44E6DFEF26E1FA0000D3B638 /* CustomAlertView.swift */,
+				448B049226E5E11500ADD046 /* CustomAlert.swift */,
+			);
+			path = CustomAlert;
+			sourceTree = "<group>";
+		};
 		44E6DFDC26E1E58000D3B638 /* Error Page */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,7 +181,6 @@
 		44E6DFDF26E1E64600D3B638 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				44E6DFEF26E1FA0000D3B638 /* ErrorPageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -307,6 +317,7 @@
 		934DA504266769AD0037D829 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				448B049426E5E16100ADD046 /* CustomAlert */,
 				9341102B26694A8300B9DBA5 /* RecipeDataRaw.swift */,
 				934DA509266769EC0037D829 /* ApiClient */,
 				934DA508266769E70037D829 /* DatabaseClient */,
@@ -666,7 +677,7 @@
 			files = (
 				934DA553266781040037D829 /* RecipeDataForDC.swift in Sources */,
 				44E6DFF426E2227800D3B638 /* ErrorType.swift in Sources */,
-				44E6DFF026E1FA0000D3B638 /* ErrorPageView.swift in Sources */,
+				44E6DFF026E1FA0000D3B638 /* CustomAlertView.swift in Sources */,
 				936FA111266B8F2D00E848C8 /* ImageCollectionViewCell.swift in Sources */,
 				9370CA0C266A04C3004E23D1 /* CellRepresentable.swift in Sources */,
 				9370CA19266A2922004E23D1 /* SortCase.swift in Sources */,
@@ -677,6 +688,7 @@
 				931D5D302670EB7800C4C2A9 /* RecipeDetailsCoordinator.swift in Sources */,
 				934DA517266771DC0037D829 /* Coordinator.swift in Sources */,
 				93DF1272266902B400CC932F /* RecipeTableViewCell.swift in Sources */,
+				448B049326E5E11500ADD046 /* CustomAlert.swift in Sources */,
 				9370CA28266A6A29004E23D1 /* RecipeDetailsViewModel.swift in Sources */,
 				9341102C26694A8300B9DBA5 /* RecipeDataRaw.swift in Sources */,
 				934DA53E26677A830037D829 /* RecipesContainerForAC.swift in Sources */,

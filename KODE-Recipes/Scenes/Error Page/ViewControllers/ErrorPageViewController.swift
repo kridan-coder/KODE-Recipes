@@ -15,12 +15,12 @@ class ErrorPageViewController: UIViewController {
     
     var viewModel: ErrorPageViewModel!
     
-    var contentView: ErrorPageView {
-        return view as! ErrorPageView
+    var contentView: CustomAlertView {
+        return view as! CustomAlertView
     }
     
     override func loadView() {
-        view = ErrorPageView()
+        //view = CustomAlertView()
     }
     
     override func viewDidLoad() {

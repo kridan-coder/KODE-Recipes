@@ -126,15 +126,20 @@ class RecipesListViewController: UIViewController {
     }
     
     private func viewModelDidNotFindInternetConnection() {
-        let alert = UIAlertController(title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternetTable, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-        present(alert, animated: true)
+        let alert = CustomAlert()
+        alert.showAlert(with: Constants.ErrorType.basic, message: Constants.ErrorText.noInternet, buttonText: Constants.ButtonTitle.refresh, on: self)
+        
+//        let alert = UIAlertController(title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternetTable, preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
+//        present(alert, animated: true)
     }
     
     private func viewModelDidReceiveError(error: String) {
-        let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-        present(alert, animated: true)
+        let alert = CustomAlert()
+        alert.showAlert(with: Constants.ErrorType.basic, message: error, buttonText: Constants.ButtonTitle.refresh, on: self)
+//        let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
+//        present(alert, animated: true)
     }
     
 }
