@@ -28,9 +28,9 @@ final class RecipeDetailsViewModel {
     
     var imagesViewModels: [ImageCollectionViewCellViewModel] = []
     
-    var recipe: Recipe? {
+    var recipe: RecipeDataForDetails? {
         didSet {
-            imagesViewModels = recipe!.images!.map { viewModelFor(imageLink: $0) } ?? []
+            imagesViewModels = recipe!.imageLinks.map { viewModelFor(imageLink: $0) }
         }
     }
     
@@ -39,12 +39,20 @@ final class RecipeDetailsViewModel {
     var didReceiveError: ((String) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
+    var didNotFindInternetConnection: (() -> Void)?
     
     // MARK: Service
     
     func reloadData() {
         self.didStartUpdating?()
-        getDataFromNetwork()
+        
+        if repository.isConnectedToNetwork() {
+            getDataFromNetwork()
+        }
+        else {
+            didNotFindInternetConnection?()
+        }
+        
         //getDataFromDatabase()
     }
     
@@ -76,6 +84,29 @@ final class RecipeDetailsViewModel {
 //    }
     
     private func getDataFromNetwork() {
+        
+        repository.apiClient?.getRecipe(uuid: recipeID) { [weak self] response in
+            
+            switch response {
+            case .success(let recipeContainer):
+                
+                if let safeRecipe = recipeContainer.recipe {
+                    self?.recipe = self?.repository.recipeAPIToRecipeForDetails(safeRecipe)
+                }
+                else {
+                    self?.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
+                }
+            
+                self?.didFinishUpdating?()
+                
+            case .failure(let error):
+                print(error)
+                self?.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
+            }
+        
+            
+        }
+        
 //        repository.apiClient?.getRecipe(uuid: recipeID, onSuccess: { APIrecipe in
 //            guard let recipeSafe = APIrecipe else {
 //                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)

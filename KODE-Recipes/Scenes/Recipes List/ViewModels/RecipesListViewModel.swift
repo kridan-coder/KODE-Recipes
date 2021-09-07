@@ -43,7 +43,6 @@ final class RecipesListViewModel {
         }
         else {
             didNotFindInternetConnection?()
-            //getDataFromDatabase()
         }
     }
     
@@ -76,24 +75,15 @@ final class RecipesListViewModel {
         return viewModel
     }
     
-//    private func getDataFromDatabase() {
-//        if let recipes = repository.databaseClient?.getObjects(ofType: RecipeDataForDC.self) {
-//            recipesViewModels = recipes.map {
-//                let recipe = repository.recipeDCToRecipeForCell($0)
-//                return viewModelFor(recipe: recipe)
-//            }
-//        }
-//        self.didFinishUpdating?()
-//    }
-    
     private func getDataFromNetwork() {
         
-        repository.apiClient?.getAllRecipes { recipesContainer in
+        repository.apiClient?.getAllRecipes { response in
             
-            switch recipesContainer {
-            case .success(let data):
+            switch response {
+            case .success(let recipesContainer):
+                
                 // set viewModels
-                self.recipesViewModels = data.recipes?.map {
+                self.recipesViewModels = recipesContainer.recipes?.map {
                     let recipe = self.repository.recipeAPIToRecipeForCell($0)
                     return self.viewModelFor(recipe)
                 } ?? []
@@ -107,30 +97,6 @@ final class RecipesListViewModel {
             
         }
         
-//        repository.apiClient?.getAllRecipes(onSuccess: { APIrecipes in
-//            guard let recipes = APIrecipes else {
-//                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
-//                return
-//            }
-//
-//            // received data should be saved locally
-////            let recipesDC = recipes.map {
-////                return self.repository.recipeACtoRecipeDC($0)
-////            }
-//            //self.repository.databaseClient?.saveObjects(recipesDC)
-//
-//            // set viewModels
-//            self.recipesViewModels = recipes.map {
-//                let recipe = self.repository.recipeAPIToRecipeForCell($0)
-//                return self.viewModelFor(recipe)
-//            }
-//
-//            self.didFinishUpdating?()
-//
-//        }, onFailure: { error in
-//            self.didFinishUpdating?()
-//            self.didReceiveError?(error)
-//        })
     }
     
 }

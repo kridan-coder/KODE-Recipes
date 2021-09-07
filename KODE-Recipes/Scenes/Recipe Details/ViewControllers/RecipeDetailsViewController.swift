@@ -88,7 +88,7 @@ class RecipeDetailsViewController: UIViewController {
         viewModel.reloadData()
     }
     
-    func setupRecipeData(recipe: RecipeDataForDetails) {
+    func setupRecipeData(_ recipe: RecipeDataForDetails) {
         pageControl.numberOfPages = recipe.imageLinks.count
         recipeNameLabel.text = recipe.name
         instructionsTextView.text = recipe.instructions
@@ -109,15 +109,24 @@ class RecipeDetailsViewController: UIViewController {
         viewModel.didReceiveError = { [weak self] error in
             self?.viewModelDidReceiveError(error: error)
         }
+        viewModel.didNotFindInternetConnection = { [weak self] in
+            self?.viewModelDidNotFindInternetConnection()
+        }
     }
     
     private func viewModelDidStartUpdating() {
     }
     
+    private func viewModelDidNotFindInternetConnection() {
+        let alert = UIAlertController(title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternetTable, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
+        present(alert, animated: true)
+    }
+    
     private func viewModelDidFinishUpdating() {
         if let recipe = viewModel.recipe {
             images = viewModel.imagesViewModels
-            //setupRecipeData(recipe: recipe)
+            setupRecipeData(recipe)
             collectionView.reloadData()
         }
         refreshControl.endRefreshing()

@@ -14,13 +14,11 @@ final class Repository {
     // MARK: Public
     
     var apiClient: ApiClient?
-    var databaseClient: DatabaseClient?
     
     // MARK: Lifecycle
     
-    init(apiClient: ApiClient, databaseClient: DatabaseClient) {
+    init(apiClient: ApiClient) {
         self.apiClient = apiClient
-        self.databaseClient = databaseClient
     }
     
     // MARK: Actions
@@ -50,13 +48,9 @@ final class Repository {
     
     // converting
     
-//    func recipeDCToRecipeForDetails(_ recipeDC: RecipeDataForDC) -> RecipeDataForDetails {
-//        return recipeRawToRecipeForDetails(recipeDCtoRecipeRaw(recipeDC))
-//    }
-    
-//    func recipeDCToRecipeForCell(_ recipeDC: RecipeDataForDC) -> RecipeDataForCell {
-//        return recipeAPIToRecipeForCell(recipeDCtoRecipeRaw(recipeDC))
-//    }
+    func recipeAPIToRecipeForDetails(_ recipe: RecipeListElement) -> RecipeDataForDetails {
+        return recipeRawToRecipeForDetails(recipeAPItoRecipeRaw(recipe))
+    }
     
     func recipeAPIToRecipeForCell(_ recipe: RecipeListElement) -> RecipeDataForCell {
         return recipeRawToRecipeForCell(recipeAPItoRecipeRaw(recipe))
@@ -88,27 +82,6 @@ final class Repository {
     private func recipeAPItoRecipeRaw(_ recipeAC: RecipeListElement) -> RecipeDataRaw {
         return RecipeDataRaw(recipeID: recipeAC.uuid!, name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
     }
-    
-//    func recipeDCtoRecipeRaw(_ recipeDC: RecipeDataForDC) -> RecipeDataRaw {
-//        return RecipeDataRaw(recipeID: recipeDC.uuid!, name: formatText(recipeDC.name!)!, imageLinks: Array(recipeDC.images), lastUpdated: recipeDC.lastUpdated.value!, description: formatText(recipeDC.recipeDescription), instructions: formatText(recipeDC.instructions!)!, difficulty: recipeDC.difficulty.value!)
-//    }
-    
-//    func recipeACtoRecipeDC(_ recipeAC: RecipeListElement) -> RecipeDataForDC {
-//        let recipeDC = RecipeDataForDC()
-//        recipeDC.difficulty.value = recipeAC.difficulty
-//        recipeDC.images = List<String>()
-//        if let images = recipeAC.images {
-//            for link in images {
-//                recipeDC.images.append(link)
-//            }
-//        }
-//        recipeDC.instructions = recipeAC.instructions
-//        recipeDC.lastUpdated.value = recipeAC.lastUpdated
-//        recipeDC.name = recipeAC.name
-//        recipeDC.recipeDescription = recipeAC.description
-//        recipeDC.uuid = recipeAC.uuid
-//        return recipeDC
-//    }
     
     // filtering and sorting
     
