@@ -63,7 +63,7 @@ final class RecipesListViewModel {
     
     // MARK: Helpers
     
-    private func viewModelFor(recipe: RecipeDataForCell) -> RecipeTableViewCellViewModel {
+    private func viewModelFor(_ recipe: RecipeDataForCell) -> RecipeTableViewCellViewModel {
         let viewModel = RecipeTableViewCellViewModel(recipe: recipe)
         
         viewModel.didSelectRecipe = { [weak self] recipeID in
@@ -87,30 +87,50 @@ final class RecipesListViewModel {
 //    }
     
     private func getDataFromNetwork() {
-        repository.apiClient?.getAllRecipes(onSuccess: { APIrecipes in
-            guard let recipes = APIrecipes else {
+        
+        repository.apiClient?.getAllRecipes { recipesContainer in
+            
+            switch recipesContainer {
+            case .success(let data):
+                // set viewModels
+                self.recipesViewModels = data.recipes?.map {
+                    let recipe = self.repository.recipeAPIToRecipeForCell($0)
+                    return self.viewModelFor(recipe)
+                } ?? []
+    
+                self.didFinishUpdating?()
+                
+            case .failure(let error):
+                print(error)
                 self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
-                return
             }
             
-            // received data should be saved locally
-//            let recipesDC = recipes.map {
-//                return self.repository.recipeACtoRecipeDC($0)
+        }
+        
+//        repository.apiClient?.getAllRecipes(onSuccess: { APIrecipes in
+//            guard let recipes = APIrecipes else {
+//                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
+//                return
 //            }
-            //self.repository.databaseClient?.saveObjects(recipesDC)
-            
-            // set viewModels
-            self.recipesViewModels = recipes.map {
-                let recipe = self.repository.recipeAPIToRecipeForCell($0)
-                return self.viewModelFor(recipe: recipe)
-            }
-            
-            self.didFinishUpdating?()
-            
-        }, onFailure: { error in
-            self.didFinishUpdating?()
-            self.didReceiveError?(error)
-        })
+//
+//            // received data should be saved locally
+////            let recipesDC = recipes.map {
+////                return self.repository.recipeACtoRecipeDC($0)
+////            }
+//            //self.repository.databaseClient?.saveObjects(recipesDC)
+//
+//            // set viewModels
+//            self.recipesViewModels = recipes.map {
+//                let recipe = self.repository.recipeAPIToRecipeForCell($0)
+//                return self.viewModelFor(recipe)
+//            }
+//
+//            self.didFinishUpdating?()
+//
+//        }, onFailure: { error in
+//            self.didFinishUpdating?()
+//            self.didReceiveError?(error)
+//        })
     }
     
 }

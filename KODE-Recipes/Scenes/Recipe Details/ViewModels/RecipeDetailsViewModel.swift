@@ -76,32 +76,32 @@ final class RecipeDetailsViewModel {
 //    }
     
     private func getDataFromNetwork() {
-        repository.apiClient?.getRecipe(uuid: recipeID, onSuccess: { APIrecipe in
-            guard let recipeSafe = APIrecipe else {
-                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
-                return
-            }
-            
-            self.recipe = recipeSafe
-            
-            // received data should be saved locally
-//            let recipesDC = recipes.map {
-//                return self.repository.recipeACtoRecipeDC($0)
+//        repository.apiClient?.getRecipe(uuid: recipeID, onSuccess: { APIrecipe in
+//            guard let recipeSafe = APIrecipe else {
+//                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
+//                return
 //            }
-            //self.repository.databaseClient?.saveObjects(recipesDC)
-            
-            // set viewModels
-//            self.recipesViewModels = recipes.map {
-//                let recipe = self.repository.recipeAPIToRecipeForCell($0)
-//                return self.viewModelFor(recipe: recipe)
-//            }
-            
-            self.didFinishUpdating?()
-            
-        }, onFailure: { error in
-            self.didFinishUpdating?()
-            self.didReceiveError?(error)
-        })
+//            
+//            self.recipe = recipeSafe
+//            
+//            // received data should be saved locally
+////            let recipesDC = recipes.map {
+////                return self.repository.recipeACtoRecipeDC($0)
+////            }
+//            //self.repository.databaseClient?.saveObjects(recipesDC)
+//            
+//            // set viewModels
+////            self.recipesViewModels = recipes.map {
+////                let recipe = self.repository.recipeAPIToRecipeForCell($0)
+////                return self.viewModelFor(recipe: recipe)
+////            }
+//            
+//            self.didFinishUpdating?()
+//            
+//        }, onFailure: { error in
+//            self.didFinishUpdating?()
+//            self.didReceiveError?(error)
+//        })
     }
     
 }
