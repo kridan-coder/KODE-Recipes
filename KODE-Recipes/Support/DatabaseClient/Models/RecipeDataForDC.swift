@@ -6,18 +6,18 @@
 //
 
 import Foundation
-import RealmSwift
+//import RealmSwift
 
-class RecipeDataForDC: Object {
-    @objc dynamic var uuid: String? = nil
-    @objc dynamic var name: String? = nil
-    var images = List<String>()
-    var lastUpdated = RealmOptional<Double>()
-    @objc dynamic var recipeDescription: String? = nil
-    @objc dynamic var instructions: String? = nil
-    var difficulty = RealmOptional<Int>()
-    
-    override static func primaryKey() -> String? {
-        return "uuid"
-    }
-}
+//class RecipeDataForDC: Object {
+//    @objc dynamic var uuid: String? = nil
+//    @objc dynamic var name: String? = nil
+//    var images = List<String>()
+//    var lastUpdated = RealmOptional<Double>()
+//    @objc dynamic var recipeDescription: String? = nil
+//    @objc dynamic var instructions: String? = nil
+//    var difficulty = RealmOptional<Int>()
+//    
+//    override static func primaryKey() -> String? {
+//        return "uuid"
+//    }
+//}

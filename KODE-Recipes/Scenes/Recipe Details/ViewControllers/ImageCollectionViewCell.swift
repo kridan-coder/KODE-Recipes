@@ -17,7 +17,9 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }
     
     static func dequeueCell(collectionView: UICollectionView, indexPath: IndexPath) -> ImageCollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as! ImageCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as? ImageCollectionViewCell else {
+            return ImageCollectionViewCell()
+        }
         return cell
     }
     

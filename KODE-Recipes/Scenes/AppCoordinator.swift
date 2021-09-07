@@ -20,7 +20,7 @@ final class AppCoordinator: Coordinator {
     }()
     
     let apiClient: ApiClient
-    let databaseClient: DatabaseClient
+    //let databaseClient: DatabaseClient
     let repository: Repository
     
     // MARK: Coordinator
@@ -28,8 +28,8 @@ final class AppCoordinator: Coordinator {
     init(window: UIWindow) {
         self.window = window
         apiClient = ApiClient()
-        databaseClient = DatabaseClient()
-        repository = Repository(apiClient: apiClient, databaseClient: databaseClient)
+        //databaseClient = DatabaseClient()
+        repository = Repository(apiClient: apiClient)
     }
     
     override func start() {

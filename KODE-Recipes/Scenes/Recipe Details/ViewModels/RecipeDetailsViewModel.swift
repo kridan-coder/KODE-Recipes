@@ -44,7 +44,7 @@ final class RecipeDetailsViewModel {
     
     func reloadData() {
         self.didStartUpdating?()
-        getDataFromDatabase()
+        //getDataFromDatabase()
     }
     
     func viewWillDisappear() {
@@ -64,14 +64,14 @@ final class RecipeDetailsViewModel {
         ImageCollectionViewCellViewModel(imageLink: imageLink)
     }
     
-    private func getDataFromDatabase() {
-        if let recipeDC = repository.databaseClient?.getObjectByPrimaryKey(ofType: RecipeDataForDC.self, primaryKey: recipeID) {
-            recipe = repository.recipeDCToRecipeForDetails(recipeDC)
-        }
-        else {
-            self.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
-        }
-        self.didFinishUpdating?()
-    }
+//    private func getDataFromDatabase() {
+//        if let recipeDC = repository.databaseClient?.getObjectByPrimaryKey(ofType: RecipeDataForDC.self, primaryKey: recipeID) {
+//            recipe = repository.recipeDCToRecipeForDetails(recipeDC)
+//        }
+//        else {
+//            self.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
+//        }
+//        self.didFinishUpdating?()
+//    }
     
 }

@@ -7,20 +7,21 @@
 
 import Foundation
 import SystemConfiguration
-import RealmSwift
+import UIKit
+//import RealmSwift
 
 final class Repository {
     
     // MARK: Public
     
     var apiClient: ApiClient?
-    var databaseClient: DatabaseClient?
+    //var databaseClient: DatabaseClient?
     
     // MARK: Lifecycle
     
-    init(apiClient: ApiClient, databaseClient: DatabaseClient) {
+    init(apiClient: ApiClient) {
         self.apiClient = apiClient
-        self.databaseClient = databaseClient
+        //self.databaseClient = databaseClient
     }
     
     // MARK: Actions
@@ -50,13 +51,13 @@ final class Repository {
     
     // converting
     
-    func recipeDCToRecipeForDetails(_ recipeDC: RecipeDataForDC) -> RecipeDataForDetails {
-        return recipeRawToRecipeForDetails(recipeDCtoRecipeRaw(recipeDC))
-    }
+//    func recipeDCToRecipeForDetails(_ recipeDC: RecipeDataForDC) -> RecipeDataForDetails {
+//        return recipeRawToRecipeForDetails(recipeDCtoRecipeRaw(recipeDC))
+//    }
     
-    func recipeDCToRecipeForCell(_ recipeDC: RecipeDataForDC) -> RecipeDataForCell {
-        return recipeToRecipeForCell(recipeDCtoRecipeRaw(recipeDC))
-    }
+//    func recipeDCToRecipeForCell(_ recipeDC: RecipeDataForDC) -> RecipeDataForCell {
+//        return recipeToRecipeForCell(recipeDCtoRecipeRaw(recipeDC))
+//    }
     
     func recipeACToRecipeForCell(_ recipeAC: RecipeDataForAC) -> RecipeDataForCell {
         return recipeToRecipeForCell(recipeACtoRecipeRaw(recipeAC))
@@ -89,26 +90,26 @@ final class Repository {
         return RecipeDataRaw(recipeID: recipeAC.uuid!, name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
     }
     
-    func recipeDCtoRecipeRaw(_ recipeDC: RecipeDataForDC) -> RecipeDataRaw {
-        return RecipeDataRaw(recipeID: recipeDC.uuid!, name: formatText(recipeDC.name!)!, imageLinks: Array(recipeDC.images), lastUpdated: recipeDC.lastUpdated.value!, description: formatText(recipeDC.recipeDescription), instructions: formatText(recipeDC.instructions!)!, difficulty: recipeDC.difficulty.value!)
-    }
+//    func recipeDCtoRecipeRaw(_ recipeDC: RecipeDataForDC) -> RecipeDataRaw {
+//        return RecipeDataRaw(recipeID: recipeDC.uuid!, name: formatText(recipeDC.name!)!, imageLinks: Array(recipeDC.images), lastUpdated: recipeDC.lastUpdated.value!, description: formatText(recipeDC.recipeDescription), instructions: formatText(recipeDC.instructions!)!, difficulty: recipeDC.difficulty.value!)
+//    }
     
-    func recipeACtoRecipeDC(_ recipeAC: RecipeDataForAC) -> RecipeDataForDC {
-        let recipeDC = RecipeDataForDC()
-        recipeDC.difficulty.value = recipeAC.difficulty
-        recipeDC.images = List<String>()
-        if let images = recipeAC.images {
-            for link in images {
-                recipeDC.images.append(link)
-            }
-        }
-        recipeDC.instructions = recipeAC.instructions
-        recipeDC.lastUpdated.value = recipeAC.lastUpdated
-        recipeDC.name = recipeAC.name
-        recipeDC.recipeDescription = recipeAC.description
-        recipeDC.uuid = recipeAC.uuid
-        return recipeDC
-    }
+//    func recipeACtoRecipeDC(_ recipeAC: RecipeDataForAC) -> RecipeDataForDC {
+//        let recipeDC = RecipeDataForDC()
+//        recipeDC.difficulty.value = recipeAC.difficulty
+//        recipeDC.images = List<String>()
+//        if let images = recipeAC.images {
+//            for link in images {
+//                recipeDC.images.append(link)
+//            }
+//        }
+//        recipeDC.instructions = recipeAC.instructions
+//        recipeDC.lastUpdated.value = recipeAC.lastUpdated
+//        recipeDC.name = recipeAC.name
+//        recipeDC.recipeDescription = recipeAC.description
+//        recipeDC.uuid = recipeAC.uuid
+//        return recipeDC
+//    }
     
     // filtering and sorting
     
@@ -151,12 +152,12 @@ final class Repository {
         
         switch sortCase {
         case .name:
-            mutableRecipes.sort { x, y in
-                return x.data.name < y.data.name
+            mutableRecipes.sort { first, second in
+                return first.data.name < second.data.name
             }
         case .date:
-            mutableRecipes.sort { x, y in
-                return x.data.lastUpdated > y.data.lastUpdated
+            mutableRecipes.sort { first, second in
+                return first.data.lastUpdated > second.data.lastUpdated
             }
         }
         

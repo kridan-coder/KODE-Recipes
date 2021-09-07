@@ -43,7 +43,7 @@ final class RecipesListViewModel {
         }
         else {
             didNotFindInternetConnection?()
-            getDataFromDatabase()
+            //getDataFromDatabase()
         }
     }
     
@@ -76,15 +76,15 @@ final class RecipesListViewModel {
         return viewModel
     }
     
-    private func getDataFromDatabase() {
-        if let recipes = repository.databaseClient?.getObjects(ofType: RecipeDataForDC.self) {
-            recipesViewModels = recipes.map {
-                let recipe = repository.recipeDCToRecipeForCell($0)
-                return viewModelFor(recipe: recipe)
-            }
-        }
-        self.didFinishUpdating?()
-    }
+//    private func getDataFromDatabase() {
+//        if let recipes = repository.databaseClient?.getObjects(ofType: RecipeDataForDC.self) {
+//            recipesViewModels = recipes.map {
+//                let recipe = repository.recipeDCToRecipeForCell($0)
+//                return viewModelFor(recipe: recipe)
+//            }
+//        }
+//        self.didFinishUpdating?()
+//    }
     
     private func getDataFromNetworkAndSaveItLocally() {
         repository.apiClient?.getRecipes(onSuccess: { recipesContainer in
@@ -94,10 +94,10 @@ final class RecipesListViewModel {
             }
             
             // received data should be saved locally
-            let recipesDC = recipes.map {
-                return self.repository.recipeACtoRecipeDC($0)
-            }
-            self.repository.databaseClient?.saveObjects(recipesDC)
+//            let recipesDC = recipes.map {
+//                return self.repository.recipeACtoRecipeDC($0)
+//            }
+//            self.repository.databaseClient?.saveObjects(recipesDC)
             
             // set viewModels
             self.recipesViewModels = recipes.map {

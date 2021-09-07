@@ -372,8 +372,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 934DA4EA26675C280037D829 /* Build configuration list for PBXNativeTarget "KODE-Recipes" */;
 			buildPhases = (
-				6008391D74CACFB12E7E31FA /* [CP] Check Pods Manifest.lock */,
 				449B77FB26E76C0F00974C81 /* ShellScript */,
+				6008391D74CACFB12E7E31FA /* [CP] Check Pods Manifest.lock */,
 				934DA4BC26675C260037D829 /* Sources */,
 				934DA4BD26675C260037D829 /* Frameworks */,
 				934DA4BE26675C260037D829 /* Resources */,
