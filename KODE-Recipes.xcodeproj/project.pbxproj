@@ -373,6 +373,7 @@
 			buildConfigurationList = 934DA4EA26675C280037D829 /* Build configuration list for PBXNativeTarget "KODE-Recipes" */;
 			buildPhases = (
 				6008391D74CACFB12E7E31FA /* [CP] Check Pods Manifest.lock */,
+				449B77FB26E76C0F00974C81 /* ShellScript */,
 				934DA4BC26675C260037D829 /* Sources */,
 				934DA4BD26675C260037D829 /* Frameworks */,
 				934DA4BE26675C260037D829 /* Resources */,
@@ -499,6 +500,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		449B77FB26E76C0F00974C81 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
 		6008391D74CACFB12E7E31FA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

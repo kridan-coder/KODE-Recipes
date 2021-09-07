@@ -9,7 +9,7 @@ target 'KODE-Recipes' do
   
   pod 'Alamofire'
   pod 'Kingfisher'
-  pod 'RealmSwift'
+  pod 'SwiftLint'
 
   target 'KODE-RecipesTests' do
     inherit! :search_paths
