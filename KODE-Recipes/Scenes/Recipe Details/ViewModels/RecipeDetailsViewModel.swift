@@ -8,23 +8,15 @@
 import Foundation
 import UIKit
 
-protocol RecipeViewModelCoordinatorDelegate: class {
+protocol RecipeViewModelCoordinatorDelegate: AnyObject {
     func viewWillDisappear()
 }
 
 final class RecipeDetailsViewModel {
     
-    // MARK: Private
-    
-    private let repository: Repository
-    
-    private let recipeID: String
-    
-    // MARK: Delegates
+    // MARK: - Properties
     
     weak var coordinatorDelegate: RecipeViewModelCoordinatorDelegate?
-    
-    // MARK: Properties
     
     var imagesViewModels: [ImageCollectionViewCellViewModel] = []
     
@@ -34,14 +26,25 @@ final class RecipeDetailsViewModel {
         }
     }
     
-    // MARK: Actions
+    private let repository: Repository
     
-    var didReceiveError: ((String) -> Void)?
+    private let recipeID: String
+    
+    // MARK: - Actions
+    
+    var didReceiveError: ((Error) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
     var didFinishSuccessfully: (() -> Void)?
     
-    // MARK: Service
+    // MARK: - Init
+    
+    init(repository: Repository, recipeID: String) {
+        self.repository = repository
+        self.recipeID = recipeID
+    }
+    
+    // MARK: - Public Methods
     
     func reloadData() {
         self.didStartUpdating?()
@@ -52,14 +55,7 @@ final class RecipeDetailsViewModel {
         coordinatorDelegate?.viewWillDisappear()
     }
     
-    // MARK: Lifecycle
-    
-    init(repository: Repository, recipeID: String) {
-        self.repository = repository
-        self.recipeID = recipeID
-    }
-    
-    // MARK: Helpers
+    // MARK: - Private Methods
     
     private func viewModelFor(imageLink: String) -> ImageCollectionViewCellViewModel {
         ImageCollectionViewCellViewModel(imageLink: imageLink)
@@ -71,7 +67,7 @@ final class RecipeDetailsViewModel {
             self.didFinishSuccessfully?()
         }
         else {
-            self.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
+            self.didReceiveError?(ErrorType.basic)
         }
         self.didFinishUpdating?()
     }

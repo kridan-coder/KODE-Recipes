@@ -10,33 +10,74 @@ import Kingfisher
 
 class RecipeDetailsViewController: UIViewController {
     
-    // MARK: IBOutlets
-    
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var lastUpdateLabel: UILabel!
-    @IBOutlet weak var difficultyLevelImage: UIImageView!
-    @IBOutlet weak var recipeNameLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var descriptionTextView: UITextView!
-    @IBOutlet weak var instructionsTextView: UITextView!
-    @IBOutlet weak var pageControl: UIPageControl!
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    // MARK: Elements set in code
-    
-    private var refreshControl = UIRefreshControl()
-    
-    // MARK: Public
+    // MARK: - Properties
     
     var viewModel: RecipeDetailsViewModel!
     
-    // MARK: Properties
     private var images: [ImageCollectionViewCellViewModel] = []
+    private let alertView = ErrorPageView()
     
-    // implicit dependency..
-    let alert = CustomAlert()
+    // Elements set in code
+    private var refreshControl = UIRefreshControl()
     
-    // MARK: Helpers
+    // MARK: - IBOutlets
+    
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var lastUpdateLabel: UILabel!
+    @IBOutlet private weak var difficultyLevelImage: UIImageView!
+    @IBOutlet private weak var recipeNameLabel: UILabel!
+    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var descriptionTextView: UITextView!
+    @IBOutlet private weak var instructionsTextView: UITextView!
+    @IBOutlet private weak var pageControl: UIPageControl!
+    @IBOutlet private weak var collectionView: UICollectionView!
+    
+    // MARK: - Init
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAppearance()
+        setupCollectionView()
+        setupRefreshControl()
+        bindToViewModel()
+        viewModel.reloadData()
+        setupCustomAlert(alertView)
+        
+        // this notification is needed for correct cell size recalculating
+        NotificationCenter.default.addObserver(self, selector: #selector(RecipeDetailsViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+    
+    // MARK: - Lifecycle
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            viewModel.viewWillDisappear()
+        }
+    }
+    
+    // MARK: - Actions
+    
+    @objc func rotated() {
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.scrollToItem(at: IndexPath(item: pageControl.currentPage, section: 0), at: .centeredHorizontally, animated: false)
+    }
+    
+    @objc private func refresh() {
+        viewModel.reloadData()
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupRecipeData(recipe: RecipeDataForDetails) {
+        pageControl.numberOfPages = recipe.imageLinks.count
+        recipeNameLabel.text = recipe.name
+        instructionsTextView.text = recipe.instructions
+        descriptionTextView.text = recipe.description
+        lastUpdateLabel.text = recipe.lastUpdated
+        difficultyLevelImage.image = recipe.difficultyImage
+    }
     
     private func setupRefreshControl() {
         refreshControl.addTarget(self, action: #selector(RecipeDetailsViewController.refresh), for: .valueChanged)
@@ -58,59 +99,16 @@ class RecipeDetailsViewController: UIViewController {
         refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
     }
     
-    // MARK: Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupAppearance()
-        setupCollectionView()
-        setupRefreshControl()
-        bindToViewModel()
-        viewModel.reloadData()
-        
-        // this notification is needed for correct cell size recalculating
-        NotificationCenter.default.addObserver(self, selector: #selector(RecipeDetailsViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        if self.isMovingFromParent {
-            viewModel.viewWillDisappear()
-        }
-    }
-    
-    // MARK: Actions
-    
-    @objc func rotated() {
-        collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.scrollToItem(at: IndexPath(item: pageControl.currentPage, section: 0), at: .centeredHorizontally, animated: false)
-    }
-    
-    @objc func refresh() {
-        viewModel.reloadData()
-    }
-    
-    func setupRecipeData(recipe: RecipeDataForDetails) {
-        pageControl.numberOfPages = recipe.imageLinks.count
-        recipeNameLabel.text = recipe.name
-        instructionsTextView.text = recipe.instructions
-        descriptionTextView.text = recipe.description
-        lastUpdateLabel.text = recipe.lastUpdated
-        difficultyLevelImage.image = recipe.difficultyImage
-    }
-    
-    // MARK: ViewModel
-    
+    // ViewModel binding
     private func bindToViewModel() {
         viewModel.didStartUpdating = { [weak self] in
-            self?.viewModelDidStartUpdating()
+            self?.didStartUpdating()
         }
         viewModel.didFinishUpdating = { [weak self] in
-            self?.viewModelDidFinishUpdating()
+            self?.didFinishUpdating()
         }
         viewModel.didReceiveError = { [weak self] error in
-            self?.viewModelDidReceiveError(error: error)
+            self?.didReceiveError(error)
         }
         viewModel.didFinishSuccessfully = { [weak self]  in
             self?.didFinishSuccessfully()
@@ -118,16 +116,14 @@ class RecipeDetailsViewController: UIViewController {
     }
     
     private func didFinishSuccessfully() {
-        if alert.isShown {
-            alert.dismissAlert()
-            navigationController?.navigationBar.isHidden = false
-        }
+        hideCustomAlert(alertView)
     }
     
-    private func viewModelDidStartUpdating() {
+    private func didStartUpdating() {
+        // TODO: - Add some logic later
     }
     
-    private func viewModelDidFinishUpdating() {
+    private func didFinishUpdating() {
         if let recipe = viewModel.recipe {
             images = viewModel.imagesViewModels
             setupRecipeData(recipe: recipe)
@@ -136,24 +132,35 @@ class RecipeDetailsViewController: UIViewController {
         refreshControl.endRefreshing()
     }
     
-    
-    private func viewModelDidReceiveError(error: String) {
+    private func didReceiveError(_ error: Error) {
         navigationController?.navigationBar.isHidden = true
-        alert.showAlert(with: Constants.ErrorType.basic, message: Constants.ErrorText.noInternet, buttonText: Constants.ButtonTitle.refresh, on: self) {
-            self.viewModel.reloadData()
-        }
+        showCustomAlert(alertView, title: Constants.ErrorType.basic, message: error.localizedDescription, buttonText: Constants.ButtonTitle.refresh)
     }
     
 }
 
+// MARK: - CustomAlertDisplaying Protocol
+
+extension RecipeDetailsViewController: CustomAlertDisplaying {
+    
+    func handleButtonTap() {
+        viewModel.reloadData()
+    }
+    
+}
+
+// MARK: - CollectionView Delegate
+
 extension RecipeDetailsViewController: UICollectionViewDelegate {
     
-    // TODO: Not sure that this function is a nice decision. Need to rethink and make it work faster
+    // TODO: - Not sure that this function is a nice decision. Need to rethink and make it work faster
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         pageControl.currentPage = Int(scrollView.contentOffset.x / collectionView.frame.size.width)
     }
     
 }
+
+// MARK: - CollectionView DataSource
 
 extension RecipeDetailsViewController: UICollectionViewDataSource {
     
@@ -166,6 +173,8 @@ extension RecipeDetailsViewController: UICollectionViewDataSource {
     }
     
 }
+
+// MARK: - CollectionView FlowLayout
 
 extension RecipeDetailsViewController: UICollectionViewDelegateFlowLayout {
     

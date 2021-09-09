@@ -9,43 +9,65 @@ import UIKit
 
 class RecipesListViewController: UIViewController {
     
-    // MARK: IBOutlets
-    
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var nameDateSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableViewActivityIndicator: UIActivityIndicatorView!
-    
-    // MARK: Elements set in code
-    
-    private var refreshControl = UIRefreshControl()
-    
-    // MARK: Public
+    // MARK: Properties
     
     var viewModel: RecipesListViewModel!
     
-    // MARK: Properties
-    
-    
-    // implicit dependency..
-    let alert = CustomAlert()
-    
     private var filteredRecipes: [RecipeTableViewCellViewModel] = []
-    
     private var currentSearchCase: SearchCase {
         get {
             SearchCase(rawValue: searchBar.scopeButtonTitles?[searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)!
         }
     }
-    
     private var currentSortCase: SortCase {
         get {
             SortCase(rawValue: nameDateSegmentedControl.selectedSegmentIndex) ?? .name
         }
     }
     
-    // MARK: Helpers
+    // Elements set in code
+    private var refreshControl = UIRefreshControl()
+    private let alertView = ErrorPageView()
     
+    // MARK: IBOutlets
+    
+    @IBOutlet private weak var searchBar: UISearchBar!
+    @IBOutlet private weak var nameDateSegmentedControl: UISegmentedControl!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var tableViewActivityIndicator: UIActivityIndicatorView!
+    
+    // MARK: Init
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAppearance()
+        setupSearchBar()
+        setupTableView()
+        setupRefreshControl()
+        bindToViewModel()
+        viewModel.reloadData()
+        setupCustomAlert(alertView)
+    }
+    
+    // MARK: Actions
+    
+    @objc private func refresh() {
+        viewModel.reloadData()
+    }
+    
+    @IBAction func didChangeSegment(_ sender: UISegmentedControl) {
+        filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
+        tableView.reloadData()
+    }
+    
+    // MARK: Private Methods
+    
+    private func startTableViewActivityIndicator() {
+        tableViewActivityIndicator.isHidden = false
+        tableViewActivityIndicator.startAnimating()
+    }
+    
+    // UI setup
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -69,48 +91,19 @@ class RecipesListViewController: UIViewController {
         refreshControl.tintColor = UIColor.BaseTheme.cellBackground
     }
     
-    // MARK: Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupAppearance()
-        setupSearchBar()
-        setupTableView()
-        setupRefreshControl()
-        bindToViewModel()
-        viewModel.reloadData()
-    }
-    
-    // MARK: Actions
-    
-    @objc func refresh() {
-        viewModel.reloadData()
-    }
-    
-    @IBAction func didChangeSegment(_ sender: UISegmentedControl) {
-        filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
-        tableView.reloadData()
-    }
-    
-    private func startTableViewActivityIndicator() {
-        tableViewActivityIndicator.isHidden = false
-        tableViewActivityIndicator.startAnimating()
-    }
-    
-    // MARK: ViewModel
-    
+    // ViewModel binding
     private func bindToViewModel() {
         viewModel.didStartUpdating = { [weak self] in
-            self?.viewModelDidStartUpdating()
+            self?.didStartUpdating()
         }
         viewModel.didFinishUpdating = { [weak self] in
-            self?.viewModelDidFinishUpdating()
+            self?.didFinishUpdating()
         }
         viewModel.didNotFindInternetConnection = { [weak self] in
-            self?.viewModelDidNotFindInternetConnection()
+            self?.didNotFindInternet()
         }
         viewModel.didReceiveError = { [weak self] error in
-            self?.viewModelDidReceiveError(error: error)
+            self?.didReceiveError(error)
         }
         viewModel.didFinishSuccessfully = { [weak self]  in
             self?.didFinishSuccessfully()
@@ -118,19 +111,14 @@ class RecipesListViewController: UIViewController {
     }
     
     private func didFinishSuccessfully() {
-        if alert.isShown {
-            alert.dismissAlert()
-            navigationController?.navigationBar.isHidden = false
-        }
+        hideCustomAlert(alertView)
     }
     
-    
-    private func viewModelDidStartUpdating() {
+    private func didStartUpdating() {
         startTableViewActivityIndicator()
     }
     
-    private func viewModelDidFinishUpdating() {
-        
+    private func didFinishUpdating() {
         tableViewActivityIndicator.stopAnimating()
         
         // in case update was triggered by refreshing the table
@@ -141,20 +129,18 @@ class RecipesListViewController: UIViewController {
         tableView.reloadData()
     }
     
-    private func viewModelDidNotFindInternetConnection() {
+    private func didNotFindInternet() {
         navigationController?.navigationBar.isHidden = true
-        alert.showAlert(with: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternet, buttonText: Constants.ButtonTitle.refresh, on: self) {
-            self.viewModel.reloadData()
-        }
+        showCustomAlert(alertView, title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternet, buttonText: Constants.ButtonTitle.refresh)
     }
     
-    private func viewModelDidReceiveError(error: String) {
-        alert.showAlert(with: Constants.ErrorType.basic, message: error, buttonText: Constants.ButtonTitle.refresh, on: self) {
-            self.viewModel.reloadData()
-        }
+    private func didReceiveError(_ error: Error) {
+        showCustomAlert(alertView, title: Constants.ErrorType.basic, message: error.localizedDescription, buttonText: Constants.ButtonTitle.refresh)
     }
     
 }
+
+// MARK: SearchBar DataSource
 
 extension RecipesListViewController: UITableViewDataSource {
     
@@ -171,6 +157,8 @@ extension RecipesListViewController: UITableViewDataSource {
     }
     
 }
+
+// MARK: SearchBar Delegate
 
 extension RecipesListViewController: UISearchBarDelegate {
     
@@ -201,7 +189,7 @@ extension RecipesListViewController: UISearchBarDelegate {
         filterAndSort()
     }
     
-    // MARK: SearchBar Helpers
+    // SearchBar Helpers
     
     private func hideSearchBar() {
         searchBar.showsScopeBar = false
@@ -228,5 +216,17 @@ extension RecipesListViewController: UISearchBarDelegate {
     }
     
 }
+
+// MARK: CustomAlertDisplaying Protocol
+
+extension RecipesListViewController: CustomAlertDisplaying {
+    
+    func handleButtonTap() {
+        viewModel.reloadData()
+    }
+    
+}
+
+// MARK: TableView Delegate
 
 extension RecipesListViewController: UITableViewDelegate {}

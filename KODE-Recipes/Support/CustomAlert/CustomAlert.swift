@@ -8,33 +8,40 @@
 import Foundation
 import UIKit
 
-// i think it should be singleton or i need DI like for APIClient or DatabaseClient
-class CustomAlert {
+protocol CustomAlertDisplaying {
     
-    private let contentView = CustomAlertView()
+    var targetView: UIView { get }
     
-    var isShown = false
+    func setupCustomAlert(_ alertView: ErrorPageView)
     
-    func showAlert(with title: String, message: String, buttonText: String, on viewController: UIViewController, completion completed: @escaping () -> Void) {
-        guard let targetView = viewController.view else {
-            return
-        }
+    func showCustomAlert(_ alertView: ErrorPageView, title: String, message: String, buttonText: String)
+    func hideCustomAlert(_ alertView: ErrorPageView)
+    
+    func handleButtonTap()
+}
 
-        targetView.addSubview(contentView)
-        contentView.snp.makeConstraints { make in
+extension CustomAlertDisplaying where Self: UIViewController {
+    
+    var targetView: UIView { return self.view }
+    
+    func setupCustomAlert(_ alertView: ErrorPageView) {
+        targetView.addSubview(alertView)
+        
+        alertView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        contentView.setData(with: title, message: message, buttonText: buttonText)
-        contentView.didPressButton = {
-            completed()
-        }
         
-        isShown = true
+        alertView.didPressButton = {
+            self.handleButtonTap()
+        }
     }
     
-    func dismissAlert() {
-        contentView.removeFromSuperview()
-        isShown = false
+    func showCustomAlert(_ alertView: ErrorPageView, title: String, message: String, buttonText: String) {
+        alertView.setData(with: title, message: message, buttonText: buttonText)
+        alertView.isHidden = false    }
+    
+    func hideCustomAlert(_ alertView: ErrorPageView) {
+        alertView.isHidden = true
     }
     
 }

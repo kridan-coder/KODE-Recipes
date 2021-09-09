@@ -10,7 +10,7 @@ import Kingfisher
 
 class ImageCollectionViewCell: UICollectionViewCell {
     
-    // MARK: Self creating
+    // MARK: - Self creating
     
     static func registerCell(collectionView: UICollectionView) {
         collectionView.register(UINib(nibName: "ImageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ImageCollectionViewCell")
@@ -21,15 +21,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         return cell
     }
     
-    // MARK: IBOutlets
-    
-    @IBOutlet weak var imageView: UIImageView!
-    
-    // MARK: Private
-    
-    private var viewModel: ImageCollectionViewCellViewModel!
-    
-    // MARK: Properties
+    // MARK: - Properties
     
     private var imageLink: String! {
         didSet {
@@ -38,28 +30,34 @@ class ImageCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // MARK: Helpers
+    private var viewModel: ImageCollectionViewCellViewModel!
     
-    private func setupCellAppearance() {
-        imageView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        imageView.layer.borderWidth = Constants.Design.borderWidthMain
-        imageView.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
-    }
+    // MARK: - IBOutlets
     
-    // MARK: Lifecycle
+    @IBOutlet private weak var imageView: UIImageView!
+    
+    // MARK: - Init
     
     override func awakeFromNib() {
         super.awakeFromNib()
         setupCellAppearance()
     }
     
-    // MARK: Actions
+    // MARK: - Public Methods
     
     func setupCellData(viewModel: ImageCollectionViewCellViewModel) {
         self.viewModel = viewModel
         imageLink = viewModel.data
         
         viewModel.didUpdate = self.setupCellData
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupCellAppearance() {
+        imageView.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        imageView.layer.borderWidth = Constants.Design.borderWidthMain
+        imageView.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
     }
     
 }

@@ -8,33 +8,30 @@
 import Foundation
 import UIKit
 
-protocol RecipesListViewModelCoordinatorDelegate: class {
+protocol RecipesListViewModelCoordinatorDelegate: AnyObject {
     func didSelectRecipe(recipeID: String)
 }
 
 final class RecipesListViewModel {
     
-    // MARK: Private
     
-    private let repository: Repository
-    
-    // MARK: Delegates
-    
-    weak var coordinatorDelegate: RecipesListViewModelCoordinatorDelegate?
-    
-    // MARK: Properties
+    //MARK: - Properties
     
     var recipesViewModels: [RecipeTableViewCellViewModel] = []
     
-    // MARK: Actions
+    weak var coordinatorDelegate: RecipesListViewModelCoordinatorDelegate?
     
-    var didReceiveError: ((String) -> Void)?
-    var didNotFindInternetConnection: (() -> Void)?
-    var didStartUpdating: (() -> Void)?
-    var didFinishUpdating: (() -> Void)?
-    var didFinishSuccessfully: (() -> Void)?
+    private let repository: Repository
     
-    // MARK: Service
+    // MARK: Init
+    
+    init(repository: Repository) {
+        self.repository = repository
+    }
+    
+    // MARK: Public Methods
+    
+    // Service
     
     func reloadData() {
         self.didStartUpdating?()
@@ -56,13 +53,15 @@ final class RecipesListViewModel {
         repository.sortRecipesBy(sortCase: sortCase, recipes: recipes)
     }
     
-    // MARK: Lifecycle
+    // MARK: Actions
     
-    init(repository: Repository) {
-        self.repository = repository
-    }
+    var didReceiveError: ((Error) -> Void)?
+    var didNotFindInternetConnection: (() -> Void)?
+    var didStartUpdating: (() -> Void)?
+    var didFinishUpdating: (() -> Void)?
+    var didFinishSuccessfully: (() -> Void)?
     
-    // MARK: Helpers
+    // MARK: Private Methods
     
     private func viewModelFor(recipe: RecipeDataForCell) -> RecipeTableViewCellViewModel {
         let viewModel = RecipeTableViewCellViewModel(recipe: recipe)
@@ -90,7 +89,7 @@ final class RecipesListViewModel {
     private func getDataFromNetworkAndSaveItLocally() {
         repository.apiClient?.getRecipes(onSuccess: { recipesContainer in
             guard let recipes = recipesContainer.recipes else {
-                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
+                self.didReceiveError?(ErrorType.basic)
                 return
             }
             
@@ -111,7 +110,7 @@ final class RecipesListViewModel {
             
         }, onFailure: { error in
             self.didFinishUpdating?()
-            self.didReceiveError?(error)
+            self.didReceiveError?(ErrorType.basic)
         })
     }
     
