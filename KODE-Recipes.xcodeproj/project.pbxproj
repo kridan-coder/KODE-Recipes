@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3928A84520A470DA943E545E /* Pods_KODE_RecipesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0042F28CD00DE36D0E035AE5 /* Pods_KODE_RecipesTests.framework */; };
+		4487B74D26EA117E00668266 /* RecipesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4487B74C26EA117E00668266 /* RecipesListView.swift */; };
 		4AABC6CF47637BF088605A4B /* Pods_KODE_Recipes_KODE_RecipesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82FFE5D28E8C3046305F0228 /* Pods_KODE_Recipes_KODE_RecipesUITests.framework */; };
 		931D5D182670CA7400C4C2A9 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D5D172670CA7400C4C2A9 /* Colors.swift */; };
 		931D5D1D2670CDFF00C4C2A9 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D5D1C2670CDFF00C4C2A9 /* Images.swift */; };
@@ -69,6 +70,7 @@
 		05F716C926FD0E55F3E4B457 /* Pods-KODE-Recipes-KODE-RecipesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KODE-Recipes-KODE-RecipesUITests.release.xcconfig"; path = "Target Support Files/Pods-KODE-Recipes-KODE-RecipesUITests/Pods-KODE-Recipes-KODE-RecipesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		0E363EAF47C28CE50A2A3DA9 /* Pods-KODE-RecipesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KODE-RecipesTests.debug.xcconfig"; path = "Target Support Files/Pods-KODE-RecipesTests/Pods-KODE-RecipesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2DCFF48E48363D706471EBB1 /* Pods-KODE-RecipesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KODE-RecipesTests.release.xcconfig"; path = "Target Support Files/Pods-KODE-RecipesTests/Pods-KODE-RecipesTests.release.xcconfig"; sourceTree = "<group>"; };
+		4487B74C26EA117E00668266 /* RecipesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesListView.swift; sourceTree = "<group>"; };
 		5C9170DDB4484CB3722715B6 /* Pods_KODE_Recipes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KODE_Recipes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		82FFE5D28E8C3046305F0228 /* Pods_KODE_Recipes_KODE_RecipesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KODE_Recipes_KODE_RecipesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		931D5D172670CA7400C4C2A9 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 			children = (
 				93DF1271266902B400CC932F /* RecipeTableViewCell.xib */,
 				934DA5672668B9200037D829 /* RecipesListViewController.xib */,
+				4487B74C26EA117E00668266 /* RecipesListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -372,8 +375,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 934DA4EA26675C280037D829 /* Build configuration list for PBXNativeTarget "KODE-Recipes" */;
 			buildPhases = (
-				449B77FB26E76C0F00974C81 /* ShellScript */,
 				6008391D74CACFB12E7E31FA /* [CP] Check Pods Manifest.lock */,
+				449B77FB26E76C0F00974C81 /* ShellScript */,
 				934DA4BC26675C260037D829 /* Sources */,
 				934DA4BD26675C260037D829 /* Frameworks */,
 				934DA4BE26675C260037D829 /* Resources */,
@@ -644,6 +647,7 @@
 				9370CA042669F8C4004E23D1 /* SearchCase.swift in Sources */,
 				931D5D5526710DEB00C4C2A9 /* RecipeDataForDetails.swift in Sources */,
 				934DA5682668B9200037D829 /* RecipesListViewController.swift in Sources */,
+				4487B74D26EA117E00668266 /* RecipesListView.swift in Sources */,
 				9370CA11266A0DE2004E23D1 /* RecipesListCoordinator.swift in Sources */,
 				9370CA1F266A677C004E23D1 /* RecipeDetailsViewController.swift in Sources */,
 				931D5D4A2670FAEC00C4C2A9 /* RecipeDataForCell.swift in Sources */,

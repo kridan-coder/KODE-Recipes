@@ -16,6 +16,7 @@ final class AppCoordinator: Coordinator {
     let rootNavigationController: UINavigationController! = {
         let navigationController = UINavigationController()
         navigationController.navigationBar.barTintColor = UIColor.BaseTheme.background
+        navigationController.navigationBar.prefersLargeTitles = true
         return navigationController
     }()
     
