@@ -87,13 +87,13 @@ class RecipeTableViewCellSK: UITableViewCell {
         
         recipeImageView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(20)
-            make.right.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.width.equalToSuperview().dividedBy(2.3)
         }
         
         labelsContainer.snp.makeConstraints { make in
-            make.top.bottom.left.equalToSuperview().inset(18)
-            make.right.equalTo(recipeImageView.snp.left).offset(-20)
+            make.top.bottom.leading.equalToSuperview().inset(18)
+            make.trailing.equalTo(recipeImageView.snp.left).offset(-20)
         }
         labelsContainer.addArrangedSubview(titleLabel)
         labelsContainer.addArrangedSubview(descriptionLabel)

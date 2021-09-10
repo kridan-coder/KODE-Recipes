@@ -12,7 +12,7 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: IBOutlets
     
-    @IBOutlet weak var scrollView: UIScrollView!
+    //@IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var lastUpdateLabel: UILabel!
     @IBOutlet weak var difficultyLevelImage: UIImageView!
     @IBOutlet weak var recipeNameLabel: UILabel!
@@ -21,6 +21,9 @@ class RecipeDetailsViewController: UIViewController {
     @IBOutlet weak var instructionsTextView: UITextView!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    private let contentView = RecipeDetailsViewControllerSK()
+    private let scrollView = UIScrollView()
     
     // MARK: Elements set in code
     
@@ -64,6 +67,8 @@ class RecipeDetailsViewController: UIViewController {
         setupRefreshControl()
         bindToViewModel()
         viewModel.reloadData()
+        
+        
         
         // this notification is needed for correct cell size recalculating
         NotificationCenter.default.addObserver(self, selector: #selector(RecipeDetailsViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
