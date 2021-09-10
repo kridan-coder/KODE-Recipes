@@ -93,7 +93,7 @@ class RecipeTableViewCellSK: UITableViewCell {
         
         labelsContainer.snp.makeConstraints { make in
             make.top.bottom.leading.equalToSuperview().inset(18)
-            make.trailing.equalTo(recipeImageView.snp.left).offset(-20)
+            make.trailing.equalTo(recipeImageView.snp.leading).offset(-20)
         }
         labelsContainer.addArrangedSubview(titleLabel)
         labelsContainer.addArrangedSubview(descriptionLabel)

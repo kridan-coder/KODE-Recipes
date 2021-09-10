@@ -12,16 +12,6 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: IBOutlets
     
-    //@IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var lastUpdateLabel: UILabel!
-    @IBOutlet weak var difficultyLevelImage: UIImageView!
-    @IBOutlet weak var recipeNameLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var descriptionTextView: UITextView!
-    @IBOutlet weak var instructionsTextView: UITextView!
-    @IBOutlet weak var pageControl: UIPageControl!
-    @IBOutlet weak var collectionView: UICollectionView!
-    
     private let contentView = RecipeDetailsViewControllerSK()
     private let scrollView = UIScrollView()
     
@@ -44,17 +34,17 @@ class RecipeDetailsViewController: UIViewController {
     }
     
     private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        ImageCollectionViewCellViewModel.registerCell(collectionView: self.collectionView)
+        contentView.recipeImagesCollectionView.delegate = self
+        contentView.recipeImagesCollectionView.dataSource = self
+        ImageCollectionViewCellViewModel.registerCell(collectionView: self.contentView.recipeImagesCollectionView)
     }
     
     private func setupAppearance() {
-        difficultyLevelImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        difficultyLevelImage.layer.borderWidth = Constants.Design.borderWidthSecondary
-        difficultyLevelImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
-        instructionsTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        descriptionTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
+//        difficultyLevelImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
+//        difficultyLevelImage.layer.borderWidth = Constants.Design.borderWidthSecondary
+//        difficultyLevelImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
+//        instructionsTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
+//        descriptionTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
         refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
     }
     
@@ -68,7 +58,13 @@ class RecipeDetailsViewController: UIViewController {
         bindToViewModel()
         viewModel.reloadData()
         
+        view.addSubview(scrollView)
         
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        scrollView.addSubview(contentView)
         
         // this notification is needed for correct cell size recalculating
         NotificationCenter.default.addObserver(self, selector: #selector(RecipeDetailsViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -85,8 +81,8 @@ class RecipeDetailsViewController: UIViewController {
     // MARK: Actions
     
     @objc func rotated() {
-        collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.scrollToItem(at: IndexPath(item: pageControl.currentPage, section: 0), at: .centeredHorizontally, animated: false)
+        contentView.recipeImagesCollectionView.collectionViewLayout.invalidateLayout()
+        contentView.recipeImagesCollectionView.scrollToItem(at: IndexPath(item: contentView.pageControl.currentPage, section: 0), at: .centeredHorizontally, animated: false)
     }
     
     @objc func refresh() {
@@ -94,12 +90,12 @@ class RecipeDetailsViewController: UIViewController {
     }
     
     func setupRecipeData(recipe: RecipeDataForDetails) {
-        pageControl.numberOfPages = recipe.imageLinks.count
-        recipeNameLabel.text = recipe.name
-        instructionsTextView.text = recipe.instructions
-        descriptionTextView.text = recipe.description
-        lastUpdateLabel.text = recipe.lastUpdated
-        difficultyLevelImage.image = recipe.difficultyImage
+        contentView.pageControl.numberOfPages = recipe.imageLinks.count
+        contentView.recipeNameLabel.text = recipe.name
+        contentView.instructionTextLabel.text = recipe.instructions
+        contentView.descriptionTextLabel.text = recipe.description
+        contentView.timestampLabel.text = recipe.lastUpdated
+        //difficultyLevelImage.image = recipe.difficultyImage
     }
     
     // MARK: ViewModel
@@ -123,7 +119,7 @@ class RecipeDetailsViewController: UIViewController {
         if let recipe = viewModel.recipe {
             images = viewModel.imagesViewModels
             setupRecipeData(recipe: recipe)
-            collectionView.reloadData()
+            contentView.recipeImagesCollectionView.reloadData()
         }
         refreshControl.endRefreshing()
     }
@@ -141,7 +137,7 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
     
     // TODO: Not sure that this function is a nice decision. Need to rethink and make it work faster
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        pageControl.currentPage = Int(scrollView.contentOffset.x / collectionView.frame.size.width)
+        contentView.pageControl.currentPage = Int(scrollView.contentOffset.x / contentView.recipeImagesCollectionView.frame.size.width)
     }
     
 }
