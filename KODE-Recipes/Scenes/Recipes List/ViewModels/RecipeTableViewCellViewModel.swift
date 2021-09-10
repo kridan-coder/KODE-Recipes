@@ -31,11 +31,11 @@ final class RecipeTableViewCellViewModel {
 extension RecipeTableViewCellViewModel: TableViewCellRepresentable {
     
     static func registerCell(tableView: UITableView) {
-        RecipeTableViewCell.registerCell(tableView: tableView)
+        RecipeTableViewCellSK.registerCell(tableView: tableView)
     }
     
     func dequeueCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        let cell = RecipeTableViewCell.dequeueCell(tableView: tableView, indexPath: indexPath)
+        let cell = RecipeTableViewCellSK.dequeueCell(tableView: tableView, indexPath: indexPath)
         cell.setupCellData(viewModel: self)
         return cell
     }

@@ -177,8 +177,8 @@ final class Repository {
     private func getDateForRecipeCell(lastUpdated: Double) -> String {
         let date = Date(timeIntervalSince1970: lastUpdated)
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, yyyy"
-        return Constants.DateDummy.recipeCell + formatter.string(from: date)
+        formatter.dateFormat = "dd.MM.yyyy"
+        return formatter.string(from: date)
     }
     
     private func getDateForRecipeDetails(lastUpdated: Double) -> String {
