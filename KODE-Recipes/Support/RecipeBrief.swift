@@ -8,8 +8,8 @@
 import Foundation
 
 struct RecipeBrief: Decodable {
-    var uuid: String? = nil
-    var name: String? = nil
-    var image: String? = nil
+    let uuid: String
+    let name: String
+    let image: String
 }
 

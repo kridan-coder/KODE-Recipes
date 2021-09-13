@@ -8,5 +8,5 @@
 import Foundation
 
 struct RecipeResponse: Decodable {
-    var recipe: RecipeListElement? = nil
+    let recipe: RecipeListElement
 }

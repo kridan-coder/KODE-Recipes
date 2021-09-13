@@ -29,7 +29,6 @@ final class RecipesListViewModel {
     // MARK: Actions
     
     var didReceiveError: ((String) -> Void)?
-    var didNotFindInternetConnection: (() -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
     
@@ -37,13 +36,7 @@ final class RecipesListViewModel {
     
     func reloadData() {
         self.didStartUpdating?()
-        
-        if repository.isConnectedToNetwork() {
-            getDataFromNetwork()
-        }
-        else {
-            didNotFindInternetConnection?()
-        }
+        getDataFromNetwork()
     }
     
     func filterRecipesForSearchText(searchText: String?, scope: SearchCase?) -> [RecipeTableViewCellViewModel] {
@@ -83,15 +76,15 @@ final class RecipesListViewModel {
             case .success(let recipesContainer):
                 
                 // set viewModels
-                self.recipesViewModels = recipesContainer.recipes?.map {
+                self.recipesViewModels = recipesContainer.recipes.compactMap {
                     let recipe = self.repository.recipeAPIToRecipeForCell($0)
                     return self.viewModelFor(recipe)
-                } ?? []
+                }
     
                 self.didFinishUpdating?()
                 
             case .failure(let error):
-                print(error)
+                // TODO: - pass error to didReceiveError method
                 self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
             }
             

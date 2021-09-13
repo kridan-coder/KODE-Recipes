@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SystemConfiguration
 import RealmSwift
 
 final class Repository {
@@ -22,29 +21,6 @@ final class Repository {
     }
     
     // MARK: Actions
-    
-    func isConnectedToNetwork() -> Bool {
-        var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
-        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-        zeroAddress.sin_family = sa_family_t(AF_INET)
-        
-        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { zeroSockAddress in
-                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
-            }
-        }
-        
-        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
-        if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
-            return false
-        }
-        
-        let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
-        let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-        let result = (isReachable && !needsConnection)
-        
-        return result
-    }
     
     // converting
     
@@ -80,7 +56,7 @@ final class Repository {
     }
     
     private func recipeAPItoRecipeRaw(_ recipeAC: RecipeListElement) -> RecipeDataRaw {
-        return RecipeDataRaw(recipeID: recipeAC.uuid!, name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
+        return RecipeDataRaw(recipeID: recipeAC.uuid, name: formatText(recipeAC.name), imageLinks: recipeAC.images, lastUpdated: recipeAC.lastUpdated, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions), difficulty: recipeAC.difficulty)
     }
     
     // filtering and sorting
@@ -139,11 +115,8 @@ final class Repository {
     
     // MARK: Helpers
     
-    private func formatText(_ text: String?) -> String? {
-        guard let text = text else {
-            return nil
-        }
-        return text.replacingOccurrences(of: "<br>", with: "\n")
+    private func formatText(_ text: String?) -> String {
+        return text?.replacingOccurrences(of: "<br>", with: "\n") ?? ""
     }
     
     private func getDateForRecipeCell(lastUpdated: Double) -> String {

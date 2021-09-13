@@ -102,9 +102,6 @@ class RecipesListViewController: UIViewController {
         viewModel.didFinishUpdating = { [weak self] in
             self?.viewModelDidFinishUpdating()
         }
-        viewModel.didNotFindInternetConnection = { [weak self] in
-            self?.viewModelDidNotFindInternetConnection()
-        }
         viewModel.didReceiveError = { [weak self] error in
             self?.viewModelDidReceiveError(error: error)
         }
@@ -125,13 +122,10 @@ class RecipesListViewController: UIViewController {
         tableView.reloadData()
     }
     
-    private func viewModelDidNotFindInternetConnection() {
-        let alert = UIAlertController(title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternetTable, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-        present(alert, animated: true)
-    }
-    
     private func viewModelDidReceiveError(error: String) {
+        
+        // TODO: - handle error with no intenrnet connection
+        
         let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
         present(alert, animated: true)

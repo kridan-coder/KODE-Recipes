@@ -301,10 +301,10 @@
 		934DA526266773140037D829 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				448B049826E6246B00ADD046 /* RecipeListElement.swift */,
 				448B049A26E624A200ADD046 /* Recipe.swift */,
 				448B049C26E624F500ADD046 /* RecipeBrief.swift */,
 				449B77F726E7505300974C81 /* RecipeListResponse.swift */,
+				448B049826E6246B00ADD046 /* RecipeListElement.swift */,
 				449B77F926E7507F00974C81 /* RecipeResponse.swift */,
 			);
 			name = Models;

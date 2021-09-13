@@ -39,21 +39,12 @@ final class RecipeDetailsViewModel {
     var didReceiveError: ((String) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
-    var didNotFindInternetConnection: (() -> Void)?
     
     // MARK: Service
     
     func reloadData() {
         self.didStartUpdating?()
-        
-        if repository.isConnectedToNetwork() {
-            getDataFromNetwork()
-        }
-        else {
-            didNotFindInternetConnection?()
-        }
-        
-        //getDataFromDatabase()
+        getDataFromNetwork()
     }
     
     func viewWillDisappear() {
@@ -73,66 +64,22 @@ final class RecipeDetailsViewModel {
         ImageCollectionViewCellViewModel(imageLink: imageLink)
     }
     
-//    private func getDataFromDatabase() {
-//        if let recipeDC = repository.databaseClient?.getObjectByPrimaryKey(ofType: RecipeDataForDC.self, primaryKey: recipeID) {
-//            recipe = repository.recipeDCToRecipeForDetails(recipeDC)
-//        }
-//        else {
-//            self.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
-//        }
-//        self.didFinishUpdating?()
-//    }
-    
     private func getDataFromNetwork() {
         
         repository.apiClient?.getRecipe(uuid: recipeID) { [weak self] response in
             
             switch response {
-            case .success(let recipeContainer):
-                
-                if let safeRecipe = recipeContainer.recipe {
-                    self?.recipe = self?.repository.recipeAPIToRecipeForDetails(safeRecipe)
-                }
-                else {
-                    self?.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
-                }
             
+            case .success(let recipeContainer):
+                self?.recipe = self?.repository.recipeAPIToRecipeForDetails(recipeContainer.recipe)
                 self?.didFinishUpdating?()
                 
             case .failure(let error):
-                print(error)
+                // TODO: - pass error to didReceiveError method
                 self?.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
             }
-        
             
         }
-        
-//        repository.apiClient?.getRecipe(uuid: recipeID, onSuccess: { APIrecipe in
-//            guard let recipeSafe = APIrecipe else {
-//                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
-//                return
-//            }
-//            
-//            self.recipe = recipeSafe
-//            
-//            // received data should be saved locally
-////            let recipesDC = recipes.map {
-////                return self.repository.recipeACtoRecipeDC($0)
-////            }
-//            //self.repository.databaseClient?.saveObjects(recipesDC)
-//            
-//            // set viewModels
-////            self.recipesViewModels = recipes.map {
-////                let recipe = self.repository.recipeAPIToRecipeForCell($0)
-////                return self.viewModelFor(recipe: recipe)
-////            }
-//            
-//            self.didFinishUpdating?()
-//            
-//        }, onFailure: { error in
-//            self.didFinishUpdating?()
-//            self.didReceiveError?(error)
-//        })
     }
     
 }

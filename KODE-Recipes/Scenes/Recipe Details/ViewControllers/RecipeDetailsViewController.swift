@@ -88,13 +88,13 @@ class RecipeDetailsViewController: UIViewController {
         viewModel.reloadData()
     }
     
-    func setupRecipeData(_ recipe: RecipeDataForDetails) {
-        pageControl.numberOfPages = recipe.imageLinks.count
-        recipeNameLabel.text = recipe.name
-        instructionsTextView.text = recipe.instructions
-        descriptionTextView.text = recipe.description
-        lastUpdateLabel.text = recipe.lastUpdated
-        difficultyLevelImage.image = recipe.difficultyImage
+    func setupRecipeData(numberOfPages: Int, recipeName: String, instructions: String, description: String, lastUpdate: String, difficultyImage: UIImage) {
+        pageControl.numberOfPages = numberOfPages
+        recipeNameLabel.text = recipeName
+        instructionsTextView.text = instructions
+        descriptionTextView.text = description
+        lastUpdateLabel.text = lastUpdate
+        difficultyLevelImage.image = difficultyImage
     }
     
     // MARK: ViewModel
@@ -109,24 +109,15 @@ class RecipeDetailsViewController: UIViewController {
         viewModel.didReceiveError = { [weak self] error in
             self?.viewModelDidReceiveError(error: error)
         }
-        viewModel.didNotFindInternetConnection = { [weak self] in
-            self?.viewModelDidNotFindInternetConnection()
-        }
     }
     
     private func viewModelDidStartUpdating() {
     }
     
-    private func viewModelDidNotFindInternetConnection() {
-        let alert = UIAlertController(title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternetTable, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-        present(alert, animated: true)
-    }
-    
     private func viewModelDidFinishUpdating() {
         if let recipe = viewModel.recipe {
             images = viewModel.imagesViewModels
-            setupRecipeData(recipe)
+            setupRecipeData(numberOfPages: recipe.imageLinks.count, recipeName: recipe.name, instructions: recipe.instructions, description: recipe.description, lastUpdate: recipe.lastUpdated, difficultyImage: recipe.difficultyImage ?? UIImage())
             collectionView.reloadData()
         }
         refreshControl.endRefreshing()
@@ -134,6 +125,9 @@ class RecipeDetailsViewController: UIViewController {
     
     
     private func viewModelDidReceiveError(error: String) {
+        
+        // TODO: - handle error with no internet connection
+        
         let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
         present(alert, animated: true)
