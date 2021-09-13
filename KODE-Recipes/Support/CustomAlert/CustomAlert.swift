@@ -13,6 +13,7 @@ protocol CustomAlertDisplaying {
     var targetView: UIView { get }
     
     func setupCustomAlert(_ alertView: ErrorPageView)
+    func removeCustomAlert(_ alertView: ErrorPageView)
     
     func showCustomAlert(_ alertView: ErrorPageView, title: String, message: String, buttonText: String)
     func hideCustomAlert(_ alertView: ErrorPageView)
@@ -34,6 +35,10 @@ extension CustomAlertDisplaying where Self: UIViewController {
         alertView.didPressButton = {
             self.handleButtonTap()
         }
+    }
+    
+    func removeCustomAlert(_ alertView: ErrorPageView) {
+        alertView.removeFromSuperview()
     }
     
     func showCustomAlert(_ alertView: ErrorPageView, title: String, message: String, buttonText: String) {

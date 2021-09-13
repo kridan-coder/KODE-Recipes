@@ -86,19 +86,19 @@ class ErrorPageView: UIView {
     }
     
     private func setupTitleLabel() {
-        titleTextLabel.font = UIFont.systemFont(ofSize: UIFont.big, weight: .semibold)
+        titleTextLabel.font = UIFont.big
         titleTextLabel.numberOfLines = 0
     }
     
     private func setupDescriptionLabel() {
         descriptionTextLabel.numberOfLines = 0
         descriptionTextLabel.textAlignment = .center
-        descriptionTextLabel.font = UIFont.systemFont(ofSize: UIFont.standart, weight: .light)
+        descriptionTextLabel.font = UIFont.standart
     }
     
     private func setupRefreshButton() {
         mainButton.backgroundColor = .none
-        mainButton.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.standart, weight: .light)
+        mainButton.titleLabel?.font = UIFont.standart
         mainButton.setTitleColor(.systemBlue, for: .normal)
         mainButton.setTitleColor(.black, for: .selected)
         mainButton.layer.cornerRadius = Constants.Design.cornerRadiusError

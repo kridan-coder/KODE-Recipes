@@ -9,6 +9,6 @@ import Foundation
 import UIKit
 
 extension UIFont {
-    static let standart = CGFloat(18)
-    static let big = CGFloat(24)
+    static let standart = UIFont.systemFont(ofSize: 18)
+    static let big = UIFont.systemFont(ofSize: 24)
 }

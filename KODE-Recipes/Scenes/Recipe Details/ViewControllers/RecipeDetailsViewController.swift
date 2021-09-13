@@ -12,13 +12,12 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Properties
     
-    var viewModel: RecipeDetailsViewModel!
+    let viewModel: RecipeDetailsViewModel
     
-    private var images: [ImageCollectionViewCellViewModel] = []
     private let alertView = ErrorPageView()
     
     // Elements set in code
-    private var refreshControl = UIRefreshControl()
+    private let refreshControl = UIRefreshControl()
     
     // MARK: - IBOutlets
     
@@ -34,6 +33,17 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Init
     
+    init(viewModel: RecipeDetailsViewModel)   {
+        self.viewModel = viewModel
+        super.init(nibName: "RecipeDetailsViewController", bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
@@ -42,27 +52,18 @@ class RecipeDetailsViewController: UIViewController {
         bindToViewModel()
         viewModel.reloadData()
         setupCustomAlert(alertView)
-        
-        // this notification is needed for correct cell size recalculating
-        NotificationCenter.default.addObserver(self, selector: #selector(RecipeDetailsViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
-    
-    // MARK: - Lifecycle
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         if self.isMovingFromParent {
+            removeCustomAlert(alertView)
             viewModel.viewWillDisappear()
         }
     }
     
     // MARK: - Actions
-    
-    @objc func rotated() {
-        collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.scrollToItem(at: IndexPath(item: pageControl.currentPage, section: 0), at: .centeredHorizontally, animated: false)
-    }
     
     @objc private func refresh() {
         viewModel.reloadData()
@@ -125,7 +126,6 @@ class RecipeDetailsViewController: UIViewController {
     
     private func didFinishUpdating() {
         if let recipe = viewModel.recipe {
-            images = viewModel.imagesViewModels
             setupRecipeData(recipe: recipe)
             collectionView.reloadData()
         }
@@ -165,11 +165,11 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
 extension RecipeDetailsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        images.count
+        viewModel.images.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        images[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        viewModel.images[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
     }
     
 }

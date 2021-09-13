@@ -18,11 +18,11 @@ final class RecipeDetailsViewModel {
     
     weak var coordinatorDelegate: RecipeViewModelCoordinatorDelegate?
     
-    var imagesViewModels: [ImageCollectionViewCellViewModel] = []
+    var images: [ImageCollectionViewCellViewModel] = []
     
     var recipe: RecipeDataForDetails? {
         didSet {
-            imagesViewModels = recipe!.imageLinks.map { viewModelFor(imageLink: $0) }
+            images = recipe!.imageLinks.map { viewModelFor(imageLink: $0) }
         }
     }
     

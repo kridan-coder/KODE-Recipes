@@ -11,7 +11,7 @@ class RecipesListViewController: UIViewController {
     
     // MARK: Properties
     
-    var viewModel: RecipesListViewModel!
+    let viewModel: RecipesListViewModel
     
     private var filteredRecipes: [RecipeTableViewCellViewModel] = []
     private var currentSearchCase: SearchCase {
@@ -26,7 +26,7 @@ class RecipesListViewController: UIViewController {
     }
     
     // Elements set in code
-    private var refreshControl = UIRefreshControl()
+    private let refreshControl = UIRefreshControl()
     private let alertView = ErrorPageView()
     
     // MARK: IBOutlets
@@ -38,6 +38,17 @@ class RecipesListViewController: UIViewController {
     
     // MARK: Init
     
+    init(viewModel: RecipesListViewModel)   {
+        self.viewModel = viewModel
+        super.init(nibName: "RecipesListViewController", bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
@@ -47,6 +58,14 @@ class RecipesListViewController: UIViewController {
         bindToViewModel()
         viewModel.reloadData()
         setupCustomAlert(alertView)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            removeCustomAlert(alertView)
+        }
     }
     
     // MARK: Actions
