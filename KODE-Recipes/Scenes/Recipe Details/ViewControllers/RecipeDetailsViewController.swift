@@ -12,8 +12,17 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: IBOutlets
     
-    private let contentView = RecipeDetailsViewControllerSK()
+    //private let contentView = RecipeDetailsViewSK()
     private let scrollView = UIScrollView()
+    
+    var contentView: RecipeDetailsViewSK {
+        return view as? RecipeDetailsViewSK ?? RecipeDetailsViewSK()
+    }
+
+    override func loadView() {
+        view = RecipeDetailsViewSK()
+    }
+    
     
     // MARK: Elements set in code
     
@@ -46,6 +55,7 @@ class RecipeDetailsViewController: UIViewController {
 //        instructionsTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
 //        descriptionTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
         refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
+        view.backgroundColor = .white
     }
     
     // MARK: Lifecycle
@@ -54,17 +64,11 @@ class RecipeDetailsViewController: UIViewController {
         super.viewDidLoad()
         setupAppearance()
         setupCollectionView()
-        setupRefreshControl()
+        //setupRefreshControl()
         bindToViewModel()
         viewModel.reloadData()
         
-        view.addSubview(scrollView)
-        
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        scrollView.addSubview(contentView)
+
         
         // this notification is needed for correct cell size recalculating
         NotificationCenter.default.addObserver(self, selector: #selector(RecipeDetailsViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -98,6 +102,7 @@ class RecipeDetailsViewController: UIViewController {
         //difficultyLevelImage.image = recipe.difficultyImage
     }
     
+    
     // MARK: ViewModel
     
     private func bindToViewModel() {
@@ -113,6 +118,7 @@ class RecipeDetailsViewController: UIViewController {
     }
     
     private func viewModelDidStartUpdating() {
+        // TODO: - add logic on starting update
     }
     
     private func viewModelDidFinishUpdating() {

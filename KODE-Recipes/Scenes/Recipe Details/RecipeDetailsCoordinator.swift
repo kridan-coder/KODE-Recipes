@@ -45,7 +45,7 @@ final class RecipeDetailsCoordinator: Coordinator {
         let recipeViewController: RecipeDetailsViewController! = {
             let viewController = RecipeDetailsViewController()
             viewController.viewModel = recipeViewModel
-            viewController.title = Constants.NavigationBarTitle.recipeDetails
+            viewController.navigationController?.navigationBar.prefersLargeTitles = false
             return viewController
         }()
         

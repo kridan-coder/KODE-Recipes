@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-final class RecipeDetailsViewControllerSK: UIView {
+final class RecipeDetailsViewSK: UIView {
     
     // MARK: - Properties
     let recipeImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
-    //let recommendationImagesCollectionView = UICollectionView()
+    let recommendationImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
     let pageControl = UIPageControl()
     let recipeNameLabel = UILabel()
     let timestampLabel = UILabel()
@@ -22,6 +22,8 @@ final class RecipeDetailsViewControllerSK: UIView {
     let instructionTitleLabel = UILabel()
     let instructionTextLabel = UILabel()
     let recommendedTitleLabel = UILabel()
+    let scrollView = UIScrollView()
+    let contentView = UIView()
     
     // MARK: - Init
     
@@ -50,14 +52,27 @@ final class RecipeDetailsViewControllerSK: UIView {
     // MARK: - Private Methods
     
     private func createConstraints() {
-        addSubview(recipeImagesCollectionView)
+    
+        addSubview(scrollView)
+        
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        scrollView.addSubview(contentView)
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        contentView.addSubview(recipeImagesCollectionView)
         recipeImagesCollectionView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(300)
         }
         
-        addSubview(timestampLabel)
-        addSubview(recipeNameLabel)
+        contentView.addSubview(timestampLabel)
+        contentView.addSubview(recipeNameLabel)
         timestampLabel.snp.makeConstraints { make in
             make.bottom.equalTo(recipeNameLabel.snp.bottom)
             make.trailing.equalToSuperview().inset(20)
@@ -69,49 +84,44 @@ final class RecipeDetailsViewControllerSK: UIView {
             make.trailing.equalTo(timestampLabel.snp.leading).offset(-20)
         }
         
-        addSubview(descriptionTextLabel)
+        contentView.addSubview(descriptionTextLabel)
         descriptionTextLabel.snp.makeConstraints { make in
             make.top.equalTo(recipeNameLabel.snp.bottom).inset(20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
-        addSubview(difficultyTitleLabel)
+        contentView.addSubview(difficultyTitleLabel)
         difficultyTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(descriptionTextLabel.snp.bottom).inset(20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
-        addSubview(difficultyImagesCollection)
+        contentView.addSubview(difficultyImagesCollection)
         difficultyImagesCollection.snp.makeConstraints { make in
             make.top.equalTo(difficultyTitleLabel.snp.bottom).inset(20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
-        addSubview(instructionTitleLabel)
+        contentView.addSubview(instructionTitleLabel)
         instructionTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(difficultyImagesCollection.snp.bottom).inset(20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
-        addSubview(instructionTextLabel)
+        contentView.addSubview(instructionTextLabel)
         instructionTextLabel.snp.makeConstraints { make in
             make.top.equalTo(instructionTitleLabel.snp.bottom).inset(20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
-        addSubview(recommendedTitleLabel)
+        contentView.addSubview(recommendedTitleLabel)
         recommendedTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(instructionTextLabel.snp.bottom).inset(20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
-//        addSubview(recommendationImagesCollectionView)
-//        recommendationImagesCollectionView.snp.makeConstraints { make in
-//            make.top.equalTo(recommendedTitleLabel.snp.bottom).inset(20)
-//            make.leading.trailing.equalToSuperview().inset(20)
-//        }
         
-        addSubview(pageControl)
+        contentView.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
             make.bottom.equalTo(recipeImagesCollectionView.snp.bottom)
             make.centerX.equalTo(recipeImagesCollectionView.snp.centerX)
@@ -120,7 +130,7 @@ final class RecipeDetailsViewControllerSK: UIView {
     }
     
     private func setupTargets() {
-        
+        // TODO: - make and setup targets
     }
     
     private func initializeUI() {
@@ -167,9 +177,6 @@ final class RecipeDetailsViewControllerSK: UIView {
         difficultyImagesCollection.axis = .horizontal
         difficultyImagesCollection.alignment = .firstBaseline
     }
-    
-    
-    
     
 }
 
