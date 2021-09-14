@@ -9,18 +9,6 @@ import Foundation
 import UIKit
 import SnapKit
 
-//// MARK: - Types
-//// MARK: - Properties (сначала идут публичные, потом приватные)
-//// MARK: - IBOutlets (всегда приватные)
-//// MARK: - Init
-//// MARK: - Lifecycle
-//// MARK: - Public Methods
-//// MARK: - Actions (@ojbc + @IBActions)
-//// MARK: - Private Methods
-//
-//// MARK: - SomeProtocol (для расширений)
-//extension SomeClass: SomeProtocol
-
 final class RecipesListView: UIView {
     
     // MARK: - Properties
@@ -74,8 +62,6 @@ final class RecipesListView: UIView {
         sortByButton.setTitleColor(.systemGray, for: .normal)
         
     }
-    
- 
     
 }
 

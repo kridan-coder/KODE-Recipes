@@ -161,13 +161,13 @@ final class RecipeDetailsViewSK: UIView {
     }
     
     private func setupTitleLabels() {
-        recommendedTitleLabel.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        recommendedTitleLabel.font = UIFont.systemFont(ofSize: 23, weight: .regular)
         recommendedTitleLabel.textColor = .darkGray
         
-        instructionTitleLabel.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        instructionTitleLabel.font = UIFont.systemFont(ofSize: 23, weight: .regular)
         instructionTitleLabel.textColor = .darkGray
         
-        difficultyTitleLabel.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        difficultyTitleLabel.font = UIFont.systemFont(ofSize: 23, weight: .regular)
         difficultyTitleLabel.textColor = .darkGray
     }
     
@@ -183,7 +183,7 @@ final class RecipeDetailsViewSK: UIView {
     
     private func setupRecipeNameLabel() {
         recipeNameLabel.numberOfLines = 2
-        recipeNameLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
+        recipeNameLabel.font = UIFont.systemFont(ofSize: 30, weight: .bold)
         recipeNameLabel.textColor = .darkGray
         
     }
