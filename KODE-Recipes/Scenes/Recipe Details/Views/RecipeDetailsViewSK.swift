@@ -11,7 +11,7 @@ import UIKit
 final class RecipeDetailsViewSK: UIView {
     
     // MARK: - Properties
-    let recipeImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
+    var recipeImagesCollectionView: UICollectionView
     let recommendationImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
     let pageControl = UIPageControl()
     let recipeNameLabel = UILabel()
@@ -28,11 +28,14 @@ final class RecipeDetailsViewSK: UIView {
     // MARK: - Init
     
     init() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        recipeImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        
         super.init(frame: CGRect.zero)
         initializeUI()
         createConstraints()
         setupTargets()
-        isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -62,7 +65,8 @@ final class RecipeDetailsViewSK: UIView {
         scrollView.addSubview(contentView)
         
         contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.bottom.equalTo(scrollView)
+            make.leading.trailing.equalTo(self)
         }
         
         contentView.addSubview(recipeImagesCollectionView)
@@ -71,61 +75,73 @@ final class RecipeDetailsViewSK: UIView {
             make.height.equalTo(300)
         }
         
+        contentView.addSubview(pageControl)
+        pageControl.snp.makeConstraints { make in
+            make.bottom.equalTo(recipeImagesCollectionView.snp.bottom)
+            make.centerX.equalTo(recipeImagesCollectionView.snp.centerX)
+        }
+        
         contentView.addSubview(timestampLabel)
         contentView.addSubview(recipeNameLabel)
         timestampLabel.snp.makeConstraints { make in
             make.bottom.equalTo(recipeNameLabel.snp.bottom)
             make.trailing.equalToSuperview().inset(20)
         }
-        
+
         recipeNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(recipeImagesCollectionView.snp.bottom).inset(20)
+            make.top.equalTo(recipeImagesCollectionView.snp.bottom).inset(-20)
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalTo(timestampLabel.snp.leading).offset(-20)
         }
-        
+
         contentView.addSubview(descriptionTextLabel)
         descriptionTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(recipeNameLabel.snp.bottom).inset(20)
+            make.top.equalTo(recipeNameLabel.snp.bottom).inset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
-        
+
         contentView.addSubview(difficultyTitleLabel)
         difficultyTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(descriptionTextLabel.snp.bottom).inset(20)
+            make.top.equalTo(descriptionTextLabel.snp.bottom).inset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
-        
+
         contentView.addSubview(difficultyImagesCollection)
         difficultyImagesCollection.snp.makeConstraints { make in
-            make.top.equalTo(difficultyTitleLabel.snp.bottom).inset(20)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(difficultyTitleLabel.snp.bottom).inset(-20)
+            make.leading.equalToSuperview().inset(20)
+            make.trailing.lessThanOrEqualToSuperview().inset(20)
+            //make.height.equalTo(50)
         }
-        
+
         contentView.addSubview(instructionTitleLabel)
         instructionTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(difficultyImagesCollection.snp.bottom).inset(20)
+            make.top.equalTo(difficultyImagesCollection.snp.bottom).inset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
-        
+
         contentView.addSubview(instructionTextLabel)
         instructionTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(instructionTitleLabel.snp.bottom).inset(20)
+            make.top.equalTo(instructionTitleLabel.snp.bottom).inset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
-        
+
         contentView.addSubview(recommendedTitleLabel)
         recommendedTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(instructionTextLabel.snp.bottom).inset(20)
+            make.top.equalTo(instructionTextLabel.snp.bottom).inset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
+
         }
-        
-        
-        contentView.addSubview(pageControl)
-        pageControl.snp.makeConstraints { make in
-            make.bottom.equalTo(recipeImagesCollectionView.snp.bottom)
-            make.centerX.equalTo(recipeImagesCollectionView.snp.centerX)
+
+        contentView.addSubview(recommendationImagesCollectionView)
+        recommendationImagesCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(recommendedTitleLabel.snp.bottom).inset(-20)
+            make.bottom.equalTo(contentView).inset(20)
+            make.leading.trailing.equalTo(contentView)
+            make.height.equalTo(200)
         }
+
+
         
     }
     
@@ -135,35 +151,39 @@ final class RecipeDetailsViewSK: UIView {
     
     private func initializeUI() {
         backgroundColor = .white
+        scrollView.showsVerticalScrollIndicator = false
         setupTitleLabels()
         setupTextLabels()
         setupRecipeNameLabel()
         setupTimestampLabel()
+        setupRecipeImagesCollection()
         setupDifficultyImagesCollection()
     }
     
     private func setupTitleLabels() {
-        recommendedTitleLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        recommendedTitleLabel.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         recommendedTitleLabel.textColor = .darkGray
         
-        instructionTitleLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        instructionTitleLabel.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         instructionTitleLabel.textColor = .darkGray
         
-        difficultyTitleLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        difficultyTitleLabel.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         difficultyTitleLabel.textColor = .darkGray
     }
     
     private func setupTextLabels() {
         instructionTextLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         instructionTextLabel.textColor = .gray
+        instructionTextLabel.numberOfLines = 0
         
         descriptionTextLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         descriptionTextLabel.textColor = .gray
+        descriptionTextLabel.numberOfLines = 0
     }
     
     private func setupRecipeNameLabel() {
         recipeNameLabel.numberOfLines = 2
-        recipeNameLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        recipeNameLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
         recipeNameLabel.textColor = .darkGray
         
     }
@@ -175,7 +195,15 @@ final class RecipeDetailsViewSK: UIView {
     
     private func setupDifficultyImagesCollection() {
         difficultyImagesCollection.axis = .horizontal
-        difficultyImagesCollection.alignment = .firstBaseline
+        difficultyImagesCollection.distribution = .fillEqually
+        difficultyImagesCollection.alignment = .leading
+        difficultyImagesCollection.spacing = 20
+    }
+    
+    private func setupRecipeImagesCollection() {
+        recipeImagesCollectionView.showsHorizontalScrollIndicator = false
+        recipeImagesCollectionView.isPagingEnabled = true
+        recipeImagesCollectionView.backgroundColor = .white
     }
     
 }
@@ -188,4 +216,3 @@ private extension Constants {
         static let placeholder = "Search"
     }
 }
-

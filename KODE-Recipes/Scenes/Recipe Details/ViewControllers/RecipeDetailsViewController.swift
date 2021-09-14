@@ -13,7 +13,7 @@ class RecipeDetailsViewController: UIViewController {
     // MARK: IBOutlets
     
     //private let contentView = RecipeDetailsViewSK()
-    private let scrollView = UIScrollView()
+    //private let scrollView = UIScrollView()
     
     var contentView: RecipeDetailsViewSK {
         return view as? RecipeDetailsViewSK ?? RecipeDetailsViewSK()
@@ -26,26 +26,23 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: Elements set in code
     
-    private var refreshControl = UIRefreshControl()
+  
     
     // MARK: Public
     
     var viewModel: RecipeDetailsViewModel!
     
-    // MARK: Properties
-    private var images: [ImageCollectionViewCellViewModel] = []
+
     
     // MARK: Helpers
     
-    private func setupRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(RecipeDetailsViewController.refresh), for: .valueChanged)
-        scrollView.addSubview(refreshControl)
-    }
+
     
     private func setupCollectionView() {
         contentView.recipeImagesCollectionView.delegate = self
         contentView.recipeImagesCollectionView.dataSource = self
         ImageCollectionViewCellViewModel.registerCell(collectionView: self.contentView.recipeImagesCollectionView)
+        contentView.recipeImagesCollectionView.reloadData()
     }
     
     private func setupAppearance() {
@@ -54,24 +51,20 @@ class RecipeDetailsViewController: UIViewController {
 //        difficultyLevelImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
 //        instructionsTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
 //        descriptionTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
-        view.backgroundColor = .white
+//        refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
     }
     
     // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupAppearance()
         setupCollectionView()
-        //setupRefreshControl()
         bindToViewModel()
         viewModel.reloadData()
         
 
-        
-        // this notification is needed for correct cell size recalculating
-        NotificationCenter.default.addObserver(self, selector: #selector(RecipeDetailsViewController.rotated), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,11 +77,6 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: Actions
     
-    @objc func rotated() {
-        contentView.recipeImagesCollectionView.collectionViewLayout.invalidateLayout()
-        contentView.recipeImagesCollectionView.scrollToItem(at: IndexPath(item: contentView.pageControl.currentPage, section: 0), at: .centeredHorizontally, animated: false)
-    }
-    
     @objc func refresh() {
         viewModel.reloadData()
     }
@@ -99,6 +87,31 @@ class RecipeDetailsViewController: UIViewController {
         contentView.instructionTextLabel.text = recipe.instructions
         contentView.descriptionTextLabel.text = recipe.description
         contentView.timestampLabel.text = recipe.lastUpdated
+        contentView.difficultyTitleLabel.text = "Difficulty"
+        contentView.instructionTitleLabel.text = "Instructions"
+        contentView.recommendedTitleLabel.text = "Recommendations"
+        let image1 = UIImage(named: "DifficultyTrue")
+        let imageView1 = UIImageView(image: image1)
+        
+        let image2 = UIImage(named: "DifficultyTrue")
+        let imageView2 = UIImageView(image: image2)
+        
+        let image3 = UIImage(named: "DifficultyTrue")
+        let imageView3 = UIImageView(image: image3)
+        
+        let image4 = UIImage(named: "DifficultyFalse")
+        let imageView4 = UIImageView(image: image4)
+        
+        let image5 = UIImage(named: "DifficultyFalse")
+        let imageView5 = UIImageView(image: image5)
+        
+        contentView.difficultyImagesCollection.addArrangedSubview(imageView1)
+        contentView.difficultyImagesCollection.addArrangedSubview(imageView2)
+        contentView.difficultyImagesCollection.addArrangedSubview(imageView3)
+        contentView.difficultyImagesCollection.addArrangedSubview(imageView4)
+        contentView.difficultyImagesCollection.addArrangedSubview(imageView5)
+        
+        contentView.recipeImagesCollectionView.reloadData()
         //difficultyLevelImage.image = recipe.difficultyImage
     }
     
@@ -123,11 +136,9 @@ class RecipeDetailsViewController: UIViewController {
     
     private func viewModelDidFinishUpdating() {
         if let recipe = viewModel.recipe {
-            images = viewModel.imagesViewModels
             setupRecipeData(recipe: recipe)
             contentView.recipeImagesCollectionView.reloadData()
         }
-        refreshControl.endRefreshing()
     }
     
     
@@ -151,12 +162,13 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
 extension RecipeDetailsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        images.count
+        viewModel.recipeImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        images[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        viewModel.recipeImages[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
     }
+    
     
 }
 

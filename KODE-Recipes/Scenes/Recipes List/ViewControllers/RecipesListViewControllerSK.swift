@@ -36,6 +36,7 @@ class RecipesListViewControllerSK: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.backButtonTitle = "Back"
         initializeUI()
         createConstraints()
 

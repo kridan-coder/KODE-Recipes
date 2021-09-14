@@ -45,7 +45,6 @@ final class RecipeDetailsCoordinator: Coordinator {
         let recipeViewController: RecipeDetailsViewController! = {
             let viewController = RecipeDetailsViewController()
             viewController.viewModel = recipeViewModel
-            viewController.navigationController?.navigationBar.prefersLargeTitles = false
             return viewController
         }()
         
@@ -62,6 +61,7 @@ final class RecipeDetailsCoordinator: Coordinator {
 
 extension RecipeDetailsCoordinator: RecipeViewModelCoordinatorDelegate {
     func viewWillDisappear() {
+        rootNavigationController.navigationBar.prefersLargeTitles = true
         self.finish()
     }
 }

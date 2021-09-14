@@ -64,6 +64,7 @@ extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
         let recipeDetailsCoordinator = RecipeDetailsCoordinator(rootNavigationController: rootNavigationController, repository: repository, recipeID: recipeID)
         recipeDetailsCoordinator.delegate = self
         addChildCoordinator(recipeDetailsCoordinator)
+        rootNavigationController.navigationBar.prefersLargeTitles = false
         recipeDetailsCoordinator.start()
     }
     

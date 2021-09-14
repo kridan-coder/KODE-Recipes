@@ -31,11 +31,11 @@ final class ImageCollectionViewCellViewModel {
 extension ImageCollectionViewCellViewModel: CollectionViewCellRepresentable {
     
     static func registerCell(collectionView: UICollectionView) {
-        ImageCollectionViewCell.registerCell(collectionView: collectionView)
+        RecipeCollectionViewCellSK.registerCell(collectionView: collectionView)
     }
     
     func dequeueCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = ImageCollectionViewCell.dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        let cell = RecipeCollectionViewCellSK.dequeueCell(collectionView: collectionView, indexPath: indexPath)
         cell.setupCellData(viewModel: self)
         return cell
     }
