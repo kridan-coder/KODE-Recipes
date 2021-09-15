@@ -38,11 +38,18 @@ class RecipeDetailsViewController: UIViewController {
     
 
     
-    private func setupCollectionView() {
+    private func setupRecipeImagesCollectionView() {
         contentView.recipeImagesCollectionView.delegate = self
         contentView.recipeImagesCollectionView.dataSource = self
         ImageCollectionViewCellViewModel.registerCell(collectionView: self.contentView.recipeImagesCollectionView)
         contentView.recipeImagesCollectionView.reloadData()
+    }
+    
+    private func setupRecipeImagesRecommendationsCollectionView() {
+        contentView.recommendationImagesCollectionView.delegate = self
+        contentView.recommendationImagesCollectionView.dataSource = self
+        RecommendedCollectionViewCellSK.registerCell(collectionView: self.contentView.recommendationImagesCollectionView)
+        
     }
     
     private func setupAppearance() {
@@ -60,7 +67,8 @@ class RecipeDetailsViewController: UIViewController {
         super.viewDidLoad()
 
         setupAppearance()
-        setupCollectionView()
+        setupRecipeImagesCollectionView()
+        setupRecipeImagesRecommendationsCollectionView()
         bindToViewModel()
         viewModel.reloadData()
         
@@ -87,29 +95,22 @@ class RecipeDetailsViewController: UIViewController {
         contentView.instructionTextLabel.text = recipe.instructions
         contentView.descriptionTextLabel.text = recipe.description
         contentView.timestampLabel.text = recipe.lastUpdated
-        contentView.difficultyTitleLabel.text = "Difficulty"
-        contentView.instructionTitleLabel.text = "Instructions"
-        contentView.recommendedTitleLabel.text = "Recommendations"
-        let image1 = UIImage(named: "DifficultyTrue")
-        let imageView1 = UIImageView(image: image1)
+        contentView.difficultyTitleLabel.text = "Difficulty:"
+        contentView.instructionTitleLabel.text = "Instruction:"
+        contentView.recommendedTitleLabel.text = "Recommended:"
         
-        let image2 = UIImage(named: "DifficultyTrue")
-        let imageView2 = UIImageView(image: image2)
+        for _ in 0..<recipe.difficultyLevel {
+            let image = UIImage(named: "DifficultyTrue")
+            let imageView = UIImageView(image: image)
+            contentView.difficultyImagesCollection.addArrangedSubview(imageView)
+        }
         
-        let image3 = UIImage(named: "DifficultyTrue")
-        let imageView3 = UIImageView(image: image3)
+        for _ in recipe.difficultyLevel..<5 {
+            let image = UIImage(named: "DifficultyFalse")
+            let imageView = UIImageView(image: image)
+            contentView.difficultyImagesCollection.addArrangedSubview(imageView)
+        }
         
-        let image4 = UIImage(named: "DifficultyFalse")
-        let imageView4 = UIImageView(image: image4)
-        
-        let image5 = UIImage(named: "DifficultyFalse")
-        let imageView5 = UIImageView(image: image5)
-        
-        contentView.difficultyImagesCollection.addArrangedSubview(imageView1)
-        contentView.difficultyImagesCollection.addArrangedSubview(imageView2)
-        contentView.difficultyImagesCollection.addArrangedSubview(imageView3)
-        contentView.difficultyImagesCollection.addArrangedSubview(imageView4)
-        contentView.difficultyImagesCollection.addArrangedSubview(imageView5)
         
         contentView.recipeImagesCollectionView.reloadData()
         //difficultyLevelImage.image = recipe.difficultyImage
@@ -154,7 +155,10 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
     
     // TODO: Not sure that this function is a nice decision. Need to rethink and make it work faster
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        contentView.pageControl.currentPage = Int(scrollView.contentOffset.x / contentView.recipeImagesCollectionView.frame.size.width)
+        if contentView.recipeImagesCollectionView.frame.size.width != 0 {
+            contentView.pageControl.currentPage = Int(scrollView.contentOffset.x / contentView.recipeImagesCollectionView.frame.size.width)
+        }
+
     }
     
 }
@@ -162,24 +166,46 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
 extension RecipeDetailsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.recipeImages.count
+        if collectionView == contentView.recipeImagesCollectionView {
+            return viewModel.recipeImages.count
+        } else {
+            return viewModel.recipeRecommendationImages.count
+        }
+
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        viewModel.recipeImages[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        if collectionView == contentView.recipeImagesCollectionView {
+            return viewModel.recipeImages[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        } else {
+            return viewModel.recipeRecommendationImages[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        }
+        
     }
-    
     
 }
 
 extension RecipeDetailsViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        collectionView.frame.size
+        if collectionView == contentView.recipeImagesCollectionView {
+            return collectionView.frame.size
+        } else {
+            var newSize = CGSize()
+            newSize.width = (self.view.frame.width / 3) * 2
+            newSize.height = collectionView.frame.height
+            return newSize
+        }
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        0
+        if collectionView == contentView.recipeImagesCollectionView {
+            return 0
+        } else {
+            return 20
+        }
+        
     }
     
 }

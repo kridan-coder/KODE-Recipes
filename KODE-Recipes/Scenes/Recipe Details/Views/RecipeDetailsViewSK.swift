@@ -11,8 +11,8 @@ import UIKit
 final class RecipeDetailsViewSK: UIView {
     
     // MARK: - Properties
-    var recipeImagesCollectionView: UICollectionView
-    let recommendationImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
+    let recipeImagesCollectionView: UICollectionView
+    let recommendationImagesCollectionView: UICollectionView
     let pageControl = UIPageControl()
     let recipeNameLabel = UILabel()
     let timestampLabel = UILabel()
@@ -28,9 +28,13 @@ final class RecipeDetailsViewSK: UIView {
     // MARK: - Init
     
     init() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        recipeImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        let layoutRecipeImages = UICollectionViewFlowLayout()
+        layoutRecipeImages.scrollDirection = .horizontal
+        recipeImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layoutRecipeImages)
+        
+        let layoutRecipeRecommendationsImages = UICollectionViewFlowLayout()
+        layoutRecipeRecommendationsImages.scrollDirection = .horizontal
+        recommendationImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layoutRecipeRecommendationsImages)
         
         super.init(frame: CGRect.zero)
         initializeUI()
@@ -135,10 +139,10 @@ final class RecipeDetailsViewSK: UIView {
 
         contentView.addSubview(recommendationImagesCollectionView)
         recommendationImagesCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(recommendedTitleLabel.snp.bottom).inset(-20)
-            make.bottom.equalTo(contentView).inset(20)
+            make.top.equalTo(recommendedTitleLabel.snp.bottom)
+            make.bottom.equalTo(contentView)
             make.leading.trailing.equalTo(contentView)
-            make.height.equalTo(200)
+            make.height.equalTo(180)
         }
 
 
@@ -157,6 +161,7 @@ final class RecipeDetailsViewSK: UIView {
         setupRecipeNameLabel()
         setupTimestampLabel()
         setupRecipeImagesCollection()
+        setupRecipeRecommendationsImagesCollection()
         setupDifficultyImagesCollection()
     }
     
@@ -204,6 +209,13 @@ final class RecipeDetailsViewSK: UIView {
         recipeImagesCollectionView.showsHorizontalScrollIndicator = false
         recipeImagesCollectionView.isPagingEnabled = true
         recipeImagesCollectionView.backgroundColor = .white
+    }
+    
+    private func setupRecipeRecommendationsImagesCollection() {
+        recommendationImagesCollectionView.showsHorizontalScrollIndicator = false
+        recommendationImagesCollectionView.backgroundColor = .white
+        recommendationImagesCollectionView.contentInset.left = CGFloat(20)
+        recommendationImagesCollectionView.contentInset.right = CGFloat(20)
     }
     
 }

@@ -74,7 +74,7 @@ final class Repository {
         
         let difficultyImage = getDifficultyImage(difficultyLevel: recipe.difficulty)
         
-        return RecipeDataForDetails(recipeID: recipe.recipeID, name: recipe.name, imageLinks: recipe.imageLinks, lastUpdated: date, description: description!, instructions: recipe.instructions, difficultyImage: difficultyImage)
+        return RecipeDataForDetails(recipeID: recipe.recipeID, name: recipe.name, imageLinks: recipe.imageLinks, lastUpdated: date, description: description!, instructions: recipe.instructions, difficultyLevel: recipe.difficulty)
     }
     
     func recipeToRecipeForCell(_ recipe: RecipeDataRaw) -> RecipeDataForCell {
