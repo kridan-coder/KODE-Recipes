@@ -47,7 +47,15 @@ class RecipesListViewControllerSK: UIViewController {
     // MARK: - Actions
     
     @objc private func sortByButtonTapped() {
-        print("Sort by button tapped!")
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Sort by Name", style: .default) { _ in
+            print("sortByName!")
+        })
+        actionSheet.addAction(UIAlertAction(title: "Sort by Date", style: .default) { _ in
+            print("sortByDate!")
+        })
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
     // MARK: - Private Methods
