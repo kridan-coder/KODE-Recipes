@@ -1,32 +1,32 @@
 //
-//  RecipeTableViewCellSK.swift
+//  RecipeTableViewCell.swift
 //  KODE-Recipes
 //
 //  Created by Developer on 10.09.2021.
 //
 
-import Foundation
 import UIKit
 import Kingfisher
 
-class RecipeTableViewCellSK: UITableViewCell {
+class RecipeTableViewCell: UITableViewCell {
     
     // MARK: Self creating
     
     static func registerCell(tableView: UITableView) {
-        tableView.register(RecipeTableViewCellSK.self, forCellReuseIdentifier: "RecipeTableViewCell")
+        tableView.register(RecipeTableViewCell.self, forCellReuseIdentifier: "RecipeTableViewCell")
     }
     
-    static func dequeueCell(tableView: UITableView, indexPath: IndexPath) -> RecipeTableViewCellSK {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath) as? RecipeTableViewCellSK else {
-            return RecipeTableViewCellSK()
+    static func dequeueCell(tableView: UITableView, indexPath: IndexPath) -> RecipeTableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell",
+                                                       for: indexPath) as? RecipeTableViewCell
+        else {
+            return RecipeTableViewCell()
         }
         return cell
     }
     
-    
     // MARK: - Properties
-    
+    // TODO: - Get rid of implicitly unwrapped optional
     private var viewModel: RecipeTableViewCellViewModel!
     
     private let recipeImageView = UIImageView()
@@ -34,7 +34,7 @@ class RecipeTableViewCellSK: UITableViewCell {
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let timestampLabel = UILabel()
-    
+    // TODO: - Get rid of implicitly unwrapped optional
     private var recipe: RecipeDataForCell! {
         didSet {
             titleLabel.text = recipe.name
@@ -59,8 +59,6 @@ class RecipeTableViewCellSK: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
     // MARK: - Public Methods
     
     func setupCellData(viewModel: RecipeTableViewCellViewModel) {
@@ -83,17 +81,16 @@ class RecipeTableViewCellSK: UITableViewCell {
     private func createConstraints() {
         addSubview(recipeImageView)
         addSubview(labelsContainer)
-
         
         recipeImageView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(20)
+            make.top.bottom.equalToSuperview().inset(Constants.Inset.classic)
             make.trailing.equalToSuperview()
-            make.width.equalToSuperview().dividedBy(2.3)
+            make.width.equalToSuperview().dividedBy(Constants.Image.widthDivision)
         }
         
         labelsContainer.snp.makeConstraints { make in
-            make.top.bottom.leading.equalToSuperview().inset(18)
-            make.trailing.equalTo(recipeImageView.snp.leading).offset(-20)
+            make.top.bottom.leading.equalToSuperview().inset(Constants.Inset.small)
+            make.trailing.equalTo(recipeImageView.snp.leading).offset(-Constants.Inset.classic)
         }
         labelsContainer.addArrangedSubview(titleLabel)
         labelsContainer.addArrangedSubview(descriptionLabel)
@@ -111,46 +108,58 @@ class RecipeTableViewCellSK: UITableViewCell {
     
     private func setupRecipeImage() {
         recipeImageView.layer.masksToBounds = true
-        recipeImageView.layer.cornerRadius = 15
+        recipeImageView.layer.cornerRadius = Constants.Design.cornerRadiusMain
         recipeImageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
         
     }
     
     private func setupTitleLabel() {
-        titleLabel.font = UIFont.systemFont(ofSize: 26, weight: .bold)
-        titleLabel.numberOfLines = 2
+        titleLabel.font = UIFont.big
+        titleLabel.numberOfLines = Constants.Text.numberOfLinesStandart
         titleLabel.textColor = .darkGray
-        titleLabel.minimumScaleFactor = 0.9
+        titleLabel.minimumScaleFactor = Constants.Text.minimumScale
         titleLabel.adjustsFontSizeToFitWidth = true
     }
     
     private func setupDescriptionLabel() {
-        descriptionLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        descriptionLabel.numberOfLines = 2
+        descriptionLabel.font = UIFont.standart
+        descriptionLabel.numberOfLines = Constants.Text.numberOfLinesStandart
         descriptionLabel.textColor = .systemGray
-        descriptionLabel.minimumScaleFactor = 0.9
+        descriptionLabel.minimumScaleFactor = Constants.Text.minimumScale
         titleLabel.adjustsFontSizeToFitWidth = true
     }
     
     private func setupTimestampLabel() {
-        timestampLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        timestampLabel.font = UIFont.standart
         timestampLabel.textColor = .darkGray
-        timestampLabel.minimumScaleFactor = 0.9
+        timestampLabel.minimumScaleFactor = Constants.Text.minimumScale
         titleLabel.adjustsFontSizeToFitWidth = true
     }
     
     private func setupLabelsContainer() {
         labelsContainer.alignment = .leading
         labelsContainer.axis = .vertical
-        labelsContainer.spacing = 8
+        labelsContainer.spacing = Constants.LabelsContainer.spacing
     }
     
 }
 
 // MARK: - Constants
+
 private extension Constants {
-    struct Button {
-        static let height = CGFloat(45)
-        static let divison = CGFloat(1.15)
+    struct Image {
+        static let widthDivision = CGFloat(2.3)
     }
+    struct Text {
+        static let minimumScale = CGFloat(0.9)
+        static let numberOfLinesStandart = 2
+    }
+    struct LabelsContainer {
+        static let spacing = CGFloat(8)
+    }
+}
+
+private extension UIFont {
+    static let standart = UIFont.systemFont(ofSize: 16, weight: .regular)
+    static let big = UIFont.systemFont(ofSize: 26, weight: .bold)
 }

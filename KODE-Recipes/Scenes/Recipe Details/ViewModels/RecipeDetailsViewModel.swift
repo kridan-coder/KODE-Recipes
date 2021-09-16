@@ -72,6 +72,7 @@ final class RecipeDetailsViewModel {
     }
     
     private func getDataFromNetwork() {
+        // TODO: - Get rid of dummy
         recipe = RecipeDataForDetails(recipeID: "123-123-1sad-21asd-23ws-12", name: "Chicken Caramelized French Onion Dip", imageLinks: [
             "https://bigoven-res.cloudinary.com/image/upload/t_recipe-256/tomato-puff-pastry-bites-3.jpg",
             "https://bigoven-res.cloudinary.com/image/upload/t_recipe-256/tomato-puff-pastry-bites-bc48c5.jpg",
@@ -80,5 +81,4 @@ final class RecipeDetailsViewModel {
         didFinishUpdating?()
     }
 
-    
 }

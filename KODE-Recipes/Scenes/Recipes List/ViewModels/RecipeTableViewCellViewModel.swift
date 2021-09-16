@@ -5,7 +5,6 @@
 //  Created by KriDan on 04.06.2021.
 //
 
-import Foundation
 import UIKit
 
 final class RecipeTableViewCellViewModel {
@@ -31,11 +30,11 @@ final class RecipeTableViewCellViewModel {
 extension RecipeTableViewCellViewModel: TableViewCellRepresentable {
     
     static func registerCell(tableView: UITableView) {
-        RecipeTableViewCellSK.registerCell(tableView: tableView)
+        RecipeTableViewCell.registerCell(tableView: tableView)
     }
     
     func dequeueCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
-        let cell = RecipeTableViewCellSK.dequeueCell(tableView: tableView, indexPath: indexPath)
+        let cell = RecipeTableViewCell.dequeueCell(tableView: tableView, indexPath: indexPath)
         cell.setupCellData(viewModel: self)
         return cell
     }

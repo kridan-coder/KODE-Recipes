@@ -2,103 +2,99 @@
 //  RecipesListViewController.swift
 //  KODE-Recipes
 //
-//  Created by KriDan on 03.06.2021.
+//  Created by Developer on 10.09.2021.
 //
 
 import UIKit
 
 class RecipesListViewController: UIViewController {
     
-    // MARK: IBOutlets
-    
-    @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var nameDateSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableViewActivityIndicator: UIActivityIndicatorView!
-    
-    // MARK: Elements set in code
-    
-    private var refreshControl = UIRefreshControl()
-    
-    // MARK: Public
-    
+    // MARK: - Properties
+    // TODO: - Get rid of implicitly unwrapped optional
     var viewModel: RecipesListViewModel!
     
-    // MARK: Properties
+    private let tableView = UITableView()
+    private let searchBar = UISearchBar()
+    private let searchController = UISearchController()
     
     private var filteredRecipes: [RecipeTableViewCellViewModel] = []
     
     private var currentSearchCase: SearchCase {
         get {
+            // TODO: - Get rid of implicitly unwrapped optional
             SearchCase(rawValue: searchBar.scopeButtonTitles?[searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)!
         }
     }
     
-    private var currentSortCase: SortCase {
-        get {
-            SortCase(rawValue: nameDateSegmentedControl.selectedSegmentIndex) ?? .name
+    private var currentSortCase = SortCase.date {
+        didSet {
+            filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
+            tableView.reloadData()
         }
     }
     
-    // MARK: Helpers
-    
-    private func setupTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        RecipeTableViewCellViewModel.registerCell(tableView: self.tableView)
-    }
-    
-    private func setupSearchBar() {
-        searchBar.delegate = self
-        searchBar.scopeButtonTitles = [SearchCase.all.rawValue, SearchCase.name.rawValue, SearchCase.description.rawValue, SearchCase.instruction.rawValue]
-        searchBar.selectedScopeButtonIndex = 0
-    }
-    
-    private func setupRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(RecipesListViewController.refresh), for: .valueChanged)
-        tableView.addSubview(refreshControl)
-    }
-    
-    private func setupAppearance() {
-        tableView.layer.cornerRadius = Constants.Design.cornerRadiusSecondary
-        searchBar.backgroundImage = UIImage()
-        refreshControl.tintColor = UIColor.BaseTheme.cellBackground
-    }
-    
-    // MARK: Lifecycle
+    // MARK: - Init
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupAppearance()
-        setupSearchBar()
-        setupTableView()
-        setupRefreshControl()
+        navigationItem.backButtonTitle = Constants.BackButton.text
+        initializeUI()
+        createConstraints()
+
         bindToViewModel()
         viewModel.reloadData()
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
-    @objc func refresh() {
-        viewModel.reloadData()
+    @objc private func sortByButtonTapped() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: Constants.ActionSheet.sortByName, style: .default) { _ in
+            self.currentSortCase = .name
+        })
+        actionSheet.addAction(UIAlertAction(title: Constants.ActionSheet.sortByDate, style: .default) { _ in
+            self.currentSortCase = .date
+        })
+        actionSheet.addAction(UIAlertAction(title: Constants.ActionSheet.cancel, style: .cancel, handler: nil))
+        self.present(actionSheet, animated: true, completion: nil)
     }
     
-    @IBAction func didChangeSegment(_ sender: UISegmentedControl) {
-        filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
-        tableView.reloadData()
+    // MARK: - Private Methods
+    
+    private func createConstraints() {
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
-    private func startTableViewActivityIndicator() {
-        tableViewActivityIndicator.isHidden = false
-        tableViewActivityIndicator.startAnimating()
+    private func initializeUI() {
+        view.backgroundColor = .white
+        setupNavigationItem()
+        setupTableView()
+
     }
     
-    // MARK: ViewModel
+    private func setupTableView() {
+        tableView.separatorStyle = .none
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
+        RecipeTableViewCellViewModel.registerCell(tableView: self.tableView)
+    }
+    
+    private func setupNavigationItem() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constants.SortByButton.title,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(sortByButtonTapped))
+        
+        navigationItem.hidesSearchBarWhenScrolling = true
+        navigationItem.searchController = searchController
+    }
     
     private func bindToViewModel() {
-        viewModel.didStartUpdating = { [weak self] in
-            self?.viewModelDidStartUpdating()
-        }
         viewModel.didFinishUpdating = { [weak self] in
             self?.viewModelDidFinishUpdating()
         }
@@ -110,23 +106,19 @@ class RecipesListViewController: UIViewController {
         }
     }
     
-    private func viewModelDidStartUpdating() {
-        startTableViewActivityIndicator()
-    }
-    
     private func viewModelDidFinishUpdating() {
-        tableViewActivityIndicator.stopAnimating()
-        
         // in case update was triggered by refreshing the table
         filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text, scope: currentSearchCase)
         filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
-        refreshControl.endRefreshing()
-        
+
         tableView.reloadData()
     }
     
     private func viewModelDidNotFindInternetConnection() {
-        let alert = UIAlertController(title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternetTable, preferredStyle: .alert)
+        let alert = UIAlertController(title: Constants.ErrorType.noInternet,
+                                      message: Constants.ErrorText.noInternetTable,
+                                      preferredStyle: .alert)
+        
         alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
         present(alert, animated: true)
     }
@@ -151,6 +143,10 @@ extension RecipesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         filteredRecipes[indexPath.row].cellSelected()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Constants.Cell.height
     }
     
 }
@@ -213,3 +209,26 @@ extension RecipesListViewController: UISearchBarDelegate {
 }
 
 extension RecipesListViewController: UITableViewDelegate {}
+
+// MARK: - Constants
+
+private extension Constants {
+    struct SortByButton {
+        static let title = "Sort by"
+    }
+    struct SearchBar {
+        static let placeholder = "Search"
+    }
+    struct BackButton {
+        static let text = "Back"
+    }
+    struct ActionSheet {
+        static let sortByName = "Sort by Name"
+        static let sortByDate = "Sort by Date"
+        static let cancel = "Cancel"
+    }
+    struct Cell {
+        static let height = CGFloat(180)
+    }
+    
+}

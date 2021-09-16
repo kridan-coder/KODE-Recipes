@@ -83,7 +83,7 @@ final class Repository {
         
         let date = getDateForRecipeCell(lastUpdated: recipe.lastUpdated)
         
-        return RecipeDataForCell(recipeID: recipe.recipeID, name: recipe.name, imageLink: imageLink, lastUpdated: date, description: recipe.description, instructions: recipe.instructions)
+        return RecipeDataForCell(recipeID: recipe.recipeID, name: recipe.name, imageLink: imageLink, lastUpdated: date, description: recipe.description, instructions: recipe.instructions, date: recipe.lastUpdated)
     }
     
     func recipeACtoRecipeRaw(_ recipeAC: RecipeDataForAC) -> RecipeDataRaw {
@@ -157,7 +157,7 @@ final class Repository {
             }
         case .date:
             mutableRecipes.sort { first, second in
-                return first.data.lastUpdated > second.data.lastUpdated
+                return first.data.date > second.data.date
             }
         }
         

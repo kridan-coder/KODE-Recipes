@@ -1,16 +1,16 @@
 //
-//  RecipeDetailsViewController.swift
+//  RecipeDetailsView.swift
 //  KODE-Recipes
 //
 //  Created by Developer on 10.09.2021.
 //
 
-import Foundation
 import UIKit
 
-final class RecipeDetailsViewSK: UIView {
+final class RecipeDetailsView: UIView {
     
     // MARK: - Properties
+    
     let recipeImagesCollectionView: UICollectionView
     let recommendationImagesCollectionView: UICollectionView
     let pageControl = UIPageControl()
@@ -34,7 +34,8 @@ final class RecipeDetailsViewSK: UIView {
         
         let layoutRecipeRecommendationsImages = UICollectionViewFlowLayout()
         layoutRecipeRecommendationsImages.scrollDirection = .horizontal
-        recommendationImagesCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layoutRecipeRecommendationsImages)
+        recommendationImagesCollectionView = UICollectionView(frame: CGRect.zero,
+                                                              collectionViewLayout: layoutRecipeRecommendationsImages)
         
         super.init(frame: CGRect.zero)
         initializeUI()
@@ -59,81 +60,98 @@ final class RecipeDetailsViewSK: UIView {
     // MARK: - Private Methods
     
     private func createConstraints() {
-    
         addSubview(scrollView)
-        
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
         scrollView.addSubview(contentView)
-        
         contentView.snp.makeConstraints { make in
             make.top.bottom.equalTo(scrollView)
             make.leading.trailing.equalTo(self)
         }
-        
+    
+        createConstraintsRecipeImagesCollection()
+        createConstraintsPageControl()
+        createConstraintsRecipeNameTimestamp()
+        createConstraintsDescription()
+        createConstraintsDifficulty()
+        createConstraintsInstruction()
+        createConstraintsRecommendation()
+    }
+    
+    private func createConstraintsRecipeImagesCollection() {
         contentView.addSubview(recipeImagesCollectionView)
         recipeImagesCollectionView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(300)
+            make.height.equalTo(Constants.RecipeImageCollection.height)
         }
-        
+    }
+    
+    private func createConstraintsPageControl() {
         contentView.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
             make.bottom.equalTo(recipeImagesCollectionView.snp.bottom)
             make.centerX.equalTo(recipeImagesCollectionView.snp.centerX)
         }
-        
+    }
+    
+    private func createConstraintsRecipeNameTimestamp() {
         contentView.addSubview(timestampLabel)
         contentView.addSubview(recipeNameLabel)
         timestampLabel.snp.makeConstraints { make in
             make.bottom.equalTo(recipeNameLabel.snp.bottom)
-            make.trailing.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview().inset(Constants.Inset.classic)
         }
 
         recipeNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(recipeImagesCollectionView.snp.bottom).inset(-20)
-            make.leading.equalToSuperview().inset(20)
-            make.trailing.equalTo(timestampLabel.snp.leading).offset(-20)
+            make.top.equalTo(recipeImagesCollectionView.snp.bottom).inset(-Constants.Inset.classic)
+            make.leading.equalToSuperview().inset(Constants.Inset.classic)
+            make.trailing.equalTo(timestampLabel.snp.leading).offset(-Constants.Inset.classic)
         }
-
+    }
+    
+    private func createConstraintsDescription() {
         contentView.addSubview(descriptionTextLabel)
         descriptionTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(recipeNameLabel.snp.bottom).inset(-20)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(recipeNameLabel.snp.bottom).inset(-Constants.Inset.classic)
+            make.leading.trailing.equalToSuperview().inset(Constants.Inset.classic)
         }
-
+    }
+    
+    private func createConstraintsDifficulty() {
         contentView.addSubview(difficultyTitleLabel)
         difficultyTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(descriptionTextLabel.snp.bottom).inset(-20)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(descriptionTextLabel.snp.bottom).inset(-Constants.Inset.classic)
+            make.leading.trailing.equalToSuperview().inset(Constants.Inset.classic)
         }
 
         contentView.addSubview(difficultyImagesCollection)
         difficultyImagesCollection.snp.makeConstraints { make in
-            make.top.equalTo(difficultyTitleLabel.snp.bottom).inset(-20)
-            make.leading.equalToSuperview().inset(20)
-            make.trailing.lessThanOrEqualToSuperview().inset(20)
-            //make.height.equalTo(50)
+            make.top.equalTo(difficultyTitleLabel.snp.bottom).inset(-Constants.Inset.classic)
+            make.leading.equalToSuperview().inset(Constants.Inset.classic)
+            make.trailing.lessThanOrEqualToSuperview().inset(Constants.Inset.classic)
         }
-
+    }
+    
+    private func createConstraintsInstruction() {
         contentView.addSubview(instructionTitleLabel)
         instructionTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(difficultyImagesCollection.snp.bottom).inset(-20)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(difficultyImagesCollection.snp.bottom).inset(-Constants.Inset.classic)
+            make.leading.trailing.equalToSuperview().inset(Constants.Inset.classic)
         }
 
         contentView.addSubview(instructionTextLabel)
         instructionTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(instructionTitleLabel.snp.bottom).inset(-20)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(instructionTitleLabel.snp.bottom).inset(-Constants.Inset.classic)
+            make.leading.trailing.equalToSuperview().inset(Constants.Inset.classic)
         }
-
+    }
+    
+    private func createConstraintsRecommendation() {
         contentView.addSubview(recommendedTitleLabel)
         recommendedTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(instructionTextLabel.snp.bottom).inset(-20)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(instructionTextLabel.snp.bottom).inset(-Constants.Inset.classic)
+            make.leading.trailing.equalToSuperview().inset(Constants.Inset.classic)
 
         }
 
@@ -142,11 +160,8 @@ final class RecipeDetailsViewSK: UIView {
             make.top.equalTo(recommendedTitleLabel.snp.bottom)
             make.bottom.equalTo(contentView)
             make.leading.trailing.equalTo(contentView)
-            make.height.equalTo(180)
+            make.height.equalTo(Constants.RecommendationImageCollection.height)
         }
-
-
-        
     }
     
     private func setupTargets() {
@@ -166,35 +181,35 @@ final class RecipeDetailsViewSK: UIView {
     }
     
     private func setupTitleLabels() {
-        recommendedTitleLabel.font = UIFont.systemFont(ofSize: 23, weight: .regular)
+        recommendedTitleLabel.font = UIFont.big
         recommendedTitleLabel.textColor = .darkGray
         
-        instructionTitleLabel.font = UIFont.systemFont(ofSize: 23, weight: .regular)
+        instructionTitleLabel.font = UIFont.big
         instructionTitleLabel.textColor = .darkGray
         
-        difficultyTitleLabel.font = UIFont.systemFont(ofSize: 23, weight: .regular)
+        difficultyTitleLabel.font = UIFont.big
         difficultyTitleLabel.textColor = .darkGray
     }
     
     private func setupTextLabels() {
-        instructionTextLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        instructionTextLabel.font = UIFont.classic
         instructionTextLabel.textColor = .gray
         instructionTextLabel.numberOfLines = 0
         
-        descriptionTextLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        descriptionTextLabel.font = UIFont.classic
         descriptionTextLabel.textColor = .gray
         descriptionTextLabel.numberOfLines = 0
     }
     
     private func setupRecipeNameLabel() {
-        recipeNameLabel.numberOfLines = 2
-        recipeNameLabel.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+        recipeNameLabel.numberOfLines = Constants.Text.numberOfLinesStandart
+        recipeNameLabel.font = UIFont.huge
         recipeNameLabel.textColor = .darkGray
         
     }
     
     private func setupTimestampLabel() {
-        timestampLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        timestampLabel.font = UIFont.classic
         timestampLabel.textColor = .darkGray
     }
     
@@ -202,7 +217,7 @@ final class RecipeDetailsViewSK: UIView {
         difficultyImagesCollection.axis = .horizontal
         difficultyImagesCollection.distribution = .fillEqually
         difficultyImagesCollection.alignment = .leading
-        difficultyImagesCollection.spacing = 20
+        difficultyImagesCollection.spacing = Constants.DifficultyImageCollection.spacing
     }
     
     private func setupRecipeImagesCollection() {
@@ -214,11 +229,13 @@ final class RecipeDetailsViewSK: UIView {
     private func setupRecipeRecommendationsImagesCollection() {
         recommendationImagesCollectionView.showsHorizontalScrollIndicator = false
         recommendationImagesCollectionView.backgroundColor = .white
-        recommendationImagesCollectionView.contentInset.left = CGFloat(20)
-        recommendationImagesCollectionView.contentInset.right = CGFloat(20)
+        recommendationImagesCollectionView.contentInset.left = Constants.Inset.classic
+        recommendationImagesCollectionView.contentInset.right = Constants.Inset.classic
     }
     
 }
+
+// MARK: - Constants
 
 private extension Constants {
     struct SortByButton {
@@ -227,4 +244,22 @@ private extension Constants {
     struct SearchBar {
         static let placeholder = "Search"
     }
+    struct DifficultyImageCollection {
+        static let spacing = CGFloat(20)
+    }
+    struct RecommendationImageCollection {
+        static let height = CGFloat(190)
+    }
+    struct RecipeImageCollection {
+        static let height = CGFloat(300)
+    }
+    struct Text {
+        static let numberOfLinesStandart = 2
+    }
+}
+
+private extension UIFont {
+    static let classic = UIFont.systemFont(ofSize: 16, weight: .regular)
+    static let big = UIFont.systemFont(ofSize: 23, weight: .regular)
+    static let huge = UIFont.systemFont(ofSize: 30, weight: .bold)
 }

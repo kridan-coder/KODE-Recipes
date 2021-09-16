@@ -5,7 +5,6 @@
 //  Created by KriDan on 04.06.2021.
 //
 
-import Foundation
 import UIKit
 
 protocol RecipesListViewModelCoordinatorDelegate: class {
@@ -40,10 +39,8 @@ final class RecipesListViewModel {
         
         if repository.isConnectedToNetwork() {
             getDataFromNetworkAndSaveItLocally()
-        }
-        else {
+        } else {
             didNotFindInternetConnection?()
-            //getDataFromDatabase()
         }
     }
     
@@ -76,28 +73,12 @@ final class RecipesListViewModel {
         return viewModel
     }
     
-//    private func getDataFromDatabase() {
-//        if let recipes = repository.databaseClient?.getObjects(ofType: RecipeDataForDC.self) {
-//            recipesViewModels = recipes.map {
-//                let recipe = repository.recipeDCToRecipeForCell($0)
-//                return viewModelFor(recipe: recipe)
-//            }
-//        }
-//        self.didFinishUpdating?()
-//    }
-    
     private func getDataFromNetworkAndSaveItLocally() {
         repository.apiClient?.getRecipes(onSuccess: { recipesContainer in
             guard let recipes = recipesContainer.recipes else {
                 self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
                 return
             }
-            
-            // received data should be saved locally
-//            let recipesDC = recipes.map {
-//                return self.repository.recipeACtoRecipeDC($0)
-//            }
-//            self.repository.databaseClient?.saveObjects(recipesDC)
             
             // set viewModels
             self.recipesViewModels = recipes.map {

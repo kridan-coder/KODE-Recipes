@@ -10,33 +10,71 @@ import Kingfisher
 
 class RecipeDetailsViewController: UIViewController {
     
-    // MARK: IBOutlets
+    // MARK: - Properties
     
-    //private let contentView = RecipeDetailsViewSK()
-    //private let scrollView = UIScrollView()
-    
-    var contentView: RecipeDetailsViewSK {
-        return view as? RecipeDetailsViewSK ?? RecipeDetailsViewSK()
+    var contentView: RecipeDetailsView {
+        return view as? RecipeDetailsView ?? RecipeDetailsView()
     }
-
-    override func loadView() {
-        view = RecipeDetailsViewSK()
-    }
-    
-    
-    // MARK: Elements set in code
-    
-  
-    
-    // MARK: Public
-    
+    // TODO: - Get rid of implicitly unwrapped optional
     var viewModel: RecipeDetailsViewModel!
     
-
+    // MARK: - Lifecycle
     
-    // MARK: Helpers
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupRecipeImagesCollectionView()
+        setupRecipeImagesRecommendationsCollectionView()
+        bindToViewModel()
+        viewModel.reloadData()
+    }
     
-
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            viewModel.viewWillDisappear()
+        }
+    }
+    
+    override func loadView() {
+        view = RecipeDetailsView()
+    }
+    
+    // MARK: - Public Methods
+    
+    func setupRecipeData(recipe: RecipeDataForDetails) {
+        contentView.pageControl.numberOfPages = recipe.imageLinks.count
+        contentView.recipeNameLabel.text = recipe.name
+        contentView.instructionTextLabel.text = recipe.instructions
+        contentView.descriptionTextLabel.text = recipe.description
+        contentView.timestampLabel.text = recipe.lastUpdated
+        contentView.difficultyTitleLabel.text = Constants.difficulty
+        contentView.instructionTitleLabel.text = Constants.instructions
+        contentView.recommendedTitleLabel.text = Constants.recommended
+        
+        for _ in 0..<recipe.difficultyLevel {
+            let image = UIImage.difficultyTrue
+            let imageView = UIImageView(image: image)
+            contentView.difficultyImagesCollection.addArrangedSubview(imageView)
+        }
+        
+        for _ in recipe.difficultyLevel..<5 {
+            let image = UIImage.difficultyFalse
+            let imageView = UIImageView(image: image)
+            contentView.difficultyImagesCollection.addArrangedSubview(imageView)
+        }
+        
+        contentView.recipeImagesCollectionView.reloadData()
+    }
+    
+    // MARK: Actions
+    
+    @objc func refresh() {
+        viewModel.reloadData()
+    }
+    
+    // MARK: - Private Methods
     
     private func setupRecipeImagesCollectionView() {
         contentView.recipeImagesCollectionView.delegate = self
@@ -48,77 +86,10 @@ class RecipeDetailsViewController: UIViewController {
     private func setupRecipeImagesRecommendationsCollectionView() {
         contentView.recommendationImagesCollectionView.delegate = self
         contentView.recommendationImagesCollectionView.dataSource = self
-        RecommendedCollectionViewCellSK.registerCell(collectionView: self.contentView.recommendationImagesCollectionView)
-        
+        RecommendedCollectionViewCell.registerCell(collectionView: self.contentView.recommendationImagesCollectionView)
     }
     
-    private func setupAppearance() {
-//        difficultyLevelImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
-//        difficultyLevelImage.layer.borderWidth = Constants.Design.borderWidthSecondary
-//        difficultyLevelImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
-//        instructionsTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-//        descriptionTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-//        refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
-    }
-    
-    // MARK: Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setupAppearance()
-        setupRecipeImagesCollectionView()
-        setupRecipeImagesRecommendationsCollectionView()
-        bindToViewModel()
-        viewModel.reloadData()
-        
-
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        if self.isMovingFromParent {
-            viewModel.viewWillDisappear()
-        }
-    }
-    
-    // MARK: Actions
-    
-    @objc func refresh() {
-        viewModel.reloadData()
-    }
-    
-    func setupRecipeData(recipe: RecipeDataForDetails) {
-        contentView.pageControl.numberOfPages = recipe.imageLinks.count
-        contentView.recipeNameLabel.text = recipe.name
-        contentView.instructionTextLabel.text = recipe.instructions
-        contentView.descriptionTextLabel.text = recipe.description
-        contentView.timestampLabel.text = recipe.lastUpdated
-        contentView.difficultyTitleLabel.text = "Difficulty:"
-        contentView.instructionTitleLabel.text = "Instruction:"
-        contentView.recommendedTitleLabel.text = "Recommended:"
-        
-        for _ in 0..<recipe.difficultyLevel {
-            let image = UIImage(named: "DifficultyTrue")
-            let imageView = UIImageView(image: image)
-            contentView.difficultyImagesCollection.addArrangedSubview(imageView)
-        }
-        
-        for _ in recipe.difficultyLevel..<5 {
-            let image = UIImage(named: "DifficultyFalse")
-            let imageView = UIImageView(image: image)
-            contentView.difficultyImagesCollection.addArrangedSubview(imageView)
-        }
-        
-        
-        contentView.recipeImagesCollectionView.reloadData()
-        //difficultyLevelImage.image = recipe.difficultyImage
-    }
-    
-    
-    // MARK: ViewModel
-    
+    // ViewModel
     private func bindToViewModel() {
         viewModel.didStartUpdating = { [weak self] in
             self?.viewModelDidStartUpdating()
@@ -142,7 +113,6 @@ class RecipeDetailsViewController: UIViewController {
         }
     }
     
-    
     private func viewModelDidReceiveError(error: String) {
         let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
@@ -158,9 +128,7 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
         if contentView.recipeImagesCollectionView.frame.size.width != 0 {
             contentView.pageControl.currentPage = Int(scrollView.contentOffset.x / contentView.recipeImagesCollectionView.frame.size.width)
         }
-
     }
-    
 }
 
 extension RecipeDetailsViewController: UICollectionViewDataSource {
@@ -171,8 +139,9 @@ extension RecipeDetailsViewController: UICollectionViewDataSource {
         } else {
             return viewModel.recipeRecommendationImages.count
         }
-
+        
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == contentView.recipeImagesCollectionView {
@@ -196,16 +165,33 @@ extension RecipeDetailsViewController: UICollectionViewDelegateFlowLayout {
             newSize.height = collectionView.frame.height
             return newSize
         }
-
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         if collectionView == contentView.recipeImagesCollectionView {
-            return 0
+            return Constants.spaceRecipeImages
         } else {
-            return 20
+            return Constants.spaceRecipeRecommendations
         }
         
     }
     
+}
+
+private extension Constants {
+    static let spaceRecipeImages = CGFloat(0)
+    static let spaceRecipeRecommendations = CGFloat(20)
+    static let difficulty = "Difficulty: "
+    static let instructions = "Instruction: "
+    static let recommended = "Recommended: "
+}
+
+private extension UIImage {
+    static var difficultyTrue: UIImage {
+        return UIImage(named: "DifficultyTrue") ?? UIImage()
+    }
+    static var difficultyFalse: UIImage {
+        return UIImage(named: "DifficultyFalse") ?? UIImage()
+    }
 }

@@ -5,7 +5,6 @@
 //  Created by KriDan on 09.06.2021.
 //
 
-import Foundation
 import UIKit
 
 protocol RecipeDetailsDelegate: class {
@@ -33,16 +32,15 @@ final class RecipeDetailsCoordinator: Coordinator {
     }
     
     override func start() {
-        
         // init viewModel
-        let recipeViewModel: RecipeDetailsViewModel! = {
+        let recipeViewModel: RecipeDetailsViewModel = {
             let viewModel = RecipeDetailsViewModel(repository: repository, recipeID: recipeID)
             viewModel.coordinatorDelegate = self
             return viewModel
         }()
         
         // init viewController
-        let recipeViewController: RecipeDetailsViewController! = {
+        let recipeViewController: RecipeDetailsViewController = {
             let viewController = RecipeDetailsViewController()
             viewController.viewModel = recipeViewModel
             return viewController
@@ -64,4 +62,5 @@ extension RecipeDetailsCoordinator: RecipeViewModelCoordinatorDelegate {
         rootNavigationController.navigationBar.prefersLargeTitles = true
         self.finish()
     }
+    
 }

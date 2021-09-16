@@ -10,6 +10,13 @@ import UIKit
 
 enum Constants {
     
+    struct Inset {
+        static let huge = CGFloat(30)
+        static let classic = CGFloat(20)
+        static let small = CGFloat(18)
+        static let tiny = CGFloat(15)
+    }
+    
     enum Design {
         static let cornerRadiusMain = CGFloat(15)
         static let cornerRadiusSecondary = CGFloat(5)

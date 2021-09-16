@@ -26,14 +26,13 @@ class Coordinator {
     func removeChildCoordinator(_ coordinator: Coordinator) {
         if let index = childCoordinators.firstIndex(of: coordinator) {
             childCoordinators.remove(at: index)
-        }
-        else {
+        } else {
             print("Could not remove coordinator: \(coordinator). It's not a child coordinator.")
         }
     }
     
     func removeAllChildCoordinatorsWithType<T: Coordinator>(type: T.Type) {
-        childCoordinators = childCoordinators.filter{$0 is T == false}
+        childCoordinators = childCoordinators.filter {$0 is T == false}
     }
     
     func removeAllChildCoordinators() {
@@ -43,7 +42,6 @@ class Coordinator {
 }
 
 extension Coordinator: Equatable {
-    
     static func == (lhs: Coordinator, rhs: Coordinator) -> Bool {
         return lhs === rhs
     }

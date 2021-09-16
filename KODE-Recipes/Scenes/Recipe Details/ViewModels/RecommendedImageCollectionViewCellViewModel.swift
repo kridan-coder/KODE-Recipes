@@ -26,8 +26,6 @@ final class RecommendedImageCollectionViewCellViewModel {
     init(name: String, imageLink: String) {
         self.name = name
         self.imageLink = imageLink
-        
-        
     }
     
 }
@@ -35,11 +33,11 @@ final class RecommendedImageCollectionViewCellViewModel {
 extension RecommendedImageCollectionViewCellViewModel: CollectionViewCellRepresentable {
     
     static func registerCell(collectionView: UICollectionView) {
-        RecommendedCollectionViewCellSK.registerCell(collectionView: collectionView)
+        RecommendedCollectionViewCell.registerCell(collectionView: collectionView)
     }
     
     func dequeueCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = RecommendedCollectionViewCellSK.dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        let cell = RecommendedCollectionViewCell.dequeueCell(collectionView: collectionView, indexPath: indexPath)
         cell.setupCellData(viewModel: self)
         return cell
     }
