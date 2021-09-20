@@ -40,7 +40,7 @@ final class AppCoordinator: Coordinator {
         window.rootViewController = rootNavigationController
         window.makeKeyAndVisible()
         
-        // launching Recipes List Scene
+        // MARK: - Show Recipes List
         let recipeListCoordinator = RecipesListCoordinator(rootNavigationController: rootNavigationController, repository: repository)
         recipeListCoordinator.delegate = self
         addChildCoordinator(recipeListCoordinator)

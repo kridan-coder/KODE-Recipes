@@ -19,11 +19,11 @@ final class ApiClient {
             switch response.result {
             
             case .failure(let error):
-                onFailure(error.errorDescription ?? Constants.ErrorText.unhandledRequestFailure)
+                onFailure(error.errorDescription ?? Constants.ErrorText.basic)
                 
             case .success(let data):
                 guard let safeData = data else {
-                    onFailure(Constants.ErrorText.emptyResponse)
+                    onFailure(Constants.ErrorText.basic)
                     return
                 }
                 
@@ -32,7 +32,7 @@ final class ApiClient {
                     onSuccess(recipesContainerAC)
                 }
                 catch {
-                    onFailure(Constants.ErrorText.decodingFailure + error.localizedDescription)
+                    onFailure(Constants.ErrorText.basic + error.localizedDescription)
                 }
                 
             }

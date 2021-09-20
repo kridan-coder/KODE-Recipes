@@ -16,17 +16,19 @@ final class RecipeTableViewCellViewModel {
     
     // MARK: Actions
     
-    var didReceiveError: ((String) -> Void)?
+    var didReceiveError: ((Error) -> Void)?
     var didUpdate: ((RecipeTableViewCellViewModel) -> Void)?
     var didSelectRecipe: ((String) -> Void)?
     
-    // MARK: Lifecycle
+    // MARK: Init
     
     init(recipe: RecipeDataForCell) {
         self.data = recipe
     }
     
 }
+
+// MARK: - CellRepresentable Protocol
 
 extension RecipeTableViewCellViewModel: TableViewCellRepresentable {
     

@@ -36,8 +36,7 @@ final class RecipesListCoordinator: Coordinator {
         
         // init viewController
         let recipesListViewController: RecipesListViewController! = {
-            let viewController = RecipesListViewController(nibName: "RecipesListViewController", bundle: nil)
-            viewController.viewModel = recipesListViewModel
+            let viewController = RecipesListViewController(viewModel: recipesListViewModel)
             viewController.title = Constants.NavigationBarTitle.recipes
             return viewController
         }()

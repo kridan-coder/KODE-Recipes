@@ -8,39 +8,43 @@
 import Foundation
 import UIKit
 
-protocol RecipeViewModelCoordinatorDelegate: class {
+protocol RecipeViewModelCoordinatorDelegate: AnyObject {
     func viewWillDisappear()
 }
 
 final class RecipeDetailsViewModel {
     
-    // MARK: Private
+    // MARK: - Properties
+    
+    weak var coordinatorDelegate: RecipeViewModelCoordinatorDelegate?
+    
+    var images: [ImageCollectionViewCellViewModel] = []
+    
+    var recipe: RecipeDataForDetails? {
+        didSet {
+            images = recipe!.imageLinks.map { viewModelFor(imageLink: $0) }
+        }
+    }
     
     private let repository: Repository
     
     private let recipeID: String
     
-    // MARK: Delegates
+    // MARK: - Actions
     
-    weak var coordinatorDelegate: RecipeViewModelCoordinatorDelegate?
-    
-    // MARK: Properties
-    
-    var imagesViewModels: [ImageCollectionViewCellViewModel] = []
-    
-    var recipe: RecipeDataForDetails? {
-        didSet {
-            imagesViewModels = recipe!.imageLinks.map { viewModelFor(imageLink: $0) }
-        }
-    }
-    
-    // MARK: Actions
-    
-    var didReceiveError: ((String) -> Void)?
+    var didReceiveError: ((Error) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
+    var didFinishSuccessfully: (() -> Void)?
     
-    // MARK: Service
+    // MARK: - Init
+    
+    init(repository: Repository, recipeID: String) {
+        self.repository = repository
+        self.recipeID = recipeID
+    }
+    
+    // MARK: - Public Methods
     
     func reloadData() {
         self.didStartUpdating?()
@@ -51,14 +55,7 @@ final class RecipeDetailsViewModel {
         coordinatorDelegate?.viewWillDisappear()
     }
     
-    // MARK: Lifecycle
-    
-    init(repository: Repository, recipeID: String) {
-        self.repository = repository
-        self.recipeID = recipeID
-    }
-    
-    // MARK: Helpers
+    // MARK: - Private Methods
     
     private func viewModelFor(imageLink: String) -> ImageCollectionViewCellViewModel {
         ImageCollectionViewCellViewModel(imageLink: imageLink)
@@ -67,9 +64,10 @@ final class RecipeDetailsViewModel {
     private func getDataFromDatabase() {
         if let recipeDC = repository.databaseClient?.getObjectByPrimaryKey(ofType: RecipeDataForDC.self, primaryKey: recipeID) {
             recipe = repository.recipeDCToRecipeForDetails(recipeDC)
+            self.didFinishSuccessfully?()
         }
         else {
-            self.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
+            self.didReceiveError?(ErrorType.basic)
         }
         self.didFinishUpdating?()
     }
