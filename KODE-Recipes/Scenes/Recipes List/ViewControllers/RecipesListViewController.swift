@@ -95,7 +95,10 @@ class RecipesListViewController: UIViewController {
     
     private func setupSearchBar() {
         searchBar.delegate = self
-        searchBar.scopeButtonTitles = [SearchCase.all.rawValue, SearchCase.name.rawValue, SearchCase.description.rawValue, SearchCase.instruction.rawValue]
+        searchBar.scopeButtonTitles = [SearchCase.all.rawValue,
+                                       SearchCase.name.rawValue,
+                                       SearchCase.description.rawValue,
+                                       SearchCase.instruction.rawValue]
         searchBar.selectedScopeButtonIndex = 0
     }
     
@@ -121,9 +124,6 @@ class RecipesListViewController: UIViewController {
         viewModel.didReceiveError = { [weak self] error in
             self?.didReceiveError(error)
         }
-        viewModel.didFinishSuccessfully = { [weak self]  in
-            self?.didFinishSuccessfully()
-        }
     }
     
     private func didFinishSuccessfully() {
@@ -143,15 +143,24 @@ class RecipesListViewController: UIViewController {
         refreshControl.endRefreshing()
         
         tableView.reloadData()
-    }
-    
-    private func didNotFindInternet() {
-        navigationController?.navigationBar.isHidden = true
-        showCustomAlert(alertView, title: Constants.ErrorType.noInternet, message: Constants.ErrorText.noInternet, buttonText: Constants.ButtonTitle.refresh)
+        
+        hideCustomAlert(alertView)
     }
     
     private func didReceiveError(_ error: Error) {
-        showCustomAlert(alertView, title: Constants.ErrorType.basic, message: error.localizedDescription, buttonText: Constants.ButtonTitle.refresh)
+        navigationController?.navigationBar.isHidden = true
+        
+        let title: String
+        if let customError = error as? CustomError {
+            title = customError.errorTitle
+        } else {
+            title = Constants.ErrorType.basic
+        }
+        
+        showCustomAlert(alertView,
+                        title: title,
+                        message: error.localizedDescription,
+                        buttonText: Constants.ButtonTitle.refresh)
     }
     
 }

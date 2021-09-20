@@ -10,5 +10,5 @@ import UIKit
 
 extension UIFont {
     static let standart = UIFont.systemFont(ofSize: 18)
-    static let big = UIFont.systemFont(ofSize: 24)
+    static let big = UIFont.systemFont(ofSize: 24, weight: .semibold)
 }

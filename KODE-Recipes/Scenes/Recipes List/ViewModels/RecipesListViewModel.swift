@@ -14,8 +14,7 @@ protocol RecipesListViewModelCoordinatorDelegate: AnyObject {
 
 final class RecipesListViewModel {
     
-    
-    //MARK: - Properties
+    // MARK: - Properties
     
     var recipesViewModels: [RecipeTableViewCellViewModel] = []
     
@@ -29,11 +28,11 @@ final class RecipesListViewModel {
         self.repository = repository
     }
     
-    var didReceiveError: ((String) -> Void)?
+    var didReceiveError: ((Error) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
     
-    // Service
+    // MARK: - Public Methods
     
     func reloadData() {
         self.didStartUpdating?()
@@ -47,14 +46,6 @@ final class RecipesListViewModel {
     func sortRecipesBy(sortCase: SortCase, recipes: [RecipeTableViewCellViewModel]) -> [RecipeTableViewCellViewModel] {
         repository.sortRecipesBy(sortCase: sortCase, recipes: recipes)
     }
-    
-    // MARK: Actions
-    
-    var didReceiveError: ((Error) -> Void)?
-    var didNotFindInternetConnection: (() -> Void)?
-    var didStartUpdating: (() -> Void)?
-    var didFinishUpdating: (() -> Void)?
-    var didFinishSuccessfully: (() -> Void)?
     
     // MARK: Private Methods
     
@@ -72,27 +63,22 @@ final class RecipesListViewModel {
     }
     
     private func getDataFromNetwork() {
-        
         repository.apiClient?.getAllRecipes { response in
             
             switch response {
             case .success(let recipesContainer):
                 
-                // set viewModels
                 self.recipesViewModels = recipesContainer.recipes.compactMap {
                     let recipe = self.repository.recipeAPIToRecipeForCell($0)
                     return self.viewModelFor(recipe)
                 }
-    
+                
                 self.didFinishUpdating?()
                 
             case .failure(let error):
-                // TODO: - pass error to didReceiveError method
-                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
+                self.didReceiveError?(error)
             }
-            
         }
-        
     }
     
 }

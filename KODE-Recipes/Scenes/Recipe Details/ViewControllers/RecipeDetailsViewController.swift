@@ -109,9 +109,6 @@ class RecipeDetailsViewController: UIViewController {
         viewModel.didReceiveError = { [weak self] error in
             self?.didReceiveError(error)
         }
-        viewModel.didFinishSuccessfully = { [weak self]  in
-            self?.didFinishSuccessfully()
-        }
     }
     
     private func didFinishSuccessfully() {
@@ -124,7 +121,6 @@ class RecipeDetailsViewController: UIViewController {
     
     private func didFinishUpdating() {
         if let recipe = viewModel.recipe {
-            images = viewModel.imagesViewModels
             setupRecipeData(numberOfPages: recipe.imageLinks.count, recipeName: recipe.name, instructions: recipe.instructions, description: recipe.description, lastUpdate: recipe.lastUpdated, difficultyImage: recipe.difficultyImage ?? UIImage())
             collectionView.reloadData()
         }

@@ -35,7 +35,6 @@ final class RecipeDetailsViewModel {
     var didReceiveError: ((Error) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
-    var didFinishSuccessfully: (() -> Void)?
     
     // MARK: - Init
     
@@ -62,18 +61,15 @@ final class RecipeDetailsViewModel {
     }
     
     private func getDataFromNetwork() {
-        
         repository.apiClient?.getRecipe(uuid: recipeID) { [weak self] response in
             
             switch response {
-            
             case .success(let recipeContainer):
                 self?.recipe = self?.repository.recipeAPIToRecipeForDetails(recipeContainer.recipe)
                 self?.didFinishUpdating?()
                 
             case .failure(let error):
-                // TODO: - pass error to didReceiveError method
-                self?.didReceiveError?(Constants.ErrorText.recipeDetailsAreEmpty)
+                self?.didReceiveError?(error)
             }
             
         }

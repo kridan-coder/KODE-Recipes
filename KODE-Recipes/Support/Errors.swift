@@ -7,17 +7,32 @@
 
 import Foundation
 
-enum ErrorType: Error {
+protocol CustomError: Error {
+    var errorTitle: String { get }
+}
+
+enum APIError: CustomError {
     case noInternet
     case basic
 }
 
-extension ErrorType: LocalizedError {
+extension APIError {
+    var errorTitle: String {
+        switch self {
+        case .noInternet:
+            return Constants.ErrorType.noInternet
+        default:
+            return Constants.ErrorType.basic
+        }
+    }
+}
+
+extension APIError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .noInternet:
             return Constants.ErrorText.noInternet
-        case .basic:
+        default:
             return Constants.ErrorText.basic
         }
     }

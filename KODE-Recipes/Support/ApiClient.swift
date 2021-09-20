@@ -56,7 +56,7 @@ final class ApiClient {
     private func perform<T: Decodable>(_ apiRoute: APIRoutable, completion: @escaping (Result<T, Error>) -> Void) {
         
         guard isConnectedToNetwork() else {
-            completion(Result.failure(Errors.noInternet))
+            completion(Result.failure(APIError.noInternet))
             return
         }
     
@@ -64,12 +64,12 @@ final class ApiClient {
         dataRequest
             .validate(statusCode: 200..<300)
             .responseDecodable {  (response: AFDataResponse<T>) in
-                
                 switch response.result {
                 case .success(let response):
                     completion(.success(response))
-                case .failure(let error):
-                    completion(.failure(error))
+                case .failure(_):
+                    // in current mockup we should not inform user about exact mistake
+                    completion(Result.failure(APIError.basic))
                 }
                 
             }
@@ -85,8 +85,4 @@ final class ApiClient {
         perform(recipeRoute, completion: completion)
     }
     
-}
-
-private enum Errors: Error {
-    case noInternet
 }
