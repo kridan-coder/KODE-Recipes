@@ -26,18 +26,16 @@ final class RecipesListCoordinator: Coordinator {
     }
     
     override func start() {
-        
         // init viewModel
-        let recipesListViewModel: RecipesListViewModel! = {
+        let recipesListViewModel: RecipesListViewModel = {
             let viewModel = RecipesListViewModel(repository: repository)
             viewModel.coordinatorDelegate = self
             return viewModel
         }()
         
         // init viewController
-        let recipesListViewController: RecipesListViewController! = {
-            let viewController = RecipesListViewController(nibName: "RecipesListViewController", bundle: nil)
-            viewController.viewModel = recipesListViewModel
+        let recipesListViewController: RecipesListViewController = {
+            let viewController = RecipesListViewController(viewModel: recipesListViewModel)
             viewController.title = Constants.NavigationBarTitle.recipes
             return viewController
         }()
@@ -50,10 +48,12 @@ final class RecipesListCoordinator: Coordinator {
 // MARK: ViewModel Delegate
 
 extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
-    
     // switches Scene to Recipe Details
     func didSelectRecipe(recipeID: String) {
-        let recipeDetailsCoordinator = RecipeDetailsCoordinator(rootNavigationController: rootNavigationController, repository: repository, recipeID: recipeID)
+        let recipeDetailsCoordinator = RecipeDetailsCoordinator(rootNavigationController: rootNavigationController,
+                                                                repository: repository,
+                                                                recipeID: recipeID)
+        
         recipeDetailsCoordinator.delegate = self
         addChildCoordinator(recipeDetailsCoordinator)
         recipeDetailsCoordinator.start()
@@ -64,7 +64,6 @@ extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
 // MARK: Coordinator Delegate
 
 extension RecipesListCoordinator: RecipeDetailsDelegate {
-    
     func didFinish(from coordinator: RecipeDetailsCoordinator) {
         removeChildCoordinator(coordinator)
     }

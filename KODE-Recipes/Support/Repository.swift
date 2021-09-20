@@ -100,12 +100,12 @@ final class Repository {
         
         switch sortCase {
         case .name:
-            mutableRecipes.sort { x, y in
-                return x.data.name < y.data.name
+            mutableRecipes.sort { first, second in
+                return first.data.name < second.data.name
             }
         case .date:
-            mutableRecipes.sort { x, y in
-                return x.data.lastUpdated > y.data.lastUpdated
+            mutableRecipes.sort { first, second in
+                return first.data.lastUpdated > second.data.lastUpdated
             }
         }
         

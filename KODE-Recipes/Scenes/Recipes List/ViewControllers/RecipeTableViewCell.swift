@@ -10,30 +10,19 @@ import Kingfisher
 
 class RecipeTableViewCell: UITableViewCell {
     
-    // MARK: Self creating
+    // MARK: - Self creating
     
     static func registerCell(tableView: UITableView) {
         tableView.register(UINib(nibName: "RecipeTableViewCell", bundle: nil), forCellReuseIdentifier: "RecipeTableViewCell")
     }
     
     static func dequeueCell(tableView: UITableView, indexPath: IndexPath) -> RecipeTableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath) as! RecipeTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath)
+            as? RecipeTableViewCell ?? RecipeTableViewCell()
         return cell
     }
     
-    // MARK: IBOutlets
-    
-    @IBOutlet weak var wrapperContainerView: UIView!
-    @IBOutlet weak var recipeImage: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var lastUpdatedLabel: UILabel!
-    
-    // MARK: Private
-    
-    private var viewModel: RecipeTableViewCellViewModel!
-    
-    // MARK: Properties
+    // MARK: - Properties
     
     private var recipe: RecipeDataForCell! {
         didSet {
@@ -47,29 +36,39 @@ class RecipeTableViewCell: UITableViewCell {
         }
     }
     
-    // MARK: Helpers
+    private var viewModel: RecipeTableViewCellViewModel!
     
-    private func setupCellAppearance() {
-        wrapperContainerView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        recipeImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        recipeImage.layer.borderWidth = Constants.Design.borderWidthSecondary
-        recipeImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
-    }
+    // MARK: - IBOutlets
     
-    // MARK: Lifecycle
+    @IBOutlet private weak var wrapperContainerView: UIView!
+    @IBOutlet private weak var recipeImage: UIImageView!
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var lastUpdatedLabel: UILabel!
+    
+    // MARK: - Init
     
     override func awakeFromNib() {
         super.awakeFromNib()
         setupCellAppearance()
     }
     
-    // MARK: Actions
+    // MARK: - Public Methods
     
     func setupCellData(viewModel: RecipeTableViewCellViewModel) {
         self.viewModel = viewModel
         self.recipe = viewModel.data
         
         viewModel.didUpdate = self.setupCellData
+    }
+    
+    // MARK: - Private Methods
+    
+    private func setupCellAppearance() {
+        wrapperContainerView.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        recipeImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        recipeImage.layer.borderWidth = Constants.Design.borderWidthSecondary
+        recipeImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
     }
     
 }
