@@ -30,8 +30,7 @@ final class ApiClient {
                 do {
                     let recipesContainerAC = try JSONDecoder().decode(RecipesContainerForAC.self, from: safeData)
                     onSuccess(recipesContainerAC)
-                }
-                catch {
+                } catch {
                     onFailure(Constants.ErrorText.basic + error.localizedDescription)
                 }
                 

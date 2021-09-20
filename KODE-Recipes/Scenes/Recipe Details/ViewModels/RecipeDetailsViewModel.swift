@@ -65,8 +65,7 @@ final class RecipeDetailsViewModel {
         if let recipeDC = repository.databaseClient?.getObjectByPrimaryKey(ofType: RecipeDataForDC.self, primaryKey: recipeID) {
             recipe = repository.recipeDCToRecipeForDetails(recipeDC)
             self.didFinishSuccessfully?()
-        }
-        else {
+        } else {
             self.didReceiveError?(ErrorType.basic)
         }
         self.didFinishUpdating?()

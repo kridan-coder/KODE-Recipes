@@ -33,7 +33,7 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Init
     
-    init(viewModel: RecipeDetailsViewModel)   {
+    init(viewModel: RecipeDetailsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: "RecipeDetailsViewController", bundle: nil)
     }
@@ -134,7 +134,10 @@ class RecipeDetailsViewController: UIViewController {
     
     private func didReceiveError(_ error: Error) {
         navigationController?.navigationBar.isHidden = true
-        showCustomAlert(alertView, title: Constants.ErrorType.basic, message: error.localizedDescription, buttonText: Constants.ButtonTitle.refresh)
+        showCustomAlert(alertView,
+                        title: Constants.ErrorType.basic,
+                        message: error.localizedDescription,
+                        buttonText: Constants.ButtonTitle.refresh)
     }
     
 }
@@ -142,7 +145,6 @@ class RecipeDetailsViewController: UIViewController {
 // MARK: - CustomAlertDisplaying Protocol
 
 extension RecipeDetailsViewController: CustomAlertDisplaying {
-    
     func handleButtonTap() {
         viewModel.reloadData()
     }
@@ -152,7 +154,6 @@ extension RecipeDetailsViewController: CustomAlertDisplaying {
 // MARK: - CollectionView Delegate
 
 extension RecipeDetailsViewController: UICollectionViewDelegate {
-    
     // TODO: - Not sure that this function is a nice decision. Need to rethink and make it work faster
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         pageControl.currentPage = Int(scrollView.contentOffset.x / collectionView.frame.size.width)
@@ -163,7 +164,6 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
 // MARK: - CollectionView DataSource
 
 extension RecipeDetailsViewController: UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.images.count
     }
@@ -177,12 +177,15 @@ extension RecipeDetailsViewController: UICollectionViewDataSource {
 // MARK: - CollectionView FlowLayout
 
 extension RecipeDetailsViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         collectionView.frame.size
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         0
     }
     

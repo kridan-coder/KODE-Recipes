@@ -13,11 +13,13 @@ class ImageCollectionViewCell: UICollectionViewCell {
     // MARK: - Self creating
     
     static func registerCell(collectionView: UICollectionView) {
-        collectionView.register(UINib(nibName: "ImageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ImageCollectionViewCell")
+        collectionView.register(UINib(nibName: "ImageCollectionViewCell", bundle: nil),
+                                forCellWithReuseIdentifier: "ImageCollectionViewCell")
     }
     
     static func dequeueCell(collectionView: UICollectionView, indexPath: IndexPath) -> ImageCollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath) as! ImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCollectionViewCell", for: indexPath)
+            as? ImageCollectionViewCell ?? ImageCollectionViewCell()
         return cell
     }
     

@@ -17,7 +17,8 @@ class RecipeTableViewCell: UITableViewCell {
     }
     
     static func dequeueCell(tableView: UITableView, indexPath: IndexPath) -> RecipeTableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath) as! RecipeTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath)
+            as? RecipeTableViewCell ?? RecipeTableViewCell()
         return cell
     }
     

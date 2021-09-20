@@ -38,7 +38,7 @@ class RecipesListViewController: UIViewController {
     
     // MARK: Init
     
-    init(viewModel: RecipesListViewModel)   {
+    init(viewModel: RecipesListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: "RecipesListViewController", bundle: nil)
     }
@@ -46,7 +46,7 @@ class RecipesListViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {

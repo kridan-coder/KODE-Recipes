@@ -31,7 +31,6 @@ final class ImageCollectionViewCellViewModel {
 // MARK: - CellRepresentable Protocol
 
 extension ImageCollectionViewCellViewModel: CollectionViewCellRepresentable {
-    
     static func registerCell(collectionView: UICollectionView) {
         ImageCollectionViewCell.registerCell(collectionView: collectionView)
     }

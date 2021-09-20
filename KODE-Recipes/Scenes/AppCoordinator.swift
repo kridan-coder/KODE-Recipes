@@ -13,7 +13,7 @@ final class AppCoordinator: Coordinator {
     // MARK: Properties
     
     let window: UIWindow?
-    let rootNavigationController: UINavigationController! = {
+    let rootNavigationController: UINavigationController = {
         let navigationController = UINavigationController()
         navigationController.navigationBar.barTintColor = UIColor.BaseTheme.background
         return navigationController
@@ -41,7 +41,9 @@ final class AppCoordinator: Coordinator {
         window.makeKeyAndVisible()
         
         // MARK: - Show Recipes List
-        let recipeListCoordinator = RecipesListCoordinator(rootNavigationController: rootNavigationController, repository: repository)
+        let recipeListCoordinator = RecipesListCoordinator(rootNavigationController: rootNavigationController,
+                                                           repository: repository)
+        
         recipeListCoordinator.delegate = self
         addChildCoordinator(recipeListCoordinator)
         recipeListCoordinator.start()
