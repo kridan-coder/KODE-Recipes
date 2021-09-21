@@ -25,18 +25,11 @@ final class RecipesListCoordinator: Coordinator {
     }
     
     override func start() {
-
-        let recipesListViewModel: RecipesListViewModel = {
-            let viewModel = RecipesListViewModel(repository: repository)
-            viewModel.coordinatorDelegate = self
-            return viewModel
-        }()
+        let recipesListViewModel = RecipesListViewModel(repository: repository)
+        recipesListViewModel.coordinatorDelegate = self
         
-        let recipesListViewController: RecipesListViewController = {
-            let viewController = RecipesListViewController(viewModel: recipesListViewModel)
-            viewController.title = Constants.NavigationBarTitle.recipes
-            return viewController
-        }()
+        let recipesListViewController = RecipesListViewController(viewModel: recipesListViewModel)
+        recipesListViewController.title = Constants.NavigationBarTitle.recipes
         
         rootNavigationController.setViewControllers([recipesListViewController], animated: false)
     }

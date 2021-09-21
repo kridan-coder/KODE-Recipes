@@ -17,7 +17,7 @@ class RecipeDetailsViewController: UIViewController {
     var contentView: RecipeDetailsView {
         return view as? RecipeDetailsView ?? RecipeDetailsView()
     }
-    // TODO: - Get rid of implicitly unwrapped optional
+    
     let viewModel: RecipeDetailsViewModel
     
     // MARK: - Init
@@ -84,17 +84,7 @@ class RecipeDetailsViewController: UIViewController {
         contentView.difficultyTitleLabel.text = Constants.difficulty
         contentView.instructionTitleLabel.text = Constants.instructions
         
-        for _ in 0..<recipe.difficultyLevel {
-            let image = UIImage.difficultyTrue
-            let imageView = UIImageView(image: image)
-            contentView.difficultyImagesCollection.addArrangedSubview(imageView)
-        }
-        
-        for _ in recipe.difficultyLevel..<5 {
-            let image = UIImage.difficultyFalse
-            let imageView = UIImageView(image: image)
-            contentView.difficultyImagesCollection.addArrangedSubview(imageView)
-        }
+        contentView.difficultyView.difficulty = recipe.difficultyLevel
         
         contentView.recipeImagesCollectionView.reloadData()
         
@@ -236,13 +226,4 @@ private extension Constants {
     static let difficulty = "Difficulty: "
     static let instructions = "Instruction: "
     static let recommended = "Recommended: "
-}
-
-private extension UIImage {
-    static var difficultyTrue: UIImage {
-        return UIImage(named: "DifficultyTrue") ?? UIImage()
-    }
-    static var difficultyFalse: UIImage {
-        return UIImage(named: "DifficultyFalse") ?? UIImage()
-    }
 }

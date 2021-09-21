@@ -73,7 +73,7 @@ final class RecipeDetailsViewModel {
         }
         return viewModel
     }
-        
+    
     private func getDataFromNetwork() {
         repository.apiClient?.getRecipe(uuid: recipeID) { [weak self] response in
             
@@ -85,8 +85,7 @@ final class RecipeDetailsViewModel {
             case .failure(let error):
                 self?.didReceiveError?(error)
             }
-            
         }
     }
-
+    
 }

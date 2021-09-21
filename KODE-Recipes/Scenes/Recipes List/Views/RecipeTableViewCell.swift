@@ -13,11 +13,11 @@ class RecipeTableViewCell: UITableViewCell {
     // MARK: Self creating
     
     static func registerCell(tableView: UITableView) {
-        tableView.register(RecipeTableViewCell.self, forCellReuseIdentifier: "RecipeTableViewCell")
+        tableView.register(RecipeTableViewCell.self, forCellReuseIdentifier: Constants.cellReuseIdentifier)
     }
     
     static func dequeueCell(tableView: UITableView, indexPath: IndexPath) -> RecipeTableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell",
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseIdentifier,
                                                        for: indexPath) as? RecipeTableViewCell
         else {
             return RecipeTableViewCell()
@@ -76,13 +76,12 @@ class RecipeTableViewCell: UITableViewCell {
         didPressButton?()
     }
     
-
-    
     // MARK: - Private Methods
     
     private func createConstraints() {
         addSubview(recipeImageView)
         addSubview(labelsContainer)
+        addSubview(timestampLabel)
         
         recipeImageView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(Constants.Inset.classic)
@@ -90,14 +89,20 @@ class RecipeTableViewCell: UITableViewCell {
             make.width.equalToSuperview().dividedBy(Constants.Image.widthDivision)
         }
         
+        timestampLabel.snp.makeConstraints { make in
+            make.bottom.leading.equalToSuperview().inset(Constants.Inset.small)
+            make.trailing.lessThanOrEqualTo(recipeImageView.snp.leading).offset(-Constants.Inset.classic)
+        }
+        
         labelsContainer.snp.makeConstraints { make in
-            make.top.bottom.leading.equalToSuperview().inset(Constants.Inset.small)
+            make.top.equalTo(recipeImageView.snp.top)
+            make.bottom.lessThanOrEqualTo(timestampLabel.snp.top).inset(-Constants.LabelsContainer.spacing)
+            make.leading.equalToSuperview().inset(Constants.Inset.small)
             make.trailing.equalTo(recipeImageView.snp.leading).offset(-Constants.Inset.classic)
         }
+
         labelsContainer.addArrangedSubview(titleLabel)
         labelsContainer.addArrangedSubview(descriptionLabel)
-        labelsContainer.addArrangedSubview(timestampLabel)
-        
     }
     
     private func initializeUI() {
@@ -116,7 +121,7 @@ class RecipeTableViewCell: UITableViewCell {
     }
     
     private func setupTitleLabel() {
-        titleLabel.font = UIFont.big
+        titleLabel.font = UIFont.enormous
         titleLabel.numberOfLines = Constants.Text.numberOfLinesStandart
         titleLabel.textColor = .darkGray
         titleLabel.minimumScaleFactor = Constants.Text.minimumScale
@@ -149,14 +154,17 @@ class RecipeTableViewCell: UITableViewCell {
 // MARK: - Constants
 
 private extension Constants {
+    
+    static let cellReuseIdentifier = "RecipeTableViewCell"
+    
     struct Image {
         static let widthDivision = CGFloat(2.3)
     }
     struct Text {
-        static let minimumScale = CGFloat(0.9)
+        static let minimumScale = CGFloat(0.85)
         static let numberOfLinesStandart = 2
     }
     struct LabelsContainer {
-        static let spacing = CGFloat(8)
+        static let spacing = CGFloat(7)
     }
 }

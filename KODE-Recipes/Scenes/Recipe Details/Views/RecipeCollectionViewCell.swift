@@ -13,11 +13,11 @@ class RecipeCollectionViewCell: UICollectionViewCell {
     // MARK: - Self creating
     
     static func registerCell(collectionView: UICollectionView) {
-        collectionView.register(RecipeCollectionViewCell.self, forCellWithReuseIdentifier: "RecipeCollectionViewCellSK")
+        collectionView.register(RecipeCollectionViewCell.self, forCellWithReuseIdentifier: Constants.cellReuseIdentifier)
     }
     
     static func dequeueCell(collectionView: UICollectionView, indexPath: IndexPath) -> RecipeCollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeCollectionViewCellSK", for: indexPath) as? RecipeCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellReuseIdentifier, for: indexPath) as? RecipeCollectionViewCell else {
             return RecipeCollectionViewCell()
         }
         return cell
@@ -67,4 +67,10 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         }
     }
     
+}
+
+// MARK: - Constants
+
+private extension Constants {
+    static let cellReuseIdentifier = "RecipeCollectionViewCellSK"
 }

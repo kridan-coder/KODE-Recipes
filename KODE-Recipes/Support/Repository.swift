@@ -45,7 +45,6 @@ final class Repository {
         return recipeRawToRecipeForCell(recipeListElementToRecipeRaw(recipe))
     }
     
-    
     private func recipeRawToRecipeForCell(_ recipe: RecipeDataRaw) -> RecipeDataForCell {
         
         let imageLink = recipe.imageLinks[0]

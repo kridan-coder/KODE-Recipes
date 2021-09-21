@@ -23,6 +23,9 @@
 		448DDA5126F9AAF6000F2C7E /* RecommendedImageCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DDA5026F9AAF6000F2C7E /* RecommendedImageCollectionViewCellViewModel.swift */; };
 		448DDA5326F9B3C9000F2C7E /* RecipeBrief.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DDA5226F9B3C9000F2C7E /* RecipeBrief.swift */; };
 		448DDA5526F9B3D5000F2C7E /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DDA5426F9B3D5000F2C7E /* Recipe.swift */; };
+		448DDA5726F9CE32000F2C7E /* DifficultyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DDA5626F9CE32000F2C7E /* DifficultyView.swift */; };
+		448DDA5926F9CF45000F2C7E /* UIImage+AppImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DDA5826F9CF45000F2C7E /* UIImage+AppImages.swift */; };
+		448DDA5B26F9D3EC000F2C7E /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448DDA5A26F9D3EC000F2C7E /* Gradient.swift */; };
 		4496998F26EB2130003A492B /* (null) in Sources */ = {isa = PBXBuildFile; };
 		44E6DFF026E1FA0000D3B638 /* ErrorPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E6DFEF26E1FA0000D3B638 /* ErrorPageView.swift */; };
 		4AABC6CF47637BF088605A4B /* Pods_KODE_Recipes_KODE_RecipesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82FFE5D28E8C3046305F0228 /* Pods_KODE_Recipes_KODE_RecipesUITests.framework */; };
@@ -89,6 +92,9 @@
 		448DDA5026F9AAF6000F2C7E /* RecommendedImageCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendedImageCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		448DDA5226F9B3C9000F2C7E /* RecipeBrief.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeBrief.swift; sourceTree = "<group>"; };
 		448DDA5426F9B3D5000F2C7E /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		448DDA5626F9CE32000F2C7E /* DifficultyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyView.swift; sourceTree = "<group>"; };
+		448DDA5826F9CF45000F2C7E /* UIImage+AppImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AppImages.swift"; sourceTree = "<group>"; };
+		448DDA5A26F9D3EC000F2C7E /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		44E6DFEF26E1FA0000D3B638 /* ErrorPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPageView.swift; sourceTree = "<group>"; };
 		5C9170DDB4484CB3722715B6 /* Pods_KODE_Recipes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KODE_Recipes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		82FFE5D28E8C3046305F0228 /* Pods_KODE_Recipes_KODE_RecipesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KODE_Recipes_KODE_RecipesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -169,6 +175,7 @@
 				931D5D1C2670CDFF00C4C2A9 /* Images.swift */,
 				931D5D222670D13200C4C2A9 /* Values.swift */,
 				4487B74826E9E4EB00668266 /* UIFont+AppFonts.swift */,
+				448DDA5826F9CF45000F2C7E /* UIImage+AppImages.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -191,6 +198,7 @@
 				448DDA4C26F9AABC000F2C7E /* RecommendedCollectionViewCell.swift */,
 				448DDA4E26F9AAC1000F2C7E /* RecipeCollectionViewCell.swift */,
 				448DDA4A26F9AAB0000F2C7E /* RecipeDetailsView.swift */,
+				448DDA5626F9CE32000F2C7E /* DifficultyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -276,6 +284,7 @@
 				9370CA0B266A04C3004E23D1 /* CellRepresentable.swift */,
 				934DA5352667737A0037D829 /* Repository.swift */,
 				4487B74A26E9E56C00668266 /* Errors.swift */,
+				448DDA5A26F9D3EC000F2C7E /* Gradient.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -631,6 +640,7 @@
 				44E6DFF026E1FA0000D3B638 /* ErrorPageView.swift in Sources */,
 				448818D826F896AC00BE32C7 /* RecipeResponse.swift in Sources */,
 				9370CA0C266A04C3004E23D1 /* CellRepresentable.swift in Sources */,
+				448DDA5726F9CE32000F2C7E /* DifficultyView.swift in Sources */,
 				9370CA19266A2922004E23D1 /* SortCase.swift in Sources */,
 				448DDA5126F9AAF6000F2C7E /* RecommendedImageCollectionViewCellViewModel.swift in Sources */,
 				931D5D1D2670CDFF00C4C2A9 /* Images.swift in Sources */,
@@ -642,6 +652,7 @@
 				9370CA28266A6A29004E23D1 /* RecipeDetailsViewModel.swift in Sources */,
 				9341102C26694A8300B9DBA5 /* RecipeDataRaw.swift in Sources */,
 				934DA5362667737A0037D829 /* Repository.swift in Sources */,
+				448DDA5B26F9D3EC000F2C7E /* Gradient.swift in Sources */,
 				936F2F02266CE030009663F4 /* ImageCollectionViewCellViewModel.swift in Sources */,
 				448818DA26F896C200BE32C7 /* RecipeListElement.swift in Sources */,
 				448DDA4726F9A4CF000F2C7E /* RecipeTableViewCell.swift in Sources */,
@@ -665,6 +676,7 @@
 				448DDA5526F9B3D5000F2C7E /* Recipe.swift in Sources */,
 				9341101F2669435E00B9DBA5 /* RecipesListViewModel.swift in Sources */,
 				934DA529266773270037D829 /* ApiClient.swift in Sources */,
+				448DDA5926F9CF45000F2C7E /* UIImage+AppImages.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

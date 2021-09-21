@@ -18,7 +18,7 @@ final class RecipeDetailsView: UIView {
     let timestampLabel = UILabel()
     let descriptionTextLabel = UILabel()
     let difficultyTitleLabel = UILabel()
-    let difficultyImagesCollection = UIStackView()
+    let difficultyView = DifficultyView()
     let instructionTitleLabel = UILabel()
     let instructionTextLabel = UILabel()
     let recommendedTitleLabel = UILabel()
@@ -69,7 +69,7 @@ final class RecipeDetailsView: UIView {
             make.top.bottom.equalTo(scrollView)
             make.leading.trailing.equalTo(self)
         }
-    
+        
         createConstraintsRecipeImagesCollection()
         createConstraintsPageControl()
         createConstraintsRecipeNameTimestamp()
@@ -102,7 +102,7 @@ final class RecipeDetailsView: UIView {
             make.bottom.equalTo(recipeNameLabel.snp.bottom)
             make.trailing.equalToSuperview().inset(Constants.Inset.classic)
         }
-
+        
         recipeNameLabel.snp.makeConstraints { make in
             make.top.equalTo(recipeImagesCollectionView.snp.bottom).inset(-Constants.Inset.classic)
             make.leading.equalToSuperview().inset(Constants.Inset.classic)
@@ -124,9 +124,9 @@ final class RecipeDetailsView: UIView {
             make.top.equalTo(descriptionTextLabel.snp.bottom).inset(-Constants.Inset.classic)
             make.leading.trailing.equalToSuperview().inset(Constants.Inset.classic)
         }
-
-        contentView.addSubview(difficultyImagesCollection)
-        difficultyImagesCollection.snp.makeConstraints { make in
+        
+        contentView.addSubview(difficultyView)
+        difficultyView.snp.makeConstraints { make in
             make.top.equalTo(difficultyTitleLabel.snp.bottom).inset(-Constants.Inset.classic)
             make.leading.equalToSuperview().inset(Constants.Inset.classic)
             make.trailing.lessThanOrEqualToSuperview().inset(Constants.Inset.classic)
@@ -136,10 +136,10 @@ final class RecipeDetailsView: UIView {
     private func createConstraintsInstruction() {
         contentView.addSubview(instructionTitleLabel)
         instructionTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(difficultyImagesCollection.snp.bottom).inset(-Constants.Inset.classic)
+            make.top.equalTo(difficultyView.snp.bottom).inset(-Constants.Inset.classic)
             make.leading.trailing.equalToSuperview().inset(Constants.Inset.classic)
         }
-
+        
         contentView.addSubview(instructionTextLabel)
         instructionTextLabel.snp.makeConstraints { make in
             make.top.equalTo(instructionTitleLabel.snp.bottom).inset(-Constants.Inset.classic)
@@ -152,9 +152,9 @@ final class RecipeDetailsView: UIView {
         recommendedTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(instructionTextLabel.snp.bottom).inset(-Constants.Inset.classic)
             make.leading.trailing.equalToSuperview().inset(Constants.Inset.classic)
-
+            
         }
-
+        
         contentView.addSubview(recommendationImagesCollectionView)
         recommendationImagesCollectionView.snp.makeConstraints { make in
             make.top.equalTo(recommendedTitleLabel.snp.bottom)
@@ -177,7 +177,6 @@ final class RecipeDetailsView: UIView {
         setupTimestampLabel()
         setupRecipeImagesCollection()
         setupRecipeRecommendationsImagesCollection()
-        setupDifficultyImagesCollection()
     }
     
     private func setupTitleLabels() {
@@ -213,13 +212,6 @@ final class RecipeDetailsView: UIView {
         timestampLabel.textColor = .darkGray
     }
     
-    private func setupDifficultyImagesCollection() {
-        difficultyImagesCollection.axis = .horizontal
-        difficultyImagesCollection.distribution = .fillEqually
-        difficultyImagesCollection.alignment = .leading
-        difficultyImagesCollection.spacing = Constants.DifficultyImageCollection.spacing
-    }
-    
     private func setupRecipeImagesCollection() {
         recipeImagesCollectionView.showsHorizontalScrollIndicator = false
         recipeImagesCollectionView.isPagingEnabled = true
@@ -243,9 +235,6 @@ private extension Constants {
     }
     struct SearchBar {
         static let placeholder = "Search"
-    }
-    struct DifficultyImageCollection {
-        static let spacing = CGFloat(20)
     }
     struct RecommendationImageCollection {
         static let height = CGFloat(190)

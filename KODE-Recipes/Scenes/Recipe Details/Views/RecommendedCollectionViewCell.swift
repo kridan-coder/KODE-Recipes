@@ -13,11 +13,11 @@ class RecommendedCollectionViewCell: UICollectionViewCell {
     
     static func registerCell(collectionView: UICollectionView) {
         collectionView.register(RecommendedCollectionViewCell.self,
-                                forCellWithReuseIdentifier: "RecommendationCollectionViewCellSK")
+                                forCellWithReuseIdentifier: Constants.cellReuseIdentifier)
     }
     
     static func dequeueCell(collectionView: UICollectionView, indexPath: IndexPath) -> RecommendedCollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecommendationCollectionViewCellSK",
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellReuseIdentifier,
                                                             for: indexPath) as? RecommendedCollectionViewCell else {
             return RecommendedCollectionViewCell()
         }
@@ -97,16 +97,8 @@ class RecommendedCollectionViewCell: UICollectionViewCell {
         titleLabel.font = UIFont.titleFont
     }
     
-    // TODO: make a class or protocol for gradient adding on any UIView
     private func setupGradient() {
-        let gradientView = UIView(frame: self.bounds)
-        let gradient = CAGradientLayer()
-        gradient.colors = Constants.Gradient.colors
-        gradient.frame = gradientView.bounds
-        gradient.locations = Constants.Gradient.locations
-        gradientView.layer.insertSublayer(gradient, at: 0)
-        recipeImageView.addSubview(gradientView)
-        recipeImageView.bringSubviewToFront(gradientView)
+        recipeImageView.setupGradient(frame: self.bounds, colors: Constants.Gradient.colors, locations: Constants.Gradient.locations)
     }
     
 }
@@ -114,6 +106,9 @@ class RecommendedCollectionViewCell: UICollectionViewCell {
 // MARK: - Constants
 
 private extension Constants {
+    
+    static let cellReuseIdentifier = "RecommendationCollectionViewCellSK"
+    
     struct RecipeImage {
         static let dividedBy = CGFloat(3 / 2)
     }

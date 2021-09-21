@@ -32,17 +32,10 @@ final class RecipeDetailsCoordinator: Coordinator {
     }
     
     override func start() {
+        let recipeViewModel = RecipeDetailsViewModel(repository: repository, recipeID: recipeID)
+        recipeViewModel.coordinatorDelegate = self
         
-        let recipeViewModel: RecipeDetailsViewModel = {
-            let viewModel = RecipeDetailsViewModel(repository: repository, recipeID: recipeID)
-            viewModel.coordinatorDelegate = self
-            return viewModel
-        }()
-        
-        let recipeViewController: RecipeDetailsViewController = {
-            let viewController = RecipeDetailsViewController(viewModel: recipeViewModel)
-            return viewController
-        }()
+        let recipeViewController = RecipeDetailsViewController(viewModel: recipeViewModel)
         
         rootNavigationController.pushViewController(recipeViewController, animated: true)
     }

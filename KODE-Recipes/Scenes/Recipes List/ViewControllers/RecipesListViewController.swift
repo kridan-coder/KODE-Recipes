@@ -15,7 +15,6 @@ class RecipesListViewController: UIViewController {
     let alertView = ErrorPageView()
     
     private let tableView = UITableView()
-//    private let searchBar = UISearchBar()
     private let searchController = UISearchController()
     
     private var filteredRecipes: [RecipeTableViewCellViewModel] = []
@@ -44,7 +43,7 @@ class RecipesListViewController: UIViewController {
         navigationItem.backButtonTitle = Constants.BackButton.text
         initializeUI()
         createConstraints()
-
+        
         bindToViewModel()
         viewModel.reloadData()
     }
@@ -77,7 +76,7 @@ class RecipesListViewController: UIViewController {
         setupNavigationItem()
         setupTableView()
         setupSearchController()
-
+        
     }
     
     private func setupSearchController() {
@@ -127,7 +126,7 @@ class RecipesListViewController: UIViewController {
         // in case update was triggered by refreshing the table
         filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchController.searchBar.text, scope: currentSearchCase)
         filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
-
+        
         tableView.reloadData()
         
         hideCustomAlert(alertView)
@@ -187,17 +186,17 @@ extension RecipesListViewController: UISearchBarDelegate {
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        hideSearchBar()
+        hideSearchBar(withPlaceholder: searchBar.text)
         return true
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         resetSearchBar()
-        hideSearchBar()
+        hideSearchBar(withPlaceholder: searchBar.text)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        hideSearchBar()
+        hideSearchBar(withPlaceholder: searchBar.text)
     }
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
@@ -206,10 +205,12 @@ extension RecipesListViewController: UISearchBarDelegate {
     
     // SearchBar Helpers
     
-    private func hideSearchBar() {
+    private func hideSearchBar(withPlaceholder placeholder: String?) {
+        searchController.searchBar.placeholder = placeholder
         searchController.searchBar.showsScopeBar = false
         searchController.searchBar.setShowsCancelButton(false, animated: true)
         searchController.searchBar.endEditing(true)
+        searchController.isActive = false
     }
     
     private func showSearchBar() {
@@ -227,6 +228,7 @@ extension RecipesListViewController: UISearchBarDelegate {
     private func filterAndSort() {
         filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchController.searchBar.text, scope: currentSearchCase)
         filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
+        
         tableView.reloadData()
     }
     
