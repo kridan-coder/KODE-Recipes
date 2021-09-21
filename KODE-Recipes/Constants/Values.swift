@@ -24,7 +24,7 @@ struct Constants {
     }
     
     struct API {
-        static let baseURL = "https://test.kode-t.ru/recipes.json"
+        static let baseURL = "https://test.kode-t.ru/"
     }
     
     struct NavigationBarTitle {

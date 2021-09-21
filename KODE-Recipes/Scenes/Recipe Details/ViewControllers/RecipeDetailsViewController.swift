@@ -69,15 +69,13 @@ class RecipeDetailsViewController: UIViewController {
         viewModel.reloadData()
     }
     
-    // MARK: - Private Methods
-    
-    private func setupRecipeData(recipe: RecipeDataForDetails) {
-        pageControl.numberOfPages = recipe.imageLinks.count
-        recipeNameLabel.text = recipe.name
-        instructionsTextView.text = recipe.instructions
-        descriptionTextView.text = recipe.description
-        lastUpdateLabel.text = recipe.lastUpdated
-        difficultyLevelImage.image = recipe.difficultyImage
+    func setupRecipeData(numberOfPages: Int, recipeName: String, instructions: String, description: String, lastUpdate: String, difficultyImage: UIImage) {
+        pageControl.numberOfPages = numberOfPages
+        recipeNameLabel.text = recipeName
+        instructionsTextView.text = instructions
+        descriptionTextView.text = description
+        lastUpdateLabel.text = lastUpdate
+        difficultyLevelImage.image = difficultyImage
     }
     
     private func setupRefreshControl() {
@@ -111,9 +109,6 @@ class RecipeDetailsViewController: UIViewController {
         viewModel.didReceiveError = { [weak self] error in
             self?.didReceiveError(error)
         }
-        viewModel.didFinishSuccessfully = { [weak self]  in
-            self?.didFinishSuccessfully()
-        }
     }
     
     private func didFinishSuccessfully() {
@@ -126,7 +121,7 @@ class RecipeDetailsViewController: UIViewController {
     
     private func didFinishUpdating() {
         if let recipe = viewModel.recipe {
-            setupRecipeData(recipe: recipe)
+            setupRecipeData(numberOfPages: recipe.imageLinks.count, recipeName: recipe.name, instructions: recipe.instructions, description: recipe.description, lastUpdate: recipe.lastUpdated, difficultyImage: recipe.difficultyImage ?? UIImage())
             collectionView.reloadData()
         }
         refreshControl.endRefreshing()

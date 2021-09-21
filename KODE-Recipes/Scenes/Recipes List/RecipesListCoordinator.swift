@@ -26,14 +26,13 @@ final class RecipesListCoordinator: Coordinator {
     }
     
     override func start() {
-        // init viewModel
+
         let recipesListViewModel: RecipesListViewModel = {
             let viewModel = RecipesListViewModel(repository: repository)
             viewModel.coordinatorDelegate = self
             return viewModel
         }()
         
-        // init viewController
         let recipesListViewController: RecipesListViewController = {
             let viewController = RecipesListViewController(viewModel: recipesListViewModel)
             viewController.title = Constants.NavigationBarTitle.recipes
@@ -48,6 +47,7 @@ final class RecipesListCoordinator: Coordinator {
 // MARK: ViewModel Delegate
 
 extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
+    
     // switches Scene to Recipe Details
     func didSelectRecipe(recipeID: String) {
         let recipeDetailsCoordinator = RecipeDetailsCoordinator(rootNavigationController: rootNavigationController,

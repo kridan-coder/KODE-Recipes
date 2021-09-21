@@ -14,8 +14,7 @@ protocol RecipesListViewModelCoordinatorDelegate: AnyObject {
 
 final class RecipesListViewModel {
     
-    
-    //MARK: - Properties
+    // MARK: - Properties
     
     var recipesViewModels: [RecipeTableViewCellViewModel] = []
     
@@ -29,20 +28,15 @@ final class RecipesListViewModel {
         self.repository = repository
     }
     
-    // MARK: Public Methods
+    var didReceiveError: ((Error) -> Void)?
+    var didStartUpdating: (() -> Void)?
+    var didFinishUpdating: (() -> Void)?
     
-    // Service
+    // MARK: - Public Methods
     
     func reloadData() {
         self.didStartUpdating?()
-        
-        if repository.isConnectedToNetwork() {
-            getDataFromNetworkAndSaveItLocally()
-        }
-        else {
-            didNotFindInternetConnection?()
-            getDataFromDatabase()
-        }
+        getDataFromNetwork()
     }
     
     func filterRecipesForSearchText(searchText: String?, scope: SearchCase?) -> [RecipeTableViewCellViewModel] {
@@ -53,17 +47,9 @@ final class RecipesListViewModel {
         repository.sortRecipesBy(sortCase: sortCase, recipes: recipes)
     }
     
-    // MARK: Actions
-    
-    var didReceiveError: ((Error) -> Void)?
-    var didNotFindInternetConnection: (() -> Void)?
-    var didStartUpdating: (() -> Void)?
-    var didFinishUpdating: (() -> Void)?
-    var didFinishSuccessfully: (() -> Void)?
-    
     // MARK: Private Methods
     
-    private func viewModelFor(recipe: RecipeDataForCell) -> RecipeTableViewCellViewModel {
+    private func viewModelFor(_ recipe: RecipeDataForCell) -> RecipeTableViewCellViewModel {
         let viewModel = RecipeTableViewCellViewModel(recipe: recipe)
         
         viewModel.didSelectRecipe = { [weak self] recipeID in
@@ -76,42 +62,23 @@ final class RecipesListViewModel {
         return viewModel
     }
     
-    private func getDataFromDatabase() {
-        if let recipes = repository.databaseClient?.getObjects(ofType: RecipeDataForDC.self) {
-            recipesViewModels = recipes.map {
-                let recipe = repository.recipeDCToRecipeForCell($0)
-                return viewModelFor(recipe: recipe)
+    private func getDataFromNetwork() {
+        repository.apiClient?.getAllRecipes { response in
+            
+            switch response {
+            case .success(let recipesContainer):
+                
+                self.recipesViewModels = recipesContainer.recipes.compactMap {
+                    let recipe = self.repository.recipeAPIToRecipeForCell($0)
+                    return self.viewModelFor(recipe)
+                }
+                
+                self.didFinishUpdating?()
+                
+            case .failure(let error):
+                self.didReceiveError?(error)
             }
         }
-        self.didFinishUpdating?()
-    }
-    
-    private func getDataFromNetworkAndSaveItLocally() {
-        repository.apiClient?.getRecipes(onSuccess: { recipesContainer in
-            guard let recipes = recipesContainer.recipes else {
-                self.didReceiveError?(ErrorType.basic)
-                return
-            }
-            
-            // received data should be saved locally
-            let recipesDC = recipes.map {
-                return self.repository.recipeACtoRecipeDC($0)
-            }
-            self.repository.databaseClient?.saveObjects(recipesDC)
-            
-            // set viewModels
-            self.recipesViewModels = recipes.map {
-                let recipe = self.repository.recipeACToRecipeForCell($0)
-                return self.viewModelFor(recipe: recipe)
-            }
-            
-            self.didFinishUpdating?()
-            self.didFinishSuccessfully?()
-            
-        }, onFailure: { error in
-            self.didFinishUpdating?()
-            self.didReceiveError?(ErrorType.basic)
-        })
     }
     
 }

@@ -35,7 +35,6 @@ final class RecipeDetailsViewModel {
     var didReceiveError: ((Error) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
-    var didFinishSuccessfully: (() -> Void)?
     
     // MARK: - Init
     
@@ -48,7 +47,7 @@ final class RecipeDetailsViewModel {
     
     func reloadData() {
         self.didStartUpdating?()
-        getDataFromDatabase()
+        getDataFromNetwork()
     }
     
     func viewWillDisappear() {
@@ -61,14 +60,19 @@ final class RecipeDetailsViewModel {
         ImageCollectionViewCellViewModel(imageLink: imageLink)
     }
     
-    private func getDataFromDatabase() {
-        if let recipeDC = repository.databaseClient?.getObjectByPrimaryKey(ofType: RecipeDataForDC.self, primaryKey: recipeID) {
-            recipe = repository.recipeDCToRecipeForDetails(recipeDC)
-            self.didFinishSuccessfully?()
-        } else {
-            self.didReceiveError?(ErrorType.basic)
+    private func getDataFromNetwork() {
+        repository.apiClient?.getRecipe(uuid: recipeID) { [weak self] response in
+            
+            switch response {
+            case .success(let recipeContainer):
+                self?.recipe = self?.repository.recipeAPIToRecipeForDetails(recipeContainer.recipe)
+                self?.didFinishUpdating?()
+                
+            case .failure(let error):
+                self?.didReceiveError?(error)
+            }
+            
         }
-        self.didFinishUpdating?()
     }
     
 }
