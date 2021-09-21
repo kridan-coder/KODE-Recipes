@@ -20,6 +20,30 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Lifecycle
     
+    // MARK: Helpers
+    
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(RecipeDetailsViewController.refresh), for: .valueChanged)
+        scrollView.addSubview(refreshControl)
+    }
+    
+    private func setupCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        ImageCollectionViewCellViewModel.registerCell(collectionView: self.collectionView)
+    }
+    
+    private func setupAppearance() {
+        difficultyLevelImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        difficultyLevelImage.layer.borderWidth = Constants.Design.borderWidthSecondary
+        difficultyLevelImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
+        instructionsTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        descriptionTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
+        refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
+    }
+    
+    // MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,12 +51,14 @@ class RecipeDetailsViewController: UIViewController {
         setupRecipeImagesRecommendationsCollectionView()
         bindToViewModel()
         viewModel.reloadData()
+        setupCustomAlert(alertView)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         if self.isMovingFromParent {
+            removeCustomAlert(alertView)
             viewModel.viewWillDisappear()
         }
     }
@@ -68,8 +94,6 @@ class RecipeDetailsViewController: UIViewController {
         contentView.recipeImagesCollectionView.reloadData()
     }
     
-    // MARK: Actions
-    
     @objc func refresh() {
         viewModel.reloadData()
     }
@@ -92,38 +116,54 @@ class RecipeDetailsViewController: UIViewController {
     // ViewModel
     private func bindToViewModel() {
         viewModel.didStartUpdating = { [weak self] in
-            self?.viewModelDidStartUpdating()
+            self?.didStartUpdating()
         }
         viewModel.didFinishUpdating = { [weak self] in
-            self?.viewModelDidFinishUpdating()
+            self?.didFinishUpdating()
         }
         viewModel.didReceiveError = { [weak self] error in
-            self?.viewModelDidReceiveError(error: error)
+            self?.didReceiveError(error)
         }
     }
     
-    private func viewModelDidStartUpdating() {
-        // TODO: - add logic on starting update
+    private func didFinishSuccessfully() {
+        hideCustomAlert(alertView)
     }
     
-    private func viewModelDidFinishUpdating() {
+    private func didStartUpdating() {
+        // TODO: - Add some logic later
+    }
+    
+    private func didFinishUpdating() {
         if let recipe = viewModel.recipe {
             setupRecipeData(recipe: recipe)
             contentView.recipeImagesCollectionView.reloadData()
         }
     }
     
-    private func viewModelDidReceiveError(error: String) {
-        let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-        present(alert, animated: true)
+    private func didReceiveError(_ error: Error) {
+        navigationController?.navigationBar.isHidden = true
+        showCustomAlert(alertView,
+                        title: Constants.ErrorType.basic,
+                        message: error.localizedDescription,
+                        buttonText: Constants.ButtonTitle.refresh)
     }
     
 }
 
-extension RecipeDetailsViewController: UICollectionViewDelegate {
+// MARK: - CustomAlertDisplaying Protocol
+
+extension RecipeDetailsViewController: CustomAlertDisplaying {
+    func handleButtonTap() {
+        viewModel.reloadData()
+    }
     
-    // TODO: Not sure that this function is a nice decision. Need to rethink and make it work faster
+}
+
+// MARK: - CollectionView Delegate
+
+extension RecipeDetailsViewController: UICollectionViewDelegate {
+    // TODO: - Not sure that this function is a nice decision. Need to rethink and make it work faster
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if contentView.recipeImagesCollectionView.frame.size.width != 0 {
             contentView.pageControl.currentPage = Int(scrollView.contentOffset.x / contentView.recipeImagesCollectionView.frame.size.width)
@@ -131,8 +171,9 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
     }
 }
 
+// MARK: - CollectionView DataSource
+
 extension RecipeDetailsViewController: UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == contentView.recipeImagesCollectionView {
             return viewModel.recipeImages.count
@@ -153,6 +194,8 @@ extension RecipeDetailsViewController: UICollectionViewDataSource {
     }
     
 }
+
+// MARK: - CollectionView FlowLayout
 
 extension RecipeDetailsViewController: UICollectionViewDelegateFlowLayout {
     

@@ -10,26 +10,27 @@ import UIKit
 
 final class ImageCollectionViewCellViewModel {
     
-    // MARK: Properties
+    // MARK: - Properties
     
     let data: String
     
-    // MARK: Actions
-    
-    var didReceiveError: ((String) -> Void)?
-    var didUpdate: ((ImageCollectionViewCellViewModel) -> Void)?
-    var didSelectImage: ((String) -> Void)?
-    
-    // MARK: Lifecycle
+    // MARK: - Init
     
     init(imageLink: String) {
         self.data = imageLink
     }
     
+    // MARK: - Actions
+    
+    var didReceiveError: ((String) -> Void)?
+    var didUpdate: ((ImageCollectionViewCellViewModel) -> Void)?
+    var didSelectImage: ((String) -> Void)?
+    
 }
 
+// MARK: - CellRepresentable Protocol
+
 extension ImageCollectionViewCellViewModel: CollectionViewCellRepresentable {
-    
     static func registerCell(collectionView: UICollectionView) {
         RecipeCollectionViewCell.registerCell(collectionView: collectionView)
     }

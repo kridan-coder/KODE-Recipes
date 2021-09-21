@@ -7,41 +7,35 @@
 
 import UIKit
 
-protocol RecipesListViewModelCoordinatorDelegate: class {
+protocol RecipesListViewModelCoordinatorDelegate: AnyObject {
     func didSelectRecipe(recipeID: String)
 }
 
 final class RecipesListViewModel {
     
-    // MARK: Private
-    
-    private let repository: Repository
-    
-    // MARK: Delegates
-    
-    weak var coordinatorDelegate: RecipesListViewModelCoordinatorDelegate?
-    
-    // MARK: Properties
+    // MARK: - Properties
     
     var recipesViewModels: [RecipeTableViewCellViewModel] = []
     
-    // MARK: Actions
+    weak var coordinatorDelegate: RecipesListViewModelCoordinatorDelegate?
     
-    var didReceiveError: ((String) -> Void)?
-    var didNotFindInternetConnection: (() -> Void)?
+    private let repository: Repository
+    
+    // MARK: Init
+    
+    init(repository: Repository) {
+        self.repository = repository
+    }
+    
+    var didReceiveError: ((Error) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
     
-    // MARK: Service
+    // MARK: - Public Methods
     
     func reloadData() {
         self.didStartUpdating?()
-        
-        if repository.isConnectedToNetwork() {
-            getDataFromNetworkAndSaveItLocally()
-        } else {
-            didNotFindInternetConnection?()
-        }
+        getDataFromNetwork()
     }
     
     func filterRecipesForSearchText(searchText: String?, scope: SearchCase?) -> [RecipeTableViewCellViewModel] {
@@ -52,15 +46,9 @@ final class RecipesListViewModel {
         repository.sortRecipesBy(sortCase: sortCase, recipes: recipes)
     }
     
-    // MARK: Lifecycle
+    // MARK: Private Methods
     
-    init(repository: Repository) {
-        self.repository = repository
-    }
-    
-    // MARK: Helpers
-    
-    private func viewModelFor(recipe: RecipeDataForCell) -> RecipeTableViewCellViewModel {
+    private func viewModelFor(_ recipe: RecipeDataForCell) -> RecipeTableViewCellViewModel {
         let viewModel = RecipeTableViewCellViewModel(recipe: recipe)
         
         viewModel.didSelectRecipe = { [weak self] recipeID in
@@ -73,25 +61,23 @@ final class RecipesListViewModel {
         return viewModel
     }
     
-    private func getDataFromNetworkAndSaveItLocally() {
-        repository.apiClient?.getRecipes(onSuccess: { recipesContainer in
-            guard let recipes = recipesContainer.recipes else {
-                self.didReceiveError?(Constants.ErrorText.recipesListIsEmpty)
-                return
+    private func getDataFromNetwork() {
+        repository.apiClient?.getAllRecipes { response in
+            
+            switch response {
+            case .success(let recipesContainer):
+                
+                self.recipesViewModels = recipesContainer.recipes.compactMap {
+                    let recipe = self.repository.recipeAPIToRecipeForCell($0)
+                    return self.viewModelFor(recipe)
+                }
+                
+                self.didFinishUpdating?()
+                
+            case .failure(let error):
+                self.didReceiveError?(error)
             }
-            
-            // set viewModels
-            self.recipesViewModels = recipes.map {
-                let recipe = self.repository.recipeACToRecipeForCell($0)
-                return self.viewModelFor(recipe: recipe)
-            }
-            
-            self.didFinishUpdating?()
-            
-        }, onFailure: { error in
-            self.didFinishUpdating?()
-            self.didReceiveError?(error)
-        })
+        }
     }
     
 }

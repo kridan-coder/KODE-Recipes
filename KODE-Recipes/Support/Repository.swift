@@ -5,65 +5,34 @@
 //  Created by KriDan on 02.06.2021.
 //
 
-import Foundation
 import SystemConfiguration
 import UIKit
-//import RealmSwift
 
 final class Repository {
     
     // MARK: Public
     
     var apiClient: ApiClient?
-    //var databaseClient: DatabaseClient?
     
     // MARK: Lifecycle
     
     init(apiClient: ApiClient) {
         self.apiClient = apiClient
-        //self.databaseClient = databaseClient
     }
     
     // MARK: Actions
     
-    func isConnectedToNetwork() -> Bool {
-        var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
-        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-        zeroAddress.sin_family = sa_family_t(AF_INET)
-        
-        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) { zeroSockAddress in
-                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
-            }
-        }
-        
-        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
-        if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
-            return false
-        }
-        
-        let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
-        let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-        let result = (isReachable && !needsConnection)
-        
-        return result
-    }
-    
     // converting
     
-//    func recipeDCToRecipeForDetails(_ recipeDC: RecipeDataForDC) -> RecipeDataForDetails {
-//        return recipeRawToRecipeForDetails(recipeDCtoRecipeRaw(recipeDC))
-//    }
-    
-//    func recipeDCToRecipeForCell(_ recipeDC: RecipeDataForDC) -> RecipeDataForCell {
-//        return recipeToRecipeForCell(recipeDCtoRecipeRaw(recipeDC))
-//    }
-    
-    func recipeACToRecipeForCell(_ recipeAC: RecipeDataForAC) -> RecipeDataForCell {
-        return recipeToRecipeForCell(recipeACtoRecipeRaw(recipeAC))
+    func recipeAPIToRecipeForDetails(_ recipe: RecipeListElement) -> RecipeDataForDetails {
+        return recipeRawToRecipeForDetails(recipeAPItoRecipeRaw(recipe))
     }
     
-    func recipeRawToRecipeForDetails(_ recipe: RecipeDataRaw) -> RecipeDataForDetails {
+    func recipeAPIToRecipeForCell(_ recipe: RecipeListElement) -> RecipeDataForCell {
+        return recipeRawToRecipeForCell(recipeAPItoRecipeRaw(recipe))
+    }
+    
+    private func recipeRawToRecipeForDetails(_ recipe: RecipeDataRaw) -> RecipeDataForDetails {
         let date = getDateForRecipeDetails(lastUpdated: recipe.lastUpdated)
         
         // description may be not provided or it can be empty
@@ -77,7 +46,7 @@ final class Repository {
         return RecipeDataForDetails(recipeID: recipe.recipeID, name: recipe.name, imageLinks: recipe.imageLinks, lastUpdated: date, description: description!, instructions: recipe.instructions, difficultyLevel: recipe.difficulty)
     }
     
-    func recipeToRecipeForCell(_ recipe: RecipeDataRaw) -> RecipeDataForCell {
+    private func recipeRawToRecipeForCell(_ recipe: RecipeDataRaw) -> RecipeDataForCell {
         
         let imageLink = recipe.imageLinks[0]
         
@@ -86,30 +55,9 @@ final class Repository {
         return RecipeDataForCell(recipeID: recipe.recipeID, name: recipe.name, imageLink: imageLink, lastUpdated: date, description: recipe.description, instructions: recipe.instructions, date: recipe.lastUpdated)
     }
     
-    func recipeACtoRecipeRaw(_ recipeAC: RecipeDataForAC) -> RecipeDataRaw {
-        return RecipeDataRaw(recipeID: recipeAC.uuid!, name: formatText(recipeAC.name!)!, imageLinks: recipeAC.images!, lastUpdated: recipeAC.lastUpdated!, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions!)!, difficulty: recipeAC.difficulty!)
+    private func recipeAPItoRecipeRaw(_ recipeAC: RecipeListElement) -> RecipeDataRaw {
+        return RecipeDataRaw(recipeID: recipeAC.uuid, name: formatText(recipeAC.name), imageLinks: recipeAC.images, lastUpdated: recipeAC.lastUpdated, description: formatText(recipeAC.description), instructions: formatText(recipeAC.instructions), difficulty: recipeAC.difficulty)
     }
-    
-//    func recipeDCtoRecipeRaw(_ recipeDC: RecipeDataForDC) -> RecipeDataRaw {
-//        return RecipeDataRaw(recipeID: recipeDC.uuid!, name: formatText(recipeDC.name!)!, imageLinks: Array(recipeDC.images), lastUpdated: recipeDC.lastUpdated.value!, description: formatText(recipeDC.recipeDescription), instructions: formatText(recipeDC.instructions!)!, difficulty: recipeDC.difficulty.value!)
-//    }
-    
-//    func recipeACtoRecipeDC(_ recipeAC: RecipeDataForAC) -> RecipeDataForDC {
-//        let recipeDC = RecipeDataForDC()
-//        recipeDC.difficulty.value = recipeAC.difficulty
-//        recipeDC.images = List<String>()
-//        if let images = recipeAC.images {
-//            for link in images {
-//                recipeDC.images.append(link)
-//            }
-//        }
-//        recipeDC.instructions = recipeAC.instructions
-//        recipeDC.lastUpdated.value = recipeAC.lastUpdated
-//        recipeDC.name = recipeAC.name
-//        recipeDC.recipeDescription = recipeAC.description
-//        recipeDC.uuid = recipeAC.uuid
-//        return recipeDC
-//    }
     
     // filtering and sorting
     
@@ -157,7 +105,7 @@ final class Repository {
             }
         case .date:
             mutableRecipes.sort { first, second in
-                return first.data.date > second.data.date
+                return first.data.lastUpdated > second.data.lastUpdated
             }
         }
         
@@ -167,11 +115,8 @@ final class Repository {
     
     // MARK: Helpers
     
-    private func formatText(_ text: String?) -> String? {
-        guard let text = text else {
-            return nil
-        }
-        return text.replacingOccurrences(of: "<br>", with: "\n")
+    private func formatText(_ text: String?) -> String {
+        return text?.replacingOccurrences(of: "<br>", with: "\n") ?? ""
     }
     
     private func getDateForRecipeCell(lastUpdated: Double) -> String {

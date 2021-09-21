@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol RecipeDetailsDelegate: class {
+protocol RecipeDetailsDelegate: AnyObject {
     func didFinish(from coordinator: RecipeDetailsCoordinator)
 }
 
@@ -32,17 +32,16 @@ final class RecipeDetailsCoordinator: Coordinator {
     }
     
     override func start() {
-        // init viewModel
+        
         let recipeViewModel: RecipeDetailsViewModel = {
             let viewModel = RecipeDetailsViewModel(repository: repository, recipeID: recipeID)
             viewModel.coordinatorDelegate = self
             return viewModel
         }()
         
-        // init viewController
         let recipeViewController: RecipeDetailsViewController = {
-            let viewController = RecipeDetailsViewController()
-            viewController.viewModel = recipeViewModel
+            let viewController = RecipeDetailsViewController(viewModel: recipeViewModel)
+            viewController.title = Constants.NavigationBarTitle.recipeDetails
             return viewController
         }()
         

@@ -25,17 +25,15 @@ final class RecipesListCoordinator: Coordinator {
     }
     
     override func start() {
-        // init viewModel
+
         let recipesListViewModel: RecipesListViewModel = {
             let viewModel = RecipesListViewModel(repository: repository)
             viewModel.coordinatorDelegate = self
             return viewModel
         }()
         
-        // init viewController
         let recipesListViewController: RecipesListViewController = {
-            let viewController = RecipesListViewController()
-            viewController.viewModel = recipesListViewModel
+            let viewController = RecipesListViewController(viewModel: recipesListViewModel)
             viewController.title = Constants.NavigationBarTitle.recipes
             return viewController
         }()
@@ -53,6 +51,7 @@ extension RecipesListCoordinator: RecipesListViewModelCoordinatorDelegate {
         let recipeDetailsCoordinator = RecipeDetailsCoordinator(rootNavigationController: rootNavigationController,
                                                                 repository: repository,
                                                                 recipeID: recipeID)
+        
         recipeDetailsCoordinator.delegate = self
         addChildCoordinator(recipeDetailsCoordinator)
         rootNavigationController.navigationBar.prefersLargeTitles = false

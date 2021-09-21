@@ -8,23 +8,17 @@
 import Foundation
 import UIKit
 
-protocol RecipeViewModelCoordinatorDelegate: class {
+protocol RecipeViewModelCoordinatorDelegate: AnyObject {
     func viewWillDisappear()
 }
 
 final class RecipeDetailsViewModel {
     
-    // MARK: Private
-    
-    private let repository: Repository
-    
-    private let recipeID: String
-    
-    // MARK: Delegates
+    // MARK: - Properties
     
     weak var coordinatorDelegate: RecipeViewModelCoordinatorDelegate?
     
-    // MARK: Properties
+    var images: [ImageCollectionViewCellViewModel] = []
     
     var recipeImages: [ImageCollectionViewCellViewModel] = []
     
@@ -37,13 +31,24 @@ final class RecipeDetailsViewModel {
         }
     }
     
-    // MARK: Actions
+    private let repository: Repository
     
-    var didReceiveError: ((String) -> Void)?
+    private let recipeID: String
+    
+    // MARK: - Actions
+    
+    var didReceiveError: ((Error) -> Void)?
     var didStartUpdating: (() -> Void)?
     var didFinishUpdating: (() -> Void)?
     
-    // MARK: Service
+    // MARK: - Init
+    
+    init(repository: Repository, recipeID: String) {
+        self.repository = repository
+        self.recipeID = recipeID
+    }
+    
+    // MARK: - Public Methods
     
     func reloadData() {
         self.didStartUpdating?()
@@ -54,7 +59,7 @@ final class RecipeDetailsViewModel {
         coordinatorDelegate?.viewWillDisappear()
     }
     
-    // MARK: Lifecycle
+    // MARK: - Private Methods
     
     init(repository: Repository, recipeID: String) {
         self.repository = repository
@@ -69,6 +74,19 @@ final class RecipeDetailsViewModel {
     
     private func viewModelForRecommended(name: String, imageLink: String) -> RecommendedImageCollectionViewCellViewModel {
         RecommendedImageCollectionViewCellViewModel(name: name, imageLink: imageLink)
+    private func getDataFromNetwork() {
+        repository.apiClient?.getRecipe(uuid: recipeID) { [weak self] response in
+            
+            switch response {
+            case .success(let recipeContainer):
+                self?.recipe = self?.repository.recipeAPIToRecipeForDetails(recipeContainer.recipe)
+                self?.didFinishUpdating?()
+                
+            case .failure(let error):
+                self?.didReceiveError?(error)
+            }
+            
+        }
     }
     
     private func getDataFromNetwork() {

@@ -8,7 +8,14 @@
 import Foundation
 import UIKit
 
-enum Constants {
+
+struct Constants {
+    
+    struct Design {
+        static let cornerRadiusError = CGFloat(22)
+        static let spacingMain = CGFloat(22)
+        
+        static let basicInset = CGFloat(20)
     
     struct Inset {
         static let huge = CGFloat(30)
@@ -24,38 +31,35 @@ enum Constants {
         static let borderWidthSecondary = CGFloat(1)
     }
     
-    enum API {
-        static let baseURL = "https://test.kode-t.ru/recipes.json"
+    struct API {
+        static let baseURL = "https://test.kode-t.ru/"
     }
     
-    enum AlertActionTitle {
-        static let ok = "OK"
-    }
-    
-    enum NavigationBarTitle {
+    struct NavigationBarTitle {
         static let recipes = "Recipes"
         static let recipeDetails = "RecipeDetails"
     }
     
-    enum ErrorType {
-        static let basic = "Error"
-        static let noInternet = "No Internet connection"
+    struct ErrorType {
+        static let basic = "Something went wrong"
+        static let noInternet = "No Internet"
     }
     
-    enum ErrorText {
-        static let decodingFailure = "Failed to decode data. "
-        static let emptyResponse = "Response is empty. "
-        static let unhandledRequestFailure = "Unexpected error while making a request. "
-        static let noInternetTable = "Local saves will be shown (if there are any). Please connect to the Internet and refresh the table. "
-        static let recipesListIsEmpty = "Recipes list is empty. "
-        static let recipeDetailsAreEmpty = "Recipe Details could not be loaded. "
+    struct ButtonTitle {
+        static let refresh = "Refresh"
     }
     
-    enum Description {
+    struct ErrorText {
+        static let basic = "The problem is on our side, we are already looking into it. Please try refreshing the screen later."
+        static let noInternet = "Try refreshing the screen when communication is restored."
+
+    }
+    
+    struct Description {
         static let empty = "No description provided."
     }
     
-    enum DateDummy {
+    struct DateDummy {
         static let recipeCell = "Last update: "
         static let recipeDetails = "Last Recipe Update:\n"
     }

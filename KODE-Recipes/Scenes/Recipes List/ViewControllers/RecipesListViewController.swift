@@ -9,16 +9,15 @@ import UIKit
 
 class RecipesListViewController: UIViewController {
     
-    // MARK: - Properties
-    // TODO: - Get rid of implicitly unwrapped optional
-    var viewModel: RecipesListViewModel!
+    // MARK: Properties
+    
+    let viewModel: RecipesListViewModel
     
     private let tableView = UITableView()
     private let searchBar = UISearchBar()
     private let searchController = UISearchController()
     
     private var filteredRecipes: [RecipeTableViewCellViewModel] = []
-    
     private var currentSearchCase: SearchCase {
         get {
             // TODO: - Get rid of implicitly unwrapped optional
@@ -33,7 +32,7 @@ class RecipesListViewController: UIViewController {
         }
     }
     
-    // MARK: - Init
+    // MARK: Helpers
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,41 +94,56 @@ class RecipesListViewController: UIViewController {
     }
     
     private func bindToViewModel() {
-        viewModel.didFinishUpdating = { [weak self] in
-            self?.viewModelDidFinishUpdating()
+        viewModel.didStartUpdating = { [weak self] in
+            self?.didStartUpdating()
         }
-        viewModel.didNotFindInternetConnection = { [weak self] in
-            self?.viewModelDidNotFindInternetConnection()
+        viewModel.didFinishUpdating = { [weak self] in
+            self?.didFinishUpdating()
         }
         viewModel.didReceiveError = { [weak self] error in
-            self?.viewModelDidReceiveError(error: error)
+            self?.didReceiveError(error)
         }
     }
     
-    private func viewModelDidFinishUpdating() {
+    private func didFinishSuccessfully() {
+        hideCustomAlert(alertView)
+    }
+    
+    private func didStartUpdating() {
+        startTableViewActivityIndicator()
+    }
+    
+    private func didFinishUpdating() {
+        tableViewActivityIndicator.stopAnimating()
+        
         // in case update was triggered by refreshing the table
         filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text, scope: currentSearchCase)
         filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
 
         tableView.reloadData()
-    }
-    
-    private func viewModelDidNotFindInternetConnection() {
-        let alert = UIAlertController(title: Constants.ErrorType.noInternet,
-                                      message: Constants.ErrorText.noInternetTable,
-                                      preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-        present(alert, animated: true)
+        hideCustomAlert(alertView)
     }
     
-    private func viewModelDidReceiveError(error: String) {
-        let alert = UIAlertController(title: Constants.ErrorType.basic, message: error, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Constants.AlertActionTitle.ok, style: .default))
-        present(alert, animated: true)
+    private func didReceiveError(_ error: Error) {
+        navigationController?.navigationBar.isHidden = true
+        
+        let title: String
+        if let customError = error as? CustomError {
+            title = customError.errorTitle
+        } else {
+            title = Constants.ErrorType.basic
+        }
+        
+        showCustomAlert(alertView,
+                        title: title,
+                        message: error.localizedDescription,
+                        buttonText: Constants.ButtonTitle.refresh)
     }
     
 }
+
+// MARK: SearchBar DataSource
 
 extension RecipesListViewController: UITableViewDataSource {
     
@@ -150,6 +164,8 @@ extension RecipesListViewController: UITableViewDataSource {
     }
     
 }
+
+// MARK: SearchBar Delegate
 
 extension RecipesListViewController: UISearchBarDelegate {
     
@@ -180,7 +196,7 @@ extension RecipesListViewController: UISearchBarDelegate {
         filterAndSort()
     }
     
-    // MARK: SearchBar Helpers
+    // SearchBar Helpers
     
     private func hideSearchBar() {
         searchBar.showsScopeBar = false
@@ -207,6 +223,18 @@ extension RecipesListViewController: UISearchBarDelegate {
     }
     
 }
+
+// MARK: CustomAlertDisplaying Protocol
+
+extension RecipesListViewController: CustomAlertDisplaying {
+    
+    func handleButtonTap() {
+        viewModel.reloadData()
+    }
+    
+}
+
+// MARK: TableView Delegate
 
 extension RecipesListViewController: UITableViewDelegate {}
 
