@@ -12,24 +12,29 @@ class RecipesListViewController: UIViewController {
     // MARK: Properties
     
     let viewModel: RecipesListViewModel
+    let alertView = ErrorPageView()
     
     private let tableView = UITableView()
-    private let searchBar = UISearchBar()
+//    private let searchBar = UISearchBar()
     private let searchController = UISearchController()
     
     private var filteredRecipes: [RecipeTableViewCellViewModel] = []
-    private var currentSearchCase: SearchCase {
-        get {
-            // TODO: - Get rid of implicitly unwrapped optional
-            SearchCase(rawValue: searchBar.scopeButtonTitles?[searchBar.selectedScopeButtonIndex] ?? SearchCase.all.rawValue)!
-        }
-    }
+    private var currentSearchCase = SearchCase.all
     
     private var currentSortCase = SortCase.date {
         didSet {
             filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
             tableView.reloadData()
         }
+    }
+    
+    init(viewModel: RecipesListViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: Helpers
@@ -71,7 +76,12 @@ class RecipesListViewController: UIViewController {
         view.backgroundColor = .white
         setupNavigationItem()
         setupTableView()
+        setupSearchController()
 
+    }
+    
+    private func setupSearchController() {
+        searchController.searchBar.delegate = self
     }
     
     private func setupTableView() {
@@ -110,14 +120,12 @@ class RecipesListViewController: UIViewController {
     }
     
     private func didStartUpdating() {
-        startTableViewActivityIndicator()
+        // TODO: - Create and show activity indicator
     }
     
     private func didFinishUpdating() {
-        tableViewActivityIndicator.stopAnimating()
-        
         // in case update was triggered by refreshing the table
-        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text, scope: currentSearchCase)
+        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchController.searchBar.text, scope: currentSearchCase)
         filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
 
         tableView.reloadData()
@@ -199,25 +207,25 @@ extension RecipesListViewController: UISearchBarDelegate {
     // SearchBar Helpers
     
     private func hideSearchBar() {
-        searchBar.showsScopeBar = false
-        searchBar.setShowsCancelButton(false, animated: true)
-        searchBar.endEditing(true)
+        searchController.searchBar.showsScopeBar = false
+        searchController.searchBar.setShowsCancelButton(false, animated: true)
+        searchController.searchBar.endEditing(true)
     }
     
     private func showSearchBar() {
-        searchBar.showsScopeBar = true
-        searchBar.setShowsCancelButton(true, animated: true)
+        searchController.searchBar.showsScopeBar = true
+        searchController.searchBar.setShowsCancelButton(true, animated: true)
     }
     
     private func resetSearchBar() {
-        searchBar.text = ""
+        searchController.searchBar.text = ""
         filteredRecipes = viewModel.recipesViewModels
         filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
         tableView.reloadData()
     }
     
     private func filterAndSort() {
-        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchBar.text, scope: currentSearchCase)
+        filteredRecipes = viewModel.filterRecipesForSearchText(searchText: searchController.searchBar.text, scope: currentSearchCase)
         filteredRecipes = viewModel.sortRecipesBy(sortCase: currentSortCase, recipes: filteredRecipes)
         tableView.reloadData()
     }

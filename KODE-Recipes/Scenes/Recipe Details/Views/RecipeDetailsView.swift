@@ -192,11 +192,11 @@ final class RecipeDetailsView: UIView {
     }
     
     private func setupTextLabels() {
-        instructionTextLabel.font = UIFont.classic
+        instructionTextLabel.font = UIFont.thin
         instructionTextLabel.textColor = .gray
         instructionTextLabel.numberOfLines = 0
         
-        descriptionTextLabel.font = UIFont.classic
+        descriptionTextLabel.font = UIFont.thin
         descriptionTextLabel.textColor = .gray
         descriptionTextLabel.numberOfLines = 0
     }
@@ -209,7 +209,7 @@ final class RecipeDetailsView: UIView {
     }
     
     private func setupTimestampLabel() {
-        timestampLabel.font = UIFont.classic
+        timestampLabel.font = UIFont.thin
         timestampLabel.textColor = .darkGray
     }
     
@@ -256,10 +256,4 @@ private extension Constants {
     struct Text {
         static let numberOfLinesStandart = 2
     }
-}
-
-private extension UIFont {
-    static let classic = UIFont.systemFont(ofSize: 16, weight: .regular)
-    static let big = UIFont.systemFont(ofSize: 23, weight: .regular)
-    static let huge = UIFont.systemFont(ofSize: 30, weight: .bold)
 }

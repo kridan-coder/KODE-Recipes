@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol RecipeDetailsDelegate: AnyObject {
+protocol RecipeDetailsDelegate: Coordinator {
     func didFinish(from coordinator: RecipeDetailsCoordinator)
 }
 
@@ -41,7 +41,6 @@ final class RecipeDetailsCoordinator: Coordinator {
         
         let recipeViewController: RecipeDetailsViewController = {
             let viewController = RecipeDetailsViewController(viewModel: recipeViewModel)
-            viewController.title = Constants.NavigationBarTitle.recipeDetails
             return viewController
         }()
         
@@ -62,4 +61,14 @@ extension RecipeDetailsCoordinator: RecipeViewModelCoordinatorDelegate {
         self.finish()
     }
     
+    func didSelectRecipe(recipeID: String) {
+        let recipeDetailsCoordinator = RecipeDetailsCoordinator(rootNavigationController: rootNavigationController,
+                                                                repository: repository,
+                                                                recipeID: recipeID)
+        
+        recipeDetailsCoordinator.delegate = self.delegate
+        self.delegate?.addChildCoordinator(recipeDetailsCoordinator)
+        rootNavigationController.navigationBar.prefersLargeTitles = false
+        recipeDetailsCoordinator.start()
+    }
 }

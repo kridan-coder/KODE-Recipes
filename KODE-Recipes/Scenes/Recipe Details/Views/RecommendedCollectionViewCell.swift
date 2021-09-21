@@ -26,6 +26,8 @@ class RecommendedCollectionViewCell: UICollectionViewCell {
     
     // MARK: Properties
     
+    var didPressButton: (() -> Void)?
+    
     private let recipeImageView = UIImageView()
     private let titleLabel = UILabel()
     

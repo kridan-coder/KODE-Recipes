@@ -12,37 +12,26 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Properties
     
+    let alertView: ErrorPageView
+    
     var contentView: RecipeDetailsView {
         return view as? RecipeDetailsView ?? RecipeDetailsView()
     }
     // TODO: - Get rid of implicitly unwrapped optional
-    var viewModel: RecipeDetailsViewModel!
+    let viewModel: RecipeDetailsViewModel
+    
+    // MARK: - Init
+    init(viewModel: RecipeDetailsViewModel) {
+        self.viewModel = viewModel
+        alertView = ErrorPageView()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Lifecycle
-    
-    // MARK: Helpers
-    
-    private func setupRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(RecipeDetailsViewController.refresh), for: .valueChanged)
-        scrollView.addSubview(refreshControl)
-    }
-    
-    private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        ImageCollectionViewCellViewModel.registerCell(collectionView: self.collectionView)
-    }
-    
-    private func setupAppearance() {
-        difficultyLevelImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        difficultyLevelImage.layer.borderWidth = Constants.Design.borderWidthSecondary
-        difficultyLevelImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
-        instructionsTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        descriptionTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
-    }
-    
-    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,14 +59,30 @@ class RecipeDetailsViewController: UIViewController {
     // MARK: - Public Methods
     
     func setupRecipeData(recipe: RecipeDataForDetails) {
-        contentView.pageControl.numberOfPages = recipe.imageLinks.count
+        if recipe.imageLinks.count < 2 {
+            contentView.pageControl.isHidden = true
+        } else {
+            contentView.pageControl.isHidden = false
+            contentView.pageControl.numberOfPages = recipe.imageLinks.count
+        }
+        
+        if recipe.similarRecipes.isEmpty {
+            contentView.recommendedTitleLabel.isHidden = true
+            contentView.recommendationImagesCollectionView.isHidden = true
+        } else {
+            contentView.recommendedTitleLabel.isHidden = false
+            contentView.recommendedTitleLabel.text = Constants.recommended
+            
+            contentView.recommendationImagesCollectionView.isHidden = false
+            contentView.recommendationImagesCollectionView.reloadData()
+        }
+        
         contentView.recipeNameLabel.text = recipe.name
         contentView.instructionTextLabel.text = recipe.instructions
         contentView.descriptionTextLabel.text = recipe.description
         contentView.timestampLabel.text = recipe.lastUpdated
         contentView.difficultyTitleLabel.text = Constants.difficulty
         contentView.instructionTitleLabel.text = Constants.instructions
-        contentView.recommendedTitleLabel.text = Constants.recommended
         
         for _ in 0..<recipe.difficultyLevel {
             let image = UIImage.difficultyTrue
@@ -92,10 +97,7 @@ class RecipeDetailsViewController: UIViewController {
         }
         
         contentView.recipeImagesCollectionView.reloadData()
-    }
-    
-    @objc func refresh() {
-        viewModel.reloadData()
+        
     }
     
     // MARK: - Private Methods
@@ -218,6 +220,12 @@ extension RecipeDetailsViewController: UICollectionViewDelegateFlowLayout {
             return Constants.spaceRecipeRecommendations
         }
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == contentView.recommendationImagesCollectionView {
+            viewModel.recipeRecommendationImages[indexPath.row].cellSelected()
+        }
     }
     
 }

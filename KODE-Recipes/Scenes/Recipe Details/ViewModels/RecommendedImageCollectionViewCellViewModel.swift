@@ -5,7 +5,6 @@
 //  Created by Developer on 15.09.2021.
 //
 
-import Foundation
 import UIKit
 
 final class RecommendedImageCollectionViewCellViewModel {
@@ -14,18 +13,20 @@ final class RecommendedImageCollectionViewCellViewModel {
     
     let imageLink: String
     let name: String
+    private let uuid: String
     
     // MARK: Actions
     
     var didReceiveError: ((String) -> Void)?
     var didUpdate: ((RecommendedImageCollectionViewCellViewModel) -> Void)?
-    var didSelectImage: ((String) -> Void)?
+    var didSelectRecommendedRecipe: ((String) -> Void)?
     
     // MARK: Lifecycle
     
-    init(name: String, imageLink: String) {
+    init(name: String, imageLink: String, uuid: String) {
         self.name = name
         self.imageLink = imageLink
+        self.uuid = uuid
     }
     
 }
@@ -43,7 +44,7 @@ extension RecommendedImageCollectionViewCellViewModel: CollectionViewCellReprese
     }
     
     func cellSelected() {
-        self.didSelectImage?(imageLink)
+        self.didSelectRecommendedRecipe?(uuid)
     }
     
 }

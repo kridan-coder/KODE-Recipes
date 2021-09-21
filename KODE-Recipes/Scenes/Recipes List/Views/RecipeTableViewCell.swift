@@ -29,6 +29,8 @@ class RecipeTableViewCell: UITableViewCell {
     // TODO: - Get rid of implicitly unwrapped optional
     private var viewModel: RecipeTableViewCellViewModel!
     
+    var didPressButton: (() -> Void)?
+    
     private let recipeImageView = UIImageView()
     private let labelsContainer = UIStackView()
     private let titleLabel = UILabel()
@@ -74,7 +76,7 @@ class RecipeTableViewCell: UITableViewCell {
         didPressButton?()
     }
     
-    var didPressButton: (() -> Void)?
+
     
     // MARK: - Private Methods
     
@@ -157,9 +159,4 @@ private extension Constants {
     struct LabelsContainer {
         static let spacing = CGFloat(8)
     }
-}
-
-private extension UIFont {
-    static let standart = UIFont.systemFont(ofSize: 16, weight: .regular)
-    static let big = UIFont.systemFont(ofSize: 26, weight: .bold)
 }
