@@ -15,5 +15,6 @@ struct RecipeDataForDetails {
     var lastUpdated: String
     var description: String
     var instructions: String
-    var difficultyImage: UIImage?
+    var difficultyLevel: Int
+    var similarRecipes: [RecipeBrief]
 }

@@ -5,10 +5,9 @@
 //  Created by KriDan on 09.06.2021.
 //
 
-import Foundation
 import UIKit
 
-protocol RecipeDetailsDelegate: AnyObject {
+protocol RecipeDetailsDelegate: Coordinator {
     func didFinish(from coordinator: RecipeDetailsCoordinator)
 }
 
@@ -33,18 +32,10 @@ final class RecipeDetailsCoordinator: Coordinator {
     }
     
     override func start() {
+        let recipeViewModel = RecipeDetailsViewModel(repository: repository, recipeID: recipeID)
+        recipeViewModel.coordinatorDelegate = self
         
-        let recipeViewModel: RecipeDetailsViewModel = {
-            let viewModel = RecipeDetailsViewModel(repository: repository, recipeID: recipeID)
-            viewModel.coordinatorDelegate = self
-            return viewModel
-        }()
-        
-        let recipeViewController: RecipeDetailsViewController = {
-            let viewController = RecipeDetailsViewController(viewModel: recipeViewModel)
-            viewController.title = Constants.NavigationBarTitle.recipeDetails
-            return viewController
-        }()
+        let recipeViewController = RecipeDetailsViewController(viewModel: recipeViewModel)
         
         rootNavigationController.pushViewController(recipeViewController, animated: true)
     }
@@ -59,6 +50,18 @@ final class RecipeDetailsCoordinator: Coordinator {
 
 extension RecipeDetailsCoordinator: RecipeViewModelCoordinatorDelegate {
     func viewWillDisappear() {
+        rootNavigationController.navigationBar.prefersLargeTitles = true
         self.finish()
+    }
+    
+    func didSelectRecipe(recipeID: String) {
+        let recipeDetailsCoordinator = RecipeDetailsCoordinator(rootNavigationController: rootNavigationController,
+                                                                repository: repository,
+                                                                recipeID: recipeID)
+        
+        recipeDetailsCoordinator.delegate = self.delegate
+        self.delegate?.addChildCoordinator(recipeDetailsCoordinator)
+        rootNavigationController.navigationBar.prefersLargeTitles = false
+        recipeDetailsCoordinator.start()
     }
 }

@@ -10,7 +10,6 @@ target 'KODE-Recipes' do
   pod 'Alamofire'
   pod 'Kingfisher'
   pod 'SwiftLint'
-  pod 'RealmSwift'
   pod 'SnapKit'
 
   target 'KODE-RecipesTests' do

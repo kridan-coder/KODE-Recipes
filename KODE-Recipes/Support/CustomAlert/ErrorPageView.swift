@@ -102,7 +102,7 @@ class ErrorPageView: UIView {
         mainButton.setTitleColor(.systemBlue, for: .normal)
         mainButton.setTitleColor(.black, for: .selected)
         mainButton.layer.cornerRadius = Constants.Design.cornerRadiusError
-        mainButton.layer.borderWidth = Constants.Design.borderWidthSecondary
+        mainButton.layer.borderWidth = Constants.Design.borderWidth
         mainButton.layer.borderColor = UIColor.systemBlue.cgColor
     }
     

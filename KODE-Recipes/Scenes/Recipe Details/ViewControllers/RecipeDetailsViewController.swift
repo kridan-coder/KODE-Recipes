@@ -12,30 +12,19 @@ class RecipeDetailsViewController: UIViewController {
     
     // MARK: - Properties
     
+    let alertView: ErrorPageView
+    
+    var contentView: RecipeDetailsView {
+        return view as? RecipeDetailsView ?? RecipeDetailsView()
+    }
+    
     let viewModel: RecipeDetailsViewModel
     
-    private let alertView = ErrorPageView()
-    
-    // Elements set in code
-    private let refreshControl = UIRefreshControl()
-    
-    // MARK: - IBOutlets
-    
-    @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var lastUpdateLabel: UILabel!
-    @IBOutlet private weak var difficultyLevelImage: UIImageView!
-    @IBOutlet private weak var recipeNameLabel: UILabel!
-    @IBOutlet private weak var descriptionLabel: UILabel!
-    @IBOutlet private weak var descriptionTextView: UITextView!
-    @IBOutlet private weak var instructionsTextView: UITextView!
-    @IBOutlet private weak var pageControl: UIPageControl!
-    @IBOutlet private weak var collectionView: UICollectionView!
-    
     // MARK: - Init
-    
     init(viewModel: RecipeDetailsViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: "RecipeDetailsViewController", bundle: nil)
+        alertView = ErrorPageView()
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -46,9 +35,9 @@ class RecipeDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupAppearance()
-        setupCollectionView()
-        setupRefreshControl()
+        
+        setupRecipeImagesCollectionView()
+        setupRecipeImagesRecommendationsCollectionView()
         bindToViewModel()
         viewModel.reloadData()
         setupCustomAlert(alertView)
@@ -63,42 +52,60 @@ class RecipeDetailsViewController: UIViewController {
         }
     }
     
-    // MARK: - Actions
-    
-    @objc private func refresh() {
-        viewModel.reloadData()
+    override func loadView() {
+        view = RecipeDetailsView()
     }
     
-    func setupRecipeData(numberOfPages: Int, recipeName: String, instructions: String, description: String, lastUpdate: String, difficultyImage: UIImage) {
-        pageControl.numberOfPages = numberOfPages
-        recipeNameLabel.text = recipeName
-        instructionsTextView.text = instructions
-        descriptionTextView.text = description
-        lastUpdateLabel.text = lastUpdate
-        difficultyLevelImage.image = difficultyImage
+    // MARK: - Public Methods
+    
+    func setupRecipeData(recipe: RecipeDataForDetails) {
+        if recipe.imageLinks.count < 2 {
+            contentView.pageControl.isHidden = true
+        } else {
+            contentView.pageControl.isHidden = false
+            contentView.pageControl.numberOfPages = recipe.imageLinks.count
+        }
+        
+        if recipe.similarRecipes.isEmpty {
+            contentView.recommendedTitleLabel.isHidden = true
+            contentView.recommendationImagesCollectionView.isHidden = true
+        } else {
+            contentView.recommendedTitleLabel.isHidden = false
+            contentView.recommendedTitleLabel.text = Constants.recommended
+            
+            contentView.recommendationImagesCollectionView.isHidden = false
+            contentView.recommendationImagesCollectionView.reloadData()
+        }
+        
+        contentView.recipeNameLabel.text = recipe.name
+        contentView.instructionTextLabel.text = recipe.instructions
+        contentView.descriptionTextLabel.text = recipe.description
+        contentView.timestampLabel.text = recipe.lastUpdated
+        contentView.difficultyTitleLabel.text = Constants.difficulty
+        contentView.instructionTitleLabel.text = Constants.instructions
+        
+        contentView.difficultyView.difficulty = recipe.difficultyLevel
+        
+        contentView.recipeImagesCollectionView.reloadData()
+        
     }
     
-    private func setupRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(RecipeDetailsViewController.refresh), for: .valueChanged)
-        scrollView.addSubview(refreshControl)
+    // MARK: - Private Methods
+    
+    private func setupRecipeImagesCollectionView() {
+        contentView.recipeImagesCollectionView.delegate = self
+        contentView.recipeImagesCollectionView.dataSource = self
+        ImageCollectionViewCellViewModel.registerCell(collectionView: self.contentView.recipeImagesCollectionView)
+        contentView.recipeImagesCollectionView.reloadData()
     }
     
-    private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        ImageCollectionViewCellViewModel.registerCell(collectionView: self.collectionView)
+    private func setupRecipeImagesRecommendationsCollectionView() {
+        contentView.recommendationImagesCollectionView.delegate = self
+        contentView.recommendationImagesCollectionView.dataSource = self
+        RecommendedCollectionViewCell.registerCell(collectionView: self.contentView.recommendationImagesCollectionView)
     }
     
-    private func setupAppearance() {
-        difficultyLevelImage.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        difficultyLevelImage.layer.borderWidth = Constants.Design.borderWidthSecondary
-        difficultyLevelImage.layer.borderColor = UIColor.BaseTheme.tableBackground?.cgColor
-        instructionsTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        descriptionTextView.layer.cornerRadius = Constants.Design.cornerRadiusMain
-        refreshControl.tintColor = UIColor.BaseTheme.pageControlMain
-    }
-    
-    // ViewModel binding
+    // ViewModel
     private func bindToViewModel() {
         viewModel.didStartUpdating = { [weak self] in
             self?.didStartUpdating()
@@ -121,10 +128,9 @@ class RecipeDetailsViewController: UIViewController {
     
     private func didFinishUpdating() {
         if let recipe = viewModel.recipe {
-            setupRecipeData(numberOfPages: recipe.imageLinks.count, recipeName: recipe.name, instructions: recipe.instructions, description: recipe.description, lastUpdate: recipe.lastUpdated, difficultyImage: recipe.difficultyImage ?? UIImage())
-            collectionView.reloadData()
+            setupRecipeData(recipe: recipe)
+            contentView.recipeImagesCollectionView.reloadData()
         }
-        refreshControl.endRefreshing()
     }
     
     private func didReceiveError(_ error: Error) {
@@ -151,20 +157,32 @@ extension RecipeDetailsViewController: CustomAlertDisplaying {
 extension RecipeDetailsViewController: UICollectionViewDelegate {
     // TODO: - Not sure that this function is a nice decision. Need to rethink and make it work faster
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        pageControl.currentPage = Int(scrollView.contentOffset.x / collectionView.frame.size.width)
+        if contentView.recipeImagesCollectionView.frame.size.width != 0 {
+            contentView.pageControl.currentPage = Int(scrollView.contentOffset.x / contentView.recipeImagesCollectionView.frame.size.width)
+        }
     }
-    
 }
 
 // MARK: - CollectionView DataSource
 
 extension RecipeDetailsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.images.count
+        if collectionView == contentView.recipeImagesCollectionView {
+            return viewModel.recipeImages.count
+        } else {
+            return viewModel.recipeRecommendationImages.count
+        }
+        
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        viewModel.images[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        if collectionView == contentView.recipeImagesCollectionView {
+            return viewModel.recipeImages[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        } else {
+            return viewModel.recipeRecommendationImages[indexPath.row].dequeueCell(collectionView: collectionView, indexPath: indexPath)
+        }
+        
     }
     
 }
@@ -172,16 +190,40 @@ extension RecipeDetailsViewController: UICollectionViewDataSource {
 // MARK: - CollectionView FlowLayout
 
 extension RecipeDetailsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        collectionView.frame.size
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == contentView.recipeImagesCollectionView {
+            return collectionView.frame.size
+        } else {
+            var newSize = CGSize()
+            newSize.width = (self.view.frame.width / 3) * 2
+            newSize.height = collectionView.frame.height
+            return newSize
+        }
+        
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        0
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        if collectionView == contentView.recipeImagesCollectionView {
+            return Constants.spaceRecipeImages
+        } else {
+            return Constants.spaceRecipeRecommendations
+        }
+        
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == contentView.recommendationImagesCollectionView {
+            viewModel.recipeRecommendationImages[indexPath.row].cellSelected()
+        }
+    }
+    
+}
+
+private extension Constants {
+    static let spaceRecipeImages = CGFloat(0)
+    static let spaceRecipeRecommendations = CGFloat(20)
+    static let difficulty = "Difficulty: "
+    static let instructions = "Instruction: "
+    static let recommended = "Recommended: "
 }

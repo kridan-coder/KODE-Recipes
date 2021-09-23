@@ -5,7 +5,6 @@
 //  Created by KriDan on 04.06.2021.
 //
 
-import Foundation
 import UIKit
 
 protocol RecipesListViewModelCoordinatorDelegate: AnyObject {
@@ -69,7 +68,7 @@ final class RecipesListViewModel {
             case .success(let recipesContainer):
                 
                 self.recipesViewModels = recipesContainer.recipes.compactMap {
-                    let recipe = self.repository.recipeAPIToRecipeForCell($0)
+                    let recipe = self.repository.recipeListElementToRecipeForCell($0)
                     return self.viewModelFor(recipe)
                 }
                 

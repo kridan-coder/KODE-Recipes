@@ -5,7 +5,6 @@
 //  Created by KriDan on 02.06.2021.
 //
 
-import Foundation
 import UIKit
 
 final class AppCoordinator: Coordinator {
@@ -16,6 +15,7 @@ final class AppCoordinator: Coordinator {
     let rootNavigationController: UINavigationController = {
         let navigationController = UINavigationController()
         navigationController.navigationBar.barTintColor = UIColor.BaseTheme.background
+        navigationController.navigationBar.prefersLargeTitles = true
         return navigationController
     }()
     

@@ -8,12 +8,14 @@
 import Foundation
 
 struct RecipeDataForCell {
-    var recipeID: String
-    var name: String
-    var imageLink: String
-    var lastUpdated: String
-    var description: String?
+    let recipeID: String
+    let name: String
+    let imageLink: String
+    let lastUpdated: String
+    let description: String?
     
     // instructions are not shown but are used for searching
-    var instructions: String
+    let instructions: String
+    // date (number) is not shown but is used for sorting
+    let date: Double
 }
