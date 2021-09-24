@@ -105,7 +105,7 @@ final class Repository {
             }
         case .date:
             mutableRecipes.sort { first, second in
-                return first.data.lastUpdated > second.data.lastUpdated
+                return first.data.date > second.data.date
             }
         }
         

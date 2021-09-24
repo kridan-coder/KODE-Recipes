@@ -41,4 +41,3 @@ struct Recipe: Decodable {
     }
     
 }
-

@@ -46,6 +46,8 @@ class RecipesListViewController: UIViewController {
         
         bindToViewModel()
         viewModel.reloadData()
+        
+        setupCustomAlert(alertView)
     }
     
     // MARK: - Actions
@@ -76,7 +78,6 @@ class RecipesListViewController: UIViewController {
         setupNavigationItem()
         setupTableView()
         setupSearchController()
-        
     }
     
     private func setupSearchController() {
@@ -133,8 +134,6 @@ class RecipesListViewController: UIViewController {
     }
     
     private func didReceiveError(_ error: Error) {
-        navigationController?.navigationBar.isHidden = true
-        
         let title: String
         if let customError = error as? CustomError {
             title = customError.errorTitle

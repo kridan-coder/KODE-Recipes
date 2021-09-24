@@ -106,7 +106,6 @@ class RecommendedCollectionViewCell: UICollectionViewCell {
 // MARK: - Constants
 
 private extension Constants {
-    
     static let cellReuseIdentifier = "RecommendationCollectionViewCellSK"
     
     struct RecipeImage {

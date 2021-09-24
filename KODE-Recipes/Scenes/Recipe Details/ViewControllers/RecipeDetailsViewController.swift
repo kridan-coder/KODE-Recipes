@@ -40,6 +40,7 @@ class RecipeDetailsViewController: UIViewController {
         setupRecipeImagesRecommendationsCollectionView()
         bindToViewModel()
         viewModel.reloadData()
+        
         setupCustomAlert(alertView)
     }
     
@@ -130,13 +131,20 @@ class RecipeDetailsViewController: UIViewController {
         if let recipe = viewModel.recipe {
             setupRecipeData(recipe: recipe)
             contentView.recipeImagesCollectionView.reloadData()
+            hideCustomAlert(alertView)
         }
     }
     
     private func didReceiveError(_ error: Error) {
-        navigationController?.navigationBar.isHidden = true
+        let title: String
+        if let customError = error as? CustomError {
+            title = customError.errorTitle
+        } else {
+            title = Constants.ErrorType.basic
+        }
+        
         showCustomAlert(alertView,
-                        title: Constants.ErrorType.basic,
+                        title: title,
                         message: error.localizedDescription,
                         buttonText: Constants.ButtonTitle.refresh)
     }
@@ -158,7 +166,8 @@ extension RecipeDetailsViewController: UICollectionViewDelegate {
     // TODO: - Not sure that this function is a nice decision. Need to rethink and make it work faster
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if contentView.recipeImagesCollectionView.frame.size.width != 0 {
-            contentView.pageControl.currentPage = Int(scrollView.contentOffset.x / contentView.recipeImagesCollectionView.frame.size.width)
+            contentView.pageControl.currentPage =
+                Int(scrollView.contentOffset.x / contentView.recipeImagesCollectionView.frame.size.width)
         }
     }
 }
@@ -190,7 +199,6 @@ extension RecipeDetailsViewController: UICollectionViewDataSource {
 // MARK: - CollectionView FlowLayout
 
 extension RecipeDetailsViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == contentView.recipeImagesCollectionView {
             return collectionView.frame.size
